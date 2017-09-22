@@ -17,7 +17,7 @@ public abstract class AbstractDtoBuilder<E extends AbstractEntity, DTO extends B
         try {
             dto = clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new BcptDatabaseException("Error creating instance of class " + clazz.getName(), e);
+            throw new BcptDatabaseException("Error creating instance of the class " + clazz.getName(), e);
         }
     }
 

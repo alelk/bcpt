@@ -20,7 +20,7 @@ import static com.alelk.bcpt.database.model.PersonEntity.*;
 @NamedQuery(name = QUERY_FIND_ALL, query = "select p from PersonEntity p")
 public class PersonEntity extends AbstractEntity {
 
-    public static final String QUERY_FIND_ALL = "findAll";
+    public static final String QUERY_FIND_ALL = "findAllPersons";
 
     private String firstName;
     private String lastName;

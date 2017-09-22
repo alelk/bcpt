@@ -39,20 +39,19 @@ public class PersonValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "externalId", "externalId.empty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "externalId", "person.externalId.empty");
         if (errors.hasErrors()) return;
         final PersonAbstractRequest request = (PersonAbstractRequest) target;
         boolean isIdExists = personService.isIdExists(request.getExternalId());
         if (target instanceof PersonUpdateRequest && !isIdExists)
-            errors.rejectValue("externalId", "externalId.notFound");
+            errors.rejectValue("externalId", "person.externalId.notFound");
         else if (target instanceof PersonCreateRequest && isIdExists)
-            errors.rejectValue("externalId", "externalId.exists");
+            errors.rejectValue("externalId", "person.externalId.exists");
         else if (target instanceof PersonDeleteRequest) {
-            if (!isIdExists) errors.rejectValue("externalId", "externalId.notFound");
+            if (!isIdExists) errors.rejectValue("externalId", "person.externalId.notFound");
             final List<BloodDonationDto> bloodDonations = bloodDonationService.findFor(((PersonDeleteRequest) target).toDto());
             if (bloodDonations != null && bloodDonations.size() > 0)
-                errors.rejectValue("externalId", "externalId.hasDependencies");
+                errors.rejectValue("externalId", "person.bloodDonations.notEmpty");
         }
-
     }
 }

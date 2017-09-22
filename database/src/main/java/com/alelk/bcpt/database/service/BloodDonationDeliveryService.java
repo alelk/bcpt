@@ -1,8 +1,8 @@
 package com.alelk.bcpt.database.service;
 
-import com.alelk.bcpt.database.model.BloodDonationDeliveryEntity;
+import com.alelk.bcpt.database.model.BloodInvoiceEntity;
 import com.alelk.bcpt.database.model.BloodDonationEntity;
-import com.alelk.bcpt.database.repository.BloodDonationDeliveryRepository;
+import com.alelk.bcpt.database.repository.BloodInvoiceRepository;
 import com.alelk.bcpt.database.repository.BloodDonationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,17 +23,17 @@ import static com.alelk.bcpt.database.util.ValidationUtil.*;
 @Service
 public class BloodDonationDeliveryService {
 
-    private BloodDonationDeliveryRepository bloodDonationDeliveryRepository;
+    private BloodInvoiceRepository bloodInvoiceRepository;
     private BloodDonationRepository bloodDonationRepository;
 
     @Autowired
-    BloodDonationDeliveryService(BloodDonationDeliveryRepository bloodDonationDeliveryRepository, BloodDonationRepository bloodDonationRepository) {
-        this.bloodDonationDeliveryRepository = bloodDonationDeliveryRepository;
+    BloodDonationDeliveryService(BloodInvoiceRepository bloodInvoiceRepository, BloodDonationRepository bloodDonationRepository) {
+        this.bloodInvoiceRepository = bloodInvoiceRepository;
         this.bloodDonationRepository = bloodDonationRepository;
     }
 
     @Transactional
-    public BloodDonationDeliveryEntity create(String externalId, Date deliveryDate, String[] bloodDonationExternalIds) {
+    public BloodInvoiceEntity create(String externalId, Date deliveryDate, String[] bloodDonationExternalIds) {
         final String message = "Cannot add new blood donation delivery info '" + externalId + ':';
         validateNotEmpty(externalId, message + " external id does'nt provided.");
         Set<BloodDonationEntity> donationEntities = bloodDonationExternalIds != null
@@ -41,28 +41,28 @@ public class BloodDonationDeliveryService {
                 .map(bdExternalId -> bloodDonationRepository.findByExternalId(bdExternalId))
                 .collect(Collectors.toSet())
                 : null;
-        return bloodDonationDeliveryRepository.save(new BloodDonationDeliveryEntity(externalId, deliveryDate, donationEntities));
+        return bloodInvoiceRepository.save(new BloodInvoiceEntity(externalId, deliveryDate, donationEntities));
     }
 
     @Transactional(readOnly = true)
-    public BloodDonationDeliveryEntity findById(Long id) {
+    public BloodInvoiceEntity findById(Long id) {
         validateNotNull(id, "Cannot find blood donation delivery by id: no id provided.");
-        return bloodDonationDeliveryRepository.findById(id);
+        return bloodInvoiceRepository.findById(id);
     }
 
     @Transactional(readOnly = true)
-    public BloodDonationDeliveryEntity findByExternalId(String externalId) {
+    public BloodInvoiceEntity findByExternalId(String externalId) {
         return findByExternalId(externalId, false);
     }
 
     @Transactional(readOnly = true)
-    public BloodDonationDeliveryEntity findByExternalId(String externalId, boolean withDonationSet) {
+    public BloodInvoiceEntity findByExternalId(String externalId, boolean withDonationSet) {
         validateNotEmpty(externalId, "Cannot find blood donation delivery by external id: no id provided.");
-        return withDonationSet ? withDonationSet(bloodDonationDeliveryRepository.findByExternalId(externalId))
-                : bloodDonationDeliveryRepository.findByExternalId(externalId);
+        return withDonationSet ? withDonationSet(bloodInvoiceRepository.findByExternalId(externalId))
+                : bloodInvoiceRepository.findByExternalId(externalId);
     }
 
-    private BloodDonationDeliveryEntity withDonationSet(BloodDonationDeliveryEntity entity) {
+    private BloodInvoiceEntity withDonationSet(BloodInvoiceEntity entity) {
         if (entity.getBloodDonations() != null) entity.getBloodDonations().size();
         return entity;
     }

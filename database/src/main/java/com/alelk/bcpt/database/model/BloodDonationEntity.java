@@ -22,8 +22,8 @@ import static com.alelk.bcpt.database.model.BloodDonationEntity.*;
 )})
 public class BloodDonationEntity extends AbstractEntity {
 
-    public static final String QUERY_FIND_ALL = "findAll";
-    public static final String QUERY_FIND_BY_DONOR = "findByDonor";
+    public static final String QUERY_FIND_ALL = "findAllBloodDonations";
+    public static final String QUERY_FIND_BY_DONOR = "findBloodDonationsByDonor";
     public static final String PARAMETER_DONOR = "donorId";
 
     @ManyToOne
