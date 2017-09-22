@@ -1,5 +1,7 @@
 package com.alelk.bcpt.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -13,6 +15,8 @@ public class BloodDonationDto extends AbstractBcptDto {
     private Double amount;
     private Date donationDate;
     private Date quarantineDate;
+
+    public BloodDonationDto() {}
 
     public BloodDonationDto(String externalId, Date creationTimestamp, Date updateTimestamp) {
         super(externalId, creationTimestamp, updateTimestamp);
@@ -50,10 +54,12 @@ public class BloodDonationDto extends AbstractBcptDto {
         return amount;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     public Date getDonationDate() {
         return donationDate;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     public Date getQuarantineDate() {
         return quarantineDate;
     }
@@ -61,7 +67,7 @@ public class BloodDonationDto extends AbstractBcptDto {
     @Override
     public String toString() {
         return "BloodDonationDto{" +
-                ", externalId='" + getExternalId() +
+                "externalId='" + getExternalId() +
                 "', donorExternalId=" + donorExternalId +
                 ", amount=" + amount +
                 ", donationDate=" + donationDate +

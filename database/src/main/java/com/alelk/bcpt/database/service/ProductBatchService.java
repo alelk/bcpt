@@ -1,8 +1,8 @@
 package com.alelk.bcpt.database.service;
 
-import com.alelk.bcpt.database.model.BloodDonationPoolEntity;
+import com.alelk.bcpt.database.model.BloodPoolEntity;
 import com.alelk.bcpt.database.model.ProductBatchEntity;
-import com.alelk.bcpt.database.repository.BloodDonationPoolRepository;
+import com.alelk.bcpt.database.repository.BloodPoolRepository;
 import com.alelk.bcpt.database.repository.ProductBatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +23,12 @@ import static com.alelk.bcpt.database.util.ValidationUtil.*;
 @Service
 public class ProductBatchService {
 
-    private BloodDonationPoolRepository bloodDonationPoolRepository;
+    private BloodPoolRepository bloodPoolRepository;
     private ProductBatchRepository productBatchRepository;
 
     @Autowired
-    public ProductBatchService(BloodDonationPoolRepository bloodDonationPoolRepository, ProductBatchRepository productBatchRepository) {
-        this.bloodDonationPoolRepository = bloodDonationPoolRepository;
+    public ProductBatchService(BloodPoolRepository bloodPoolRepository, ProductBatchRepository productBatchRepository) {
+        this.bloodPoolRepository = bloodPoolRepository;
         this.productBatchRepository = productBatchRepository;
     }
 
@@ -36,9 +36,9 @@ public class ProductBatchService {
     public ProductBatchEntity create(String externalId, Date batchDate, String[] bloodDonationPoolExternalIds) {
         final String message = "Cannot add new product batch info '" + externalId + ':';
         validateNotEmpty(externalId, message + " external id does'nt provided.");
-        Set<BloodDonationPoolEntity> entities = bloodDonationPoolExternalIds != null
+        Set<BloodPoolEntity> entities = bloodDonationPoolExternalIds != null
                 ? Arrays.stream(bloodDonationPoolExternalIds)
-                .map(bddExternalId -> bloodDonationPoolRepository.findByExternalId(bddExternalId))
+                .map(bddExternalId -> bloodPoolRepository.findByExternalId(bddExternalId))
                 .collect(Collectors.toSet())
                 : null;
         return productBatchRepository.save(new ProductBatchEntity(externalId, batchDate, entities));

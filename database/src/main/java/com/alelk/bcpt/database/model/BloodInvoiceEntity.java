@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
+import static com.alelk.bcpt.database.model.BloodInvoiceEntity.*;
 
 /**
  * Blood Donation Delivery Entity
@@ -11,8 +12,14 @@ import java.util.stream.Collectors;
  * Created by Alex Elkin on 11.09.2017.
  */
 @Entity
-@Table (name = "bloodDontionDeliveries")
-public class BloodDonationDeliveryEntity extends AbstractEntity {
+@Table (name = "bloodInvoices")
+@NamedQueries(value = {
+        @NamedQuery(
+                name = QUERY_FIND_ALL,
+                query = "select bdde from BloodInvoiceEntity bdde"
+        )})
+public class BloodInvoiceEntity extends AbstractEntity {
+    public static final String QUERY_FIND_ALL = "findAllBloodInvoices";
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
@@ -20,9 +27,9 @@ public class BloodDonationDeliveryEntity extends AbstractEntity {
     @OneToMany
     private Set<BloodDonationEntity> bloodDonations;
 
-    BloodDonationDeliveryEntity() {}
+    protected BloodInvoiceEntity() {}
 
-    public BloodDonationDeliveryEntity(String externalId, Date deliveryDate, Set<BloodDonationEntity> bloodDonations) {
+    public BloodInvoiceEntity(String externalId, Date deliveryDate, Set<BloodDonationEntity> bloodDonations) {
         super(externalId);
         this.deliveryDate = deliveryDate;
         this.bloodDonations = bloodDonations;
@@ -46,7 +53,7 @@ public class BloodDonationDeliveryEntity extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "BloodDonationDeliveryEntity{" +
+        return "BloodInvoiceEntity{" +
                 "id=" + getId() +
                 ", externalId='" + getExternalId() + '\'' +
                 ", bloodDonations=" + (bloodDonations != null

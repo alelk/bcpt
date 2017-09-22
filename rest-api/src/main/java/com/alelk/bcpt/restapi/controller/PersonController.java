@@ -3,6 +3,7 @@ package com.alelk.bcpt.restapi.controller;
 import com.alelk.bcpt.database.service.PersonService;
 import com.alelk.bcpt.model.dto.PersonDto;
 import com.alelk.bcpt.restapi.request.PersonCreateRequest;
+import com.alelk.bcpt.restapi.request.PersonDeleteRequest;
 import com.alelk.bcpt.restapi.request.PersonUpdateRequest;
 import com.alelk.bcpt.restapi.validator.PersonValidator;
 import org.slf4j.Logger;
@@ -58,8 +59,8 @@ public class PersonController {
         return personService.findByExternalId(externalId);
     }
 
-    @DeleteMapping("/{externalId}")
-    public ResponseEntity<PersonDto> removePerson(@PathVariable String externalId) {
-        return ResponseEntity.ok(personService.removeByExternalId(externalId));
+    @DeleteMapping("/")
+    public ResponseEntity<PersonDto> deletePerson(@Validated @RequestBody PersonDeleteRequest person) {
+        return ResponseEntity.ok(personService.removeByExternalId(person.getExternalId()));
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * Product Batch Repository
@@ -29,5 +30,13 @@ public class ProductBatchRepository {
     public ProductBatchEntity findByExternalId(String externalId) {
         Session session = em.unwrap(Session.class);
         return session.byNaturalId(ProductBatchEntity.class).using("externalId", externalId).load();
+    }
+
+    public List<ProductBatchEntity> findAll() {
+        return em.createNamedQuery(ProductBatchEntity.QUERY_FIND_ALL, ProductBatchEntity.class).getResultList();
+    }
+
+    public void remove(ProductBatchEntity entity) {
+        em.remove(entity);
     }
 }

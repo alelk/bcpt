@@ -9,7 +9,7 @@ import com.alelk.bcpt.model.dto.PersonDto;
  *
  * Created by Alex Elkin on 19.09.2017.
  */
-public class PersonAbstractRequest extends BcptDtoApiRequest<PersonDto> {
+public abstract class PersonAbstractRequest extends BcptDtoApiRequest<PersonDto> {
 
     private String firstName;
     private String lastName;
@@ -66,7 +66,7 @@ public class PersonAbstractRequest extends BcptDtoApiRequest<PersonDto> {
     public String toString() {
         return "PersonAbstractRequest{" +
                 "externalId='" + getExternalId() + '\'' +
-                " firstName='" + firstName + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", bloodType=" + bloodType +
