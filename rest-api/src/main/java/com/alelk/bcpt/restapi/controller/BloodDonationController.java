@@ -38,27 +38,27 @@ public class BloodDonationController {
     }
 
     @GetMapping("/")
-    public List<BloodDonationDto> getBloodDonations() {
+    public List<BloodDonationDto> getAll() {
         return bloodDonationService.findAll();
     }
 
     @PostMapping("/")
-    public ResponseEntity<BloodDonationDto> postBloodDonation(@Validated @RequestBody BloodDonationCreateRequest request) {
+    public ResponseEntity<BloodDonationDto> create(@Validated @RequestBody BloodDonationCreateRequest request) {
         return ResponseEntity.ok(bloodDonationService.create(request.toDto()));
     }
 
     @PutMapping("/{externalId}")
-    public ResponseEntity<BloodDonationDto> putBloodDonation(@PathVariable String externalId, @Validated @RequestBody BloodDonationUpdateRequest request) {
+    public ResponseEntity<BloodDonationDto> update(@PathVariable String externalId, @Validated @RequestBody BloodDonationUpdateRequest request) {
         return ResponseEntity.ok(bloodDonationService.update(externalId, request.toDto(), true));
     }
 
     @GetMapping("/{externalId}")
-    public BloodDonationDto getBloodDonation(@PathVariable String externalId) {
+    public BloodDonationDto get(@PathVariable String externalId) {
         return bloodDonationService.findByExternalId(externalId);
     }
 
     @DeleteMapping("/")
-    public ResponseEntity<BloodDonationDto> deleteBloodDonation(@Validated @RequestBody BloodDonationDeleteRequest request) {
+    public ResponseEntity<BloodDonationDto> delete(@Validated @RequestBody BloodDonationDeleteRequest request) {
         return ResponseEntity.ok(bloodDonationService.removeByExternalId(request.getExternalId()));
     }
 }

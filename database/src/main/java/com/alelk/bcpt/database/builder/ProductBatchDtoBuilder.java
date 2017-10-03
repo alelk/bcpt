@@ -4,6 +4,8 @@ import com.alelk.bcpt.database.model.BloodPoolEntity;
 import com.alelk.bcpt.database.model.ProductBatchEntity;
 import com.alelk.bcpt.model.dto.ProductBatchDto;
 
+import java.util.stream.Collectors;
+
 /**
  * Product Batch DTO builder
  *
@@ -20,8 +22,10 @@ public class ProductBatchDtoBuilder extends AbstractDtoBuilder<ProductBatchEntit
         super.apply(entity);
         if (entity == null) return this;
         dto.setBatchDate(entity.getBatchDate());
+        dto.setTotalAmount(entity.getTotalAmount());
         dto.setBloodPoolIds(
-                entity.getBloodPools().stream().map(BloodPoolEntity::getExternalId).toArray(String[]::new)
+                entity.getBloodPools() != null ?
+                entity.getBloodPools().stream().map(BloodPoolEntity::getExternalId).collect(Collectors.toSet()) : null
         );
         return this;
     }

@@ -2,8 +2,10 @@ package com.alelk.bcpt.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Arrays;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -14,7 +16,8 @@ import java.util.stream.Collectors;
 public class ProductBatchDto extends AbstractBcptDto {
 
     private Date batchDate;
-    private String[] bloodPoolIds;
+    private Set<String> bloodPoolIds;
+    private Double totalAmount;
 
     public ProductBatchDto() {}
 
@@ -22,10 +25,11 @@ public class ProductBatchDto extends AbstractBcptDto {
         super(externalId, creationTimestamp, updateTimestamp);
     }
 
-    public ProductBatchDto(String externalId, Date creationTimestamp, Date updateTimestamp, Date batchDate, String[] bloodPoolIds) {
+    public ProductBatchDto(String externalId, Date creationTimestamp, Date updateTimestamp, Date batchDate, Set<String> bloodPoolIds, Double totalAmount) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.batchDate = batchDate;
         this.bloodPoolIds = bloodPoolIds;
+        this.totalAmount = totalAmount;
     }
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -33,7 +37,7 @@ public class ProductBatchDto extends AbstractBcptDto {
         return batchDate;
     }
 
-    public String[] getBloodPoolIds() {
+    public Set<String> getBloodPoolIds() {
         return bloodPoolIds;
     }
 
@@ -41,8 +45,16 @@ public class ProductBatchDto extends AbstractBcptDto {
         this.batchDate = batchDate;
     }
 
-    public void setBloodPoolIds(String[] bloodPoolIds) {
+    public void setBloodPoolIds(Set<String> bloodPoolIds) {
         this.bloodPoolIds = bloodPoolIds;
+    }
+
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount == null ? null : new BigDecimal(totalAmount).setScale(2, RoundingMode.FLOOR).doubleValue();
     }
 
     @Override
@@ -51,9 +63,10 @@ public class ProductBatchDto extends AbstractBcptDto {
                 "externalId='" + getExternalId() +
                 ", batchDate='" + batchDate +
                 ", bloodPoolIds=" + (bloodPoolIds != null
-                ? '[' + Arrays.stream(bloodPoolIds).collect(Collectors.joining(", ")) + ']'
+                ? '[' + bloodPoolIds.stream().collect(Collectors.joining(", ")) + ']'
                 : null) +
                 ", creationTimestamp=" + getCreationTimestamp() +
+                ", totalAmount=" + totalAmount +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';
     }

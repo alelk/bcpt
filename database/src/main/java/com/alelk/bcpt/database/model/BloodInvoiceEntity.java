@@ -1,5 +1,7 @@
 package com.alelk.bcpt.database.model;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -25,7 +27,14 @@ public class BloodInvoiceEntity extends AbstractEntity {
     private Date deliveryDate;
 
     @OneToMany
+    @JoinColumn(name = "bloodinvoice_id")
     private Set<BloodDonationEntity> bloodDonations;
+
+    @ManyToOne
+    private BloodPoolEntity bloodPool;
+
+    @Formula("(select sum(donations.amount) from bloodDonations donations where donations.bloodinvoice_id = id)")
+    private Double totalAmount;
 
     protected BloodInvoiceEntity() {}
 
@@ -51,6 +60,18 @@ public class BloodInvoiceEntity extends AbstractEntity {
         this.bloodDonations = bloodDonations;
     }
 
+    public BloodPoolEntity getBloodPool() {
+        return bloodPool;
+    }
+
+    public void setBloodPool(BloodPoolEntity bloodPool) {
+        this.bloodPool = bloodPool;
+    }
+
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
     @Override
     public String toString() {
         return "BloodInvoiceEntity{" +
@@ -59,6 +80,8 @@ public class BloodInvoiceEntity extends AbstractEntity {
                 ", bloodDonations=" + (bloodDonations != null
                 ? '[' + bloodDonations.stream().map(BloodDonationEntity::getExternalId).collect(Collectors.joining(", ")) + ']'
                 : null) +
+                ", bloodPoolExternalId='" + (bloodPool != null ? bloodPool.getExternalId() : null) + '\'' +
+                ", totalAmount='" + totalAmount + '\'' +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';

@@ -9,9 +9,11 @@ import java.util.Date;
  *
  * Created by Alex Elkin on 21.09.2017.
  */
+@SuppressWarnings("unused")
 public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonationDto> {
 
     private String donorExternalId;
+    private String bloodInvoiceExternalId;
     private Double amount;
     private Date donationDate;
     private Date quarantineDate;
@@ -48,15 +50,24 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
         this.quarantineDate = quarantineDate;
     }
 
+    public String getBloodInvoiceExternalId() {
+        return bloodInvoiceExternalId;
+    }
+
+    public void setBloodInvoiceExternalId(String bloodInvoiceExternalId) {
+        this.bloodInvoiceExternalId = bloodInvoiceExternalId;
+    }
+
     @Override
     public BloodDonationDto toDto() {
-        return new BloodDonationDto(getExternalId(), null, null, donorExternalId, amount, donationDate, quarantineDate);
+        return new BloodDonationDto(getExternalId(), null, null, donorExternalId, bloodInvoiceExternalId, amount, donationDate, quarantineDate);
     }
 
     @Override
     public String toString() {
-        return "BloodDonationAbstractRequest{" +
+        return this.getClass().getSimpleName() + "{" +
                 "externalId='" + getExternalId() + '\'' +
+                ", bloodInvoiceExternalId='" + bloodInvoiceExternalId + '\'' +
                 ", donorExternalId='" + donorExternalId + '\'' +
                 ", amount=" + amount +
                 ", donationDate=" + donationDate +

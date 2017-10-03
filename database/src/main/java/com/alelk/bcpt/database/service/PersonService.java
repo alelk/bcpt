@@ -8,6 +8,7 @@ import com.alelk.bcpt.model.dto.PersonDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,8 +69,8 @@ public class PersonService {
     }
 
     @Transactional
-    public boolean isIdExists(String personExternalId) {
-        return findEntityByExternalId(personExternalId, "Error checking if the person exists: ") != null;
+    public boolean isIdExists(String externalId) {
+        return !StringUtils.isEmpty(externalId) && findEntityByExternalId(externalId, "Error checking if the person exists: ") != null;
     }
 
 

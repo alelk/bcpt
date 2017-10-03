@@ -12,6 +12,7 @@ import java.util.Date;
 public class BloodDonationDto extends AbstractBcptDto {
 
     private String donorExternalId;
+    private String bloodInvoiceExternalId;
     private Double amount;
     private Date donationDate;
     private Date quarantineDate;
@@ -22,9 +23,10 @@ public class BloodDonationDto extends AbstractBcptDto {
         super(externalId, creationTimestamp, updateTimestamp);
     }
 
-    public BloodDonationDto(String externalId, Date creationTimestamp, Date updateTimestamp, String donorExternalId, Double amount, Date donationDate, Date quarantineDate) {
+    public BloodDonationDto(String externalId, Date creationTimestamp, Date updateTimestamp, String donorExternalId, String bloodInvoiceExternalId, Double amount, Date donationDate, Date quarantineDate) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.donorExternalId = donorExternalId;
+        this.bloodInvoiceExternalId = bloodInvoiceExternalId;
         this.amount = amount;
         this.donationDate = donationDate;
         this.quarantineDate = quarantineDate;
@@ -54,6 +56,14 @@ public class BloodDonationDto extends AbstractBcptDto {
         return amount;
     }
 
+    public String getBloodInvoiceExternalId() {
+        return bloodInvoiceExternalId;
+    }
+
+    public void setBloodInvoiceExternalId(String bloodInvoiceExternalId) {
+        this.bloodInvoiceExternalId = bloodInvoiceExternalId;
+    }
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     public Date getDonationDate() {
         return donationDate;
@@ -69,6 +79,7 @@ public class BloodDonationDto extends AbstractBcptDto {
         return "BloodDonationDto{" +
                 "externalId='" + getExternalId() +
                 "', donorExternalId=" + donorExternalId +
+                "', bloodInvoiceExternalId=" + bloodInvoiceExternalId +
                 ", amount=" + amount +
                 ", donationDate=" + donationDate +
                 ", quarantineDate=" + quarantineDate +

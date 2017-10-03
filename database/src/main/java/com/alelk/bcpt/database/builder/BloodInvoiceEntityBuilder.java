@@ -2,6 +2,7 @@ package com.alelk.bcpt.database.builder;
 
 import com.alelk.bcpt.database.model.BloodInvoiceEntity;
 import com.alelk.bcpt.database.model.BloodDonationEntity;
+import com.alelk.bcpt.database.model.BloodPoolEntity;
 import com.alelk.bcpt.model.dto.BloodInvoiceDto;
 
 import java.util.HashSet;
@@ -36,10 +37,14 @@ public class BloodInvoiceEntityBuilder extends AbstractEntityBuilder<BloodInvoic
     }
 
     public BloodInvoiceEntityBuilder apply(Set<BloodDonationEntity> bloodDonationEntities) {
-        if (mergeWithNullValues && bloodDonationEntities == null)
-            entity.setBloodDonations(new HashSet<>());
-        else
+        if (mergeWithNullValues || bloodDonationEntities != null)
             entity.setBloodDonations(bloodDonationEntities);
+        return this;
+    }
+
+    public BloodInvoiceEntityBuilder apply(BloodPoolEntity bloodPoolEntity) {
+        if (mergeWithNullValues || bloodPoolEntity != null)
+            entity.setBloodPool(bloodPoolEntity);
         return this;
     }
 }
