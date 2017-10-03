@@ -1,5 +1,7 @@
 package com.alelk.bcpt.database.model;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,8 +24,16 @@ public class BloodPoolEntity extends AbstractEntity {
 
     private Integer poolNumber;
 
+    @ManyToOne
+    private ProductBatchEntity productBatch;
+
     @OneToMany
+    @JoinColumn(name = "bloodpool_id")
     private Set<BloodInvoiceEntity> bloodInvoices;
+
+    @Formula("(SELECT sum(donations.amount) from bloodDonations donations JOIN  bloodInvoices invoices " +
+            "ON donations.bloodinvoice_id = invoices.id WHERE invoices.bloodpool_id = id)")
+    private Double totalAmount;
 
     public BloodPoolEntity() {
     }
@@ -50,6 +60,22 @@ public class BloodPoolEntity extends AbstractEntity {
         this.bloodInvoices = bloodInvoices;
     }
 
+    public ProductBatchEntity getProductBatch() {
+        return productBatch;
+    }
+
+    public void setProductBatch(ProductBatchEntity productBatch) {
+        this.productBatch = productBatch;
+    }
+
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     @Override
     public String toString() {
         return "BloodPoolEntity{" +
@@ -59,7 +85,9 @@ public class BloodPoolEntity extends AbstractEntity {
                 ", bloodInvoices=" + (bloodInvoices != null
                 ? '[' + bloodInvoices.stream().map(AbstractEntity::getExternalId).collect(Collectors.joining(", ")) + ']'
                 : null)+
+                ", productBatchExternalId='" + (productBatch != null ? productBatch.getExternalId() : null) + '\'' +
                 ", creationTimestamp=" + getCreationTimestamp() +
+                ", totalAmount=" + totalAmount +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';
     }

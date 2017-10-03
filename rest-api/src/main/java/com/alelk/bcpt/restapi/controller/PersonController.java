@@ -24,7 +24,6 @@ import java.util.List;
 @RequestMapping("/persons")
 public class PersonController {
 
-    private static final Logger log = LoggerFactory.getLogger(PersonController.class);
     private PersonService personService;
     private PersonValidator personValidator;
 
@@ -40,27 +39,27 @@ public class PersonController {
     }
 
     @GetMapping("/")
-    public List<PersonDto> getPersons() {
+    public List<PersonDto> getAll() {
         return personService.findAll();
     }
 
     @PostMapping("/")
-    public ResponseEntity<PersonDto> postPerson(@Validated @RequestBody PersonCreateRequest person) {
+    public ResponseEntity<PersonDto> create(@Validated @RequestBody PersonCreateRequest person) {
         return ResponseEntity.ok(personService.create(person.toDto()));
     }
 
     @PutMapping("/{externalId}")
-    public ResponseEntity<PersonDto> putPerson(@PathVariable String externalId, @Validated @RequestBody PersonUpdateRequest person) {
+    public ResponseEntity<PersonDto> update(@PathVariable String externalId, @Validated @RequestBody PersonUpdateRequest person) {
         return ResponseEntity.ok(personService.update(externalId, person.toDto(), true));
     }
 
     @GetMapping("/{externalId}")
-    public PersonDto getPerson(@PathVariable String externalId) {
+    public PersonDto get(@PathVariable String externalId) {
         return personService.findByExternalId(externalId);
     }
 
     @DeleteMapping("/")
-    public ResponseEntity<PersonDto> deletePerson(@Validated @RequestBody PersonDeleteRequest person) {
+    public ResponseEntity<PersonDto> delete(@Validated @RequestBody PersonDeleteRequest person) {
         return ResponseEntity.ok(personService.removeByExternalId(person.getExternalId()));
     }
 }

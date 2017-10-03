@@ -3,14 +3,17 @@ package com.alelk.bcpt.database.service;
 import com.alelk.bcpt.database.builder.BloodDonationDtoBuilder;
 import com.alelk.bcpt.database.builder.BloodDonationEntityBuilder;
 import com.alelk.bcpt.database.model.BloodDonationEntity;
+import com.alelk.bcpt.database.model.BloodInvoiceEntity;
 import com.alelk.bcpt.database.model.PersonEntity;
 import com.alelk.bcpt.database.repository.BloodDonationRepository;
+import com.alelk.bcpt.database.repository.BloodInvoiceRepository;
 import com.alelk.bcpt.database.repository.PersonRepository;
 import com.alelk.bcpt.model.dto.BloodDonationDto;
 import com.alelk.bcpt.model.dto.PersonDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import static com.alelk.bcpt.database.util.ValidationUtil.*;
 
@@ -27,23 +30,26 @@ public class BloodDonationService {
 
     private BloodDonationRepository bloodDonationRepository;
     private PersonRepository personRepository;
+    private BloodInvoiceRepository bloodInvoiceRepository;
 
     @Autowired
-    BloodDonationService(BloodDonationRepository bloodDonationRepository, PersonRepository personRepository) {
+    BloodDonationService(BloodDonationRepository bloodDonationRepository, PersonRepository personRepository, BloodInvoiceRepository bloodInvoiceRepository) {
         this.bloodDonationRepository = bloodDonationRepository;
         this.personRepository = personRepository;
+        this.bloodInvoiceRepository = bloodInvoiceRepository;
     }
 
     @Transactional
     public BloodDonationDto create(BloodDonationDto bloodDonation) {
-        final String message = "Cannot add new blood donation info '" + bloodDonation + "' to the database:";
-        validateNotNull(bloodDonation, message + " BloodDonation DTO must be not null!");
-        validateNotEmpty(bloodDonation.getExternalId(), message + " no external id provided!");
-        validateNotEmpty(bloodDonation.getDonorExternalId(), message + " no donor external id provided!");
-        final PersonEntity pe = personRepository.findByExternalId(bloodDonation.getDonorExternalId());
-        validateNotNull(pe, message + " no person found for the external id '" + bloodDonation.getDonorExternalId() + '\'');
+        final String message = "Cannot add new blood donation info '" + bloodDonation + "' to the database: ";
+        validateNotNull(bloodDonation, message + "BloodDonation DTO must be not null!");
+        validateNotEmpty(bloodDonation.getExternalId(), message + "no external id provided!");
         return new BloodDonationDtoBuilder().apply(
-                bloodDonationRepository.save(new BloodDonationEntityBuilder().apply(bloodDonation).apply(pe).build())
+                bloodDonationRepository.save(new BloodDonationEntityBuilder()
+                        .apply(bloodDonation)
+                        .apply(findPersonByExternalId(bloodDonation.getDonorExternalId(), message))
+                        .apply(findBloodInvoiceByExternalId(bloodDonation.getBloodInvoiceExternalId(), message))
+                        .build())
         ).build();
     }
 
@@ -53,18 +59,14 @@ public class BloodDonationService {
         validateNotNull(dto, message + "Blood Donation DTO object must be not null.");
         if (mergeWithNullValues)
             validateNotEmpty(dto.getExternalId(), message + "no Blood Donation external id provided!");
-        if (mergeWithNullValues)
-            validateNotEmpty(dto.getDonorExternalId(), message + "no Donor external id provided!");
         BloodDonationEntity entity = findEntityByExternalId(externalId, message);
         validateNotNull(entity, message + "Blood Donation external id does'nt exist.");
-
-        final BloodDonationEntityBuilder entityBuilder = new BloodDonationEntityBuilder(entity, mergeWithNullValues).apply(dto);
-        if (dto.getDonorExternalId() != null && !dto.getDonorExternalId().equals(entity.getDonor().getExternalId())) {
-            PersonEntity pe = personRepository.findByExternalId(dto.getDonorExternalId());
-            validateNotNull(pe, message + "No donor found with the external id = '" + dto.getDonorExternalId() + '\'');
-            entityBuilder.apply(pe);
-        }
-        return new BloodDonationDtoBuilder().apply(entityBuilder.build()).build();
+        return new BloodDonationDtoBuilder().apply(
+                new BloodDonationEntityBuilder(entity, mergeWithNullValues)
+                        .apply(dto).apply(findPersonByExternalId(dto.getDonorExternalId(), message))
+                        .apply(findBloodInvoiceByExternalId(dto.getBloodInvoiceExternalId(), message))
+                        .build()
+        ).build();
     }
 
     @Transactional(readOnly = true)
@@ -95,14 +97,28 @@ public class BloodDonationService {
     public BloodDonationDto removeByExternalId(String externalId) {
         final String message = "Cannot remove Blood Donation by external id: ";
         final BloodDonationEntity entity = findEntityByExternalId(externalId, message);
-        validateNotNull(entity, message + " no entity found for external id '" + externalId + '\'');
+        validateNotNull(entity, message + "no entity found for the external id '" + externalId + '\'');
         bloodDonationRepository.remove(entity);
         return new BloodDonationDtoBuilder().apply(entity).build();
     }
 
     @Transactional
-    public boolean isIdExists(String personExternalId) {
-        return findEntityByExternalId(personExternalId, "Error checking if the person exists: ") != null;
+    public boolean isIdExists(String externalId) {
+        return !StringUtils.isEmpty(externalId) && findEntityByExternalId(externalId, "Error checking if the blood donation exists: ") != null;
+    }
+
+    private PersonEntity findPersonByExternalId(String externalId, String message) {
+        if (StringUtils.isEmpty(externalId)) return null;
+        PersonEntity pe = personRepository.findByExternalId(externalId);
+        validateNotNull(pe, message + "Cannot find person by external id '" + externalId + '\'');
+        return pe;
+    }
+
+    private BloodInvoiceEntity findBloodInvoiceByExternalId(String externalId, String message) {
+        if (StringUtils.isEmpty(externalId)) return null;
+        BloodInvoiceEntity bie = bloodInvoiceRepository.findByExternalId(externalId);
+        validateNotNull(bie, message + "No blood invoice found with the external id = '" + externalId + '\'');
+        return bie;
     }
 
     private BloodDonationEntity findEntityByExternalId(String externalId, String message) {

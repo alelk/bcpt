@@ -29,6 +29,9 @@ public class BloodDonationEntity extends AbstractEntity {
     @ManyToOne
     private PersonEntity donor;
 
+    @ManyToOne
+    private BloodInvoiceEntity bloodInvoice;
+
     private Double amount;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -79,12 +82,21 @@ public class BloodDonationEntity extends AbstractEntity {
         this.quarantineDate = quarantineDate;
     }
 
+    public BloodInvoiceEntity getBloodInvoice() {
+        return bloodInvoice;
+    }
+
+    public void setBloodInvoice(BloodInvoiceEntity bloodInvoice) {
+        this.bloodInvoice = bloodInvoice;
+    }
+
     @Override
     public String toString() {
         return "BloodDonationEntity{" +
                 "id=" + getId() +
                 ", externalId='" + getExternalId() +
                 "', donorExternalId=" + (donor != null ? '\'' + donor.getExternalId() + '\'' : null) +
+                "', bloodInvoiceExternalId=" + (bloodInvoice != null ? '\'' + bloodInvoice.getExternalId() + '\'' : null) +
                 ", amount=" + amount +
                 ", donationDate=" + donationDate +
                 ", quarantineDate=" + quarantineDate +

@@ -2,9 +2,9 @@ package com.alelk.bcpt.database.builder;
 
 import com.alelk.bcpt.database.model.BloodInvoiceEntity;
 import com.alelk.bcpt.database.model.BloodPoolEntity;
+import com.alelk.bcpt.database.model.ProductBatchEntity;
 import com.alelk.bcpt.model.dto.BloodPoolDto;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -35,11 +35,15 @@ public class BloodPoolEntityBuilder extends AbstractEntityBuilder<BloodPoolDto, 
         return this;
     }
 
-    public BloodPoolEntityBuilder apply(Set<BloodInvoiceEntity> bloodDonationDeliveries) {
-        if (mergeWithNullValues && bloodDonationDeliveries == null)
-            entity.setBloodInvoices(new HashSet<>());
-        else
-            entity.setBloodInvoices(bloodDonationDeliveries);
+    public BloodPoolEntityBuilder apply(Set<BloodInvoiceEntity> bloodInvoices) {
+        if (mergeWithNullValues || bloodInvoices != null)
+            entity.setBloodInvoices(bloodInvoices);
+        return this;
+    }
+
+    public BloodPoolEntityBuilder apply(ProductBatchEntity productBatchEntity) {
+        if (mergeWithNullValues || productBatchEntity != null)
+            entity.setProductBatch(productBatchEntity);
         return this;
     }
 }

@@ -2,8 +2,10 @@ package com.alelk.bcpt.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Arrays;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -14,7 +16,9 @@ import java.util.stream.Collectors;
 public class BloodInvoiceDto extends AbstractBcptDto {
 
     private Date deliveryDate;
-    private String[] bloodDonationExternalIds;
+    private Set<String> bloodDonationExternalIds;
+    private String bloodPoolExternalId;
+    private Double totalAmount;
 
     public BloodInvoiceDto() {}
 
@@ -22,10 +26,12 @@ public class BloodInvoiceDto extends AbstractBcptDto {
         super(externalId, creationTimestamp, updateTimestamp);
     }
 
-    public BloodInvoiceDto(String externalId, Date creationTimestamp, Date updateTimestamp, Date deliveryDate, String[] bloodDonationExternalIds) {
+    public BloodInvoiceDto(String externalId, Date creationTimestamp, Date updateTimestamp, Date deliveryDate, Set<String> bloodDonationExternalIds, String bloodPoolExternalId, Double totalAmount) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.deliveryDate = deliveryDate;
         this.bloodDonationExternalIds = bloodDonationExternalIds;
+        this.bloodPoolExternalId = bloodPoolExternalId;
+        this.totalAmount = totalAmount;
     }
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -33,7 +39,7 @@ public class BloodInvoiceDto extends AbstractBcptDto {
         return deliveryDate;
     }
 
-    public String[] getBloodDonationExternalIds() {
+    public Set<String> getBloodDonationExternalIds() {
         return bloodDonationExternalIds;
     }
 
@@ -41,8 +47,24 @@ public class BloodInvoiceDto extends AbstractBcptDto {
         this.deliveryDate = deliveryDate;
     }
 
-    public void setBloodDonationExternalIds(String[] bloodDonationExternalIds) {
+    public void setBloodDonationExternalIds(Set<String> bloodDonationExternalIds) {
         this.bloodDonationExternalIds = bloodDonationExternalIds;
+    }
+
+    public String getBloodPoolExternalId() {
+        return bloodPoolExternalId;
+    }
+
+    public void setBloodPoolExternalId(String bloodPoolExternalId) {
+        this.bloodPoolExternalId = bloodPoolExternalId;
+    }
+
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount == null ? null : new BigDecimal(totalAmount).setScale(2, RoundingMode.FLOOR).doubleValue();
     }
 
     @Override
@@ -51,8 +73,10 @@ public class BloodInvoiceDto extends AbstractBcptDto {
                 "externalId='" + getExternalId() +
                 ", deliveryDate=" + deliveryDate +
                 ", bloodDonationExternalIds=" + (bloodDonationExternalIds != null
-                ? '[' + Arrays.stream(bloodDonationExternalIds).collect(Collectors.joining(", ")) + ']'
+                ? '[' + bloodDonationExternalIds.stream().collect(Collectors.joining(", ")) + ']'
                 : null) +
+                ", bloodPoolExternalId='" + getBloodPoolExternalId() + '\'' +
+                ", totalAmount='" + getTotalAmount() + '\'' +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';

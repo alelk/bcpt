@@ -9,6 +9,7 @@ import com.alelk.bcpt.model.dto.PersonDto;
  *
  * Created by Alex Elkin on 19.09.2017.
  */
+@SuppressWarnings("unused")
 public abstract class PersonAbstractRequest extends BcptDtoApiRequest<PersonDto> {
 
     private String firstName;
@@ -64,7 +65,7 @@ public abstract class PersonAbstractRequest extends BcptDtoApiRequest<PersonDto>
 
     @Override
     public String toString() {
-        return "PersonAbstractRequest{" +
+        return this.getClass().getSimpleName() + "{" +
                 "externalId='" + getExternalId() + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

@@ -1,8 +1,7 @@
 package com.alelk.bcpt.restapi.config;
 
 import com.alelk.bcpt.database.BcptDatabase;
-import com.alelk.bcpt.database.service.BloodDonationService;
-import com.alelk.bcpt.database.service.PersonService;
+import com.alelk.bcpt.database.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -33,6 +32,24 @@ public class RestApiConfig {
     @Autowired
     public BloodDonationService bloodDonationService(BcptDatabase bcptDatabase) {
         return bcptDatabase.getBloodDonationService();
+    }
+
+    @Bean
+    @Autowired
+    public BloodInvoiceService bloodInvoiceService(BcptDatabase bcptDatabase) {
+        return bcptDatabase.getBloodInvoiceService();
+    }
+
+    @Bean
+    @Autowired
+    public BloodPoolService bloodPoolService(BcptDatabase bcptDatabase) {
+        return bcptDatabase.getBloodPoolService();
+    }
+
+    @Bean
+    @Autowired
+    public ProductBatchService productBatchService(BcptDatabase bcptDatabase) {
+        return bcptDatabase.getProductBatchService();
     }
 
     @Bean

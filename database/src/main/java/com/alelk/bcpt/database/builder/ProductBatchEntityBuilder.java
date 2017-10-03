@@ -35,11 +35,9 @@ public class ProductBatchEntityBuilder extends AbstractEntityBuilder<ProductBatc
         return this;
     }
 
-    public ProductBatchEntityBuilder apply(Set<BloodPoolEntity> bloodDonationPools) {
-        if (mergeWithNullValues && bloodDonationPools == null)
-            entity.setBloodPools(new HashSet<>());
-        else
-            entity.setBloodPools(bloodDonationPools);
+    public ProductBatchEntityBuilder apply(Set<BloodPoolEntity> bloodPools) {
+        if (mergeWithNullValues || bloodPools != null)
+            entity.setBloodPools(bloodPools);
         return this;
     }
 }

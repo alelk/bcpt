@@ -1,5 +1,7 @@
 package com.alelk.bcpt.database.model;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -24,7 +26,14 @@ public class ProductBatchEntity extends AbstractEntity {
     private Date batchDate;
 
     @OneToMany
+    @JoinColumn(name = "productbatch_id")
     private Set<BloodPoolEntity> bloodPools;
+
+    @Formula("(SELECT sum(donations.amount) from bloodDonations donations " +
+            "JOIN  bloodInvoices invoices ON donations.bloodinvoice_id = invoices.id " +
+            "JOIN bloodPools pools ON invoices.bloodpool_id = pools.id " +
+            "WHERE pools.productbatch_id = id)")
+    private Double totalAmount;
 
     public ProductBatchEntity() {
     }
@@ -51,6 +60,14 @@ public class ProductBatchEntity extends AbstractEntity {
         this.bloodPools = bloodPools;
     }
 
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     @Override
     public String toString() {
         return "ProductBatchEntity{" +
@@ -60,6 +77,7 @@ public class ProductBatchEntity extends AbstractEntity {
                 ", bloodPools=" + (bloodPools != null
                 ? '[' + bloodPools.stream().map(AbstractEntity::getExternalId).collect(Collectors.joining(", ")) + ']'
                 : null) +
+                ", totalAmount=" + totalAmount +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';

@@ -4,6 +4,8 @@ import com.alelk.bcpt.database.model.BloodInvoiceEntity;
 import com.alelk.bcpt.database.model.BloodPoolEntity;
 import com.alelk.bcpt.model.dto.BloodPoolDto;
 
+import java.util.stream.Collectors;
+
 /**
  * Blood Donation Pool DTO Builder
  *
@@ -20,9 +22,11 @@ public class BloodPoolDtoBuilder extends AbstractDtoBuilder<BloodPoolEntity, Blo
         super.apply(entity);
         if (entity == null) return this;
         dto.setPoolNumber(entity.getPoolNumber());
+        dto.setTotalAmount(entity.getTotalAmount());
+        dto.setProductBatchExternalId(entity.getProductBatch() != null ? entity.getProductBatch().getExternalId() : null);
         dto.setBloodInvoiceIds(
-                entity.getBloodInvoices().stream()
-                        .map(BloodInvoiceEntity::getExternalId).toArray(String[]::new)
+                entity.getBloodInvoices() != null ? entity.getBloodInvoices().stream()
+                        .map(BloodInvoiceEntity::getExternalId).collect(Collectors.toSet()) : null
         );
         return this;
     }
