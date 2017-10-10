@@ -39,12 +39,14 @@ public class PersonService {
     }
 
     @Transactional
-    public PersonDto update(String externalId, PersonDto person, boolean mergeWithNullValues) {
+    public PersonDto update(String externalId, PersonDto person, boolean mergeWithNullValues, boolean softUpdate) {
         final String message = "Error updating person " + person + ": ";
         validateNotNull(person, message + "Person DTO object must be not null.");
         PersonEntity pe = findEntityByExternalId(externalId, message);
         validateNotNull(pe, message + "Person external id does'nt exist.");
-        return new PersonDtoBuilder().apply(new PersonEntityBuilder(pe, mergeWithNullValues).apply(person).build()).build();
+        return new PersonDtoBuilder().apply(
+                new PersonEntityBuilder(pe, mergeWithNullValues, softUpdate).apply(person).build()
+        ).build();
     }
 
     @Transactional(readOnly = true)

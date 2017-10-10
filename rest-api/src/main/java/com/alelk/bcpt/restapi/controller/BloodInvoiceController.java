@@ -50,7 +50,7 @@ public class BloodInvoiceController {
 
     @PutMapping("/{externalId}")
     public ResponseEntity<BloodInvoiceDto> update(@PathVariable String externalId, @Validated @RequestBody BloodInvoiceUpdateRequest request) {
-        return ResponseEntity.ok(bloodInvoiceService.update(externalId, request.toDto(), true));
+        return ResponseEntity.ok(bloodInvoiceService.update(externalId, request.toDto(), true,false));
     }
 
     @GetMapping("/{externalId}")

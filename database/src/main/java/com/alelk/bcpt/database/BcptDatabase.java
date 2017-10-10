@@ -19,19 +19,20 @@ public class BcptDatabase {
     private BloodInvoiceService bloodInvoiceService;
     private BloodPoolService bloodPoolService;
     private ProductBatchService productBatchService;
+    private UniversalService universalService;
 
     @Autowired
     BcptDatabase(PersonService personService,
                  BloodDonationService bloodDonationService,
                  BloodInvoiceService bloodInvoiceService,
                  BloodPoolService bloodPoolService,
-                 ProductBatchService productBatchService
-    ) {
+                 ProductBatchService productBatchService, UniversalService universalService) {
         this.personService = personService;
         this.bloodDonationService = bloodDonationService;
         this.bloodInvoiceService = bloodInvoiceService;
         this.bloodPoolService = bloodPoolService;
         this.productBatchService = productBatchService;
+        this.universalService = universalService;
     }
 
     public static BcptDatabase getInstance() {
@@ -58,5 +59,9 @@ public class BcptDatabase {
 
     public ProductBatchService getProductBatchService() {
         return productBatchService;
+    }
+
+    public UniversalService getUniversalService() {
+        return universalService;
     }
 }

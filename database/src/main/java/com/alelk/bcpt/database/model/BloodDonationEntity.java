@@ -1,5 +1,7 @@
 package com.alelk.bcpt.database.model;
 
+import com.alelk.bcpt.model.DonationType;
+
 import javax.persistence.*;
 import java.util.Date;
 import static com.alelk.bcpt.database.model.BloodDonationEntity.*;
@@ -34,20 +36,27 @@ public class BloodDonationEntity extends AbstractEntity {
 
     private Double amount;
 
+    private DonationType donationType;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date donationDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date quarantineDate;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date expirationDate;
+
     public BloodDonationEntity() {}
 
-    public BloodDonationEntity(String externalId, PersonEntity donor, Double amount, Date donationDate, Date quarantineDate) {
+    public BloodDonationEntity(String externalId, PersonEntity donor, Double amount, DonationType donationType, Date donationDate, Date quarantineDate, Date expirationDate) {
         super(externalId);
         this.donor = donor;
         this.amount = amount;
+        this.donationType = donationType;
         this.donationDate = donationDate;
         this.quarantineDate = quarantineDate;
+        this.expirationDate = expirationDate;
     }
 
     public PersonEntity getDonor() {
@@ -90,6 +99,22 @@ public class BloodDonationEntity extends AbstractEntity {
         this.bloodInvoice = bloodInvoice;
     }
 
+    public DonationType getDonationType() {
+        return donationType;
+    }
+
+    public void setDonationType(DonationType donationType) {
+        this.donationType = donationType;
+    }
+
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
     @Override
     public String toString() {
         return "BloodDonationEntity{" +
@@ -98,7 +123,9 @@ public class BloodDonationEntity extends AbstractEntity {
                 "', donorExternalId=" + (donor != null ? '\'' + donor.getExternalId() + '\'' : null) +
                 "', bloodInvoiceExternalId=" + (bloodInvoice != null ? '\'' + bloodInvoice.getExternalId() + '\'' : null) +
                 ", amount=" + amount +
+                ", donationType=" + donationType +
                 ", donationDate=" + donationDate +
+                ", expirationDate=" + expirationDate +
                 ", quarantineDate=" + quarantineDate +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +

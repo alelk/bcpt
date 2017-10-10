@@ -2,11 +2,11 @@ package com.alelk.bcpt.database.service;
 
 import com.alelk.bcpt.database.builder.BloodInvoiceDtoBuilder;
 import com.alelk.bcpt.database.builder.BloodInvoiceEntityBuilder;
-import com.alelk.bcpt.database.model.BloodInvoiceEntity;
 import com.alelk.bcpt.database.model.BloodDonationEntity;
+import com.alelk.bcpt.database.model.BloodInvoiceEntity;
 import com.alelk.bcpt.database.model.BloodPoolEntity;
-import com.alelk.bcpt.database.repository.BloodInvoiceRepository;
 import com.alelk.bcpt.database.repository.BloodDonationRepository;
+import com.alelk.bcpt.database.repository.BloodInvoiceRepository;
 import com.alelk.bcpt.database.repository.BloodPoolRepository;
 import com.alelk.bcpt.model.dto.BloodInvoiceDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.alelk.bcpt.database.util.ValidationUtil.*;
+import static com.alelk.bcpt.database.util.ValidationUtil.validateNotEmpty;
+import static com.alelk.bcpt.database.util.ValidationUtil.validateNotNull;
 
 /**
  * Blood Donation Delivery Service
@@ -52,7 +55,7 @@ public class BloodInvoiceService {
     }
 
     @Transactional
-    public BloodInvoiceDto update(String externalId, BloodInvoiceDto dto, boolean mergeWithNullValues) {
+    public BloodInvoiceDto update(String externalId, BloodInvoiceDto dto, boolean mergeWithNullValues, boolean softUpdate) {
         final String message = "Error updating blood invoice info " + dto + ": ";
         validateNotNull(dto, message + "Blood invoice DTO object must be not null.");
         if (mergeWithNullValues)
@@ -60,7 +63,7 @@ public class BloodInvoiceService {
         final BloodInvoiceEntity entity = findEntityByExternalId(externalId, message);
         validateNotNull(entity, message + "Blood Invoice external id does'nt exist.");
         return new BloodInvoiceDtoBuilder().apply(
-                new BloodInvoiceEntityBuilder(entity, mergeWithNullValues)
+                new BloodInvoiceEntityBuilder(entity, mergeWithNullValues, softUpdate)
                         .apply(dto)
                         .apply(getBloodDonationEntitiesByExternalIds(dto.getBloodDonationExternalIds(), message))
                         .apply(findBloodPoolByExternalId(dto.getBloodPoolExternalId(), message))

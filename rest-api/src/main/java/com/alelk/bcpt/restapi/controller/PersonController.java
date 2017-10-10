@@ -50,7 +50,7 @@ public class PersonController {
 
     @PutMapping("/{externalId}")
     public ResponseEntity<PersonDto> update(@PathVariable String externalId, @Validated @RequestBody PersonUpdateRequest person) {
-        return ResponseEntity.ok(personService.update(externalId, person.toDto(), true));
+        return ResponseEntity.ok(personService.update(externalId, person.toDto(), true, false));
     }
 
     @GetMapping("/{externalId}")

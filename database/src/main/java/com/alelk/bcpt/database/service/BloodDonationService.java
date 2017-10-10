@@ -54,7 +54,7 @@ public class BloodDonationService {
     }
 
     @Transactional
-    public BloodDonationDto update(String externalId, BloodDonationDto dto, boolean mergeWithNullValues) {
+    public BloodDonationDto update(String externalId, BloodDonationDto dto, boolean mergeWithNullValues, boolean softUpdate) {
         final String message = "Error updating blood donation info " + dto + ": ";
         validateNotNull(dto, message + "Blood Donation DTO object must be not null.");
         if (mergeWithNullValues)
@@ -62,7 +62,7 @@ public class BloodDonationService {
         BloodDonationEntity entity = findEntityByExternalId(externalId, message);
         validateNotNull(entity, message + "Blood Donation external id does'nt exist.");
         return new BloodDonationDtoBuilder().apply(
-                new BloodDonationEntityBuilder(entity, mergeWithNullValues)
+                new BloodDonationEntityBuilder(entity, mergeWithNullValues, softUpdate)
                         .apply(dto).apply(findPersonByExternalId(dto.getDonorExternalId(), message))
                         .apply(findBloodInvoiceByExternalId(dto.getBloodInvoiceExternalId(), message))
                         .build()

@@ -18,19 +18,22 @@ public class PersonEntityBuilder extends AbstractEntityBuilder<PersonDto, Person
         super(existingEntity, mergeWithNullValues);
     }
 
+    public PersonEntityBuilder(PersonEntity existingEntity, boolean mergeWithNullValues, boolean softMerge) {
+        super(existingEntity, mergeWithNullValues, softMerge);
+    }
+
+    public PersonEntityBuilder(boolean mergeWithNullValues, boolean softMerge) {
+        super(PersonEntity.class, mergeWithNullValues, softMerge);
+    }
+
     @Override
     public PersonEntityBuilder apply(PersonDto dto) {
         super.apply(dto);
-        if (mergeWithNullValues || dto.getFirstName() != null)
-            entity.setFirstName(dto.getFirstName());
-        if (mergeWithNullValues || dto.getLastName() != null)
-            entity.setLastName(dto.getLastName());
-        if (mergeWithNullValues || dto.getMiddleName() != null)
-            entity.setMiddleName(dto.getMiddleName());
-        if (mergeWithNullValues || dto.getBloodType() != null)
-            entity.setBloodType(dto.getBloodType());
-        if (mergeWithNullValues || dto.getRhFactor() != null)
-            entity.setRhFactor(dto.getRhFactor());
+        setEntityFieldValue("firstName", dto.getFirstName());
+        setEntityFieldValue("lastName", dto.getLastName());
+        setEntityFieldValue("middleName", dto.getMiddleName());
+        setEntityFieldValue("bloodType", dto.getBloodType());
+        setEntityFieldValue("rhFactor", dto.getRhFactor());
         return this;
     }
 }

@@ -49,7 +49,7 @@ public class ProductBatchService {
     }
 
     @Transactional
-    public ProductBatchDto update(String externalId, ProductBatchDto dto, boolean mergeWithNullValues) {
+    public ProductBatchDto update(String externalId, ProductBatchDto dto, boolean mergeWithNullValues, boolean softUpdate) {
         final String message = "Error updating product batch info " + dto + ": ";
         validateNotNull(dto, message + "Product batch DTO object must be not null.");
         if (mergeWithNullValues)
@@ -57,7 +57,7 @@ public class ProductBatchService {
         final ProductBatchEntity entity = findEntityByExternalId(externalId, message);
         validateNotNull(entity, message + "product batch external id does'nt exist.");
         return new ProductBatchDtoBuilder().apply(
-                new ProductBatchEntityBuilder(entity, mergeWithNullValues)
+                new ProductBatchEntityBuilder(entity, mergeWithNullValues, softUpdate)
                         .apply(dto)
                         .apply(getBloodPoolEntitiesByExternalIds(dto.getBloodPoolIds(), message))
                         .build()

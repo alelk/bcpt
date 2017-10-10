@@ -24,4 +24,8 @@ public class ValidationUtil {
     public static void validateNotNull(Object o, String message) {
         if (o == null) throw new BcptDatabaseException(message);
     }
+
+    public static void validateTrue(Boolean value, String message) {
+        if (value == null || !value) throw new BcptDatabaseException(message);
+    }
 }

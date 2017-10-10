@@ -50,7 +50,7 @@ public class ProductBatchController {
 
     @PutMapping("/{externalId}")
     public ResponseEntity<ProductBatchDto> update(@PathVariable String externalId, @Validated @RequestBody ProductBatchUpdateRequest request) {
-        return ResponseEntity.ok(productBatchService.update(externalId, request.toDto(), true));
+        return ResponseEntity.ok(productBatchService.update(externalId, request.toDto(), true, false));
     }
 
     @GetMapping("/{externalId}")

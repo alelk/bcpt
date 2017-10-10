@@ -12,6 +12,7 @@
         <module>database</module>
         <module>rest-api</module>
         <module>model</module>
+        <module>importer</module>
     </modules>
 
     <properties>
@@ -26,6 +27,7 @@
         <javax-servlet.version>3.1.0</javax-servlet.version>
         <hibernate.core.version>5.2.10.Final</hibernate.core.version>
         <postgresql.version>9.4.1212</postgresql.version>
+        <rxjava.version>2.1.4</rxjava.version>
     </properties>
 
     <build>
