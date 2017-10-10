@@ -49,7 +49,7 @@ public class BloodPoolController {
 
     @PutMapping("/{externalId}")
     public ResponseEntity<BloodPoolDto> update(@PathVariable String externalId, @Validated @RequestBody BloodPoolUpdateRequest request) {
-        return ResponseEntity.ok(bloodPoolService.update(externalId, request.toDto(), true));
+        return ResponseEntity.ok(bloodPoolService.update(externalId, request.toDto(), true, false));
     }
 
     @GetMapping("/{externalId}")

@@ -22,28 +22,25 @@ public class BloodPoolEntityBuilder extends AbstractEntityBuilder<BloodPoolDto, 
         super(BloodPoolEntity.class, mergeWithNullValues);
     }
 
-    public BloodPoolEntityBuilder(BloodPoolEntity existingEntity, boolean mergeWithNullValues) {
-        super(existingEntity, mergeWithNullValues);
+    public BloodPoolEntityBuilder(BloodPoolEntity existingEntity, boolean mergeWithNullValues, boolean softUpdate) {
+        super(existingEntity, mergeWithNullValues, softUpdate);
     }
 
     @Override
     public BloodPoolEntityBuilder apply(BloodPoolDto dto) {
         super.apply(dto);
         if (dto == null) return this;
-        if (mergeWithNullValues || dto.getPoolNumber() != null)
-            entity.setPoolNumber(dto.getPoolNumber());
+        setEntityFieldValue("poolNumber", dto.getPoolNumber());
         return this;
     }
 
     public BloodPoolEntityBuilder apply(Set<BloodInvoiceEntity> bloodInvoices) {
-        if (mergeWithNullValues || bloodInvoices != null)
-            entity.setBloodInvoices(bloodInvoices);
+        setEntityFieldValue("bloodInvoices", bloodInvoices);
         return this;
     }
 
     public BloodPoolEntityBuilder apply(ProductBatchEntity productBatchEntity) {
-        if (mergeWithNullValues || productBatchEntity != null)
-            entity.setProductBatch(productBatchEntity);
+        setEntityFieldValue("productBatchEntity", productBatchEntity);
         return this;
     }
 }

@@ -23,28 +23,25 @@ public class BloodInvoiceEntityBuilder extends AbstractEntityBuilder<BloodInvoic
         super(BloodInvoiceEntity.class, mergeWithNullValues);
     }
 
-    public BloodInvoiceEntityBuilder(BloodInvoiceEntity existingEntity, boolean mergeWithNullValues) {
-        super(existingEntity, mergeWithNullValues);
+    public BloodInvoiceEntityBuilder(BloodInvoiceEntity existingEntity, boolean mergeWithNullValues, boolean softUpdate) {
+        super(existingEntity, mergeWithNullValues, softUpdate);
     }
 
     @Override
     public BloodInvoiceEntityBuilder apply(BloodInvoiceDto dto) {
         super.apply(dto);
         if (dto == null) return this;
-        if (mergeWithNullValues || dto.getDeliveryDate() != null)
-            entity.setDeliveryDate(dto.getDeliveryDate());
+        setEntityFieldValue("deliveryDate", dto.getDeliveryDate());
         return this;
     }
 
     public BloodInvoiceEntityBuilder apply(Set<BloodDonationEntity> bloodDonationEntities) {
-        if (mergeWithNullValues || bloodDonationEntities != null)
-            entity.setBloodDonations(bloodDonationEntities);
+        setEntityFieldValue("bloodDonations", bloodDonationEntities);
         return this;
     }
 
     public BloodInvoiceEntityBuilder apply(BloodPoolEntity bloodPoolEntity) {
-        if (mergeWithNullValues || bloodPoolEntity != null)
-            entity.setBloodPool(bloodPoolEntity);
+        setEntityFieldValue("bloodPool", bloodPoolEntity);
         return this;
     }
 }

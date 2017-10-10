@@ -22,6 +22,7 @@ import org.springframework.validation.Validator;
 @Component
 public class BloodDonationValidator implements Validator {
 
+    private static final String EXTERNAL_ID_REGEX = "\\d{14}";
     private PersonService personService;
     private BloodDonationService bloodDonationService;
     private BloodInvoiceService bloodInvoiceService;
@@ -49,6 +50,8 @@ public class BloodDonationValidator implements Validator {
         if (target instanceof BloodDonationCreateRequest && isIdExists)
             errors.rejectValue("externalId", "bloodDonation.externalId.exists");
         if ((target instanceof BloodDonationCreateRequest || target instanceof BloodDonationUpdateRequest)) {
+            if (!request.getExternalId().matches(EXTERNAL_ID_REGEX))
+                errors.rejectValue("externalId", "bloodDonation.externalId.invalid");
             if (!StringUtils.isEmpty(request.getDonorExternalId()) && !personService.isIdExists(request.getDonorExternalId()))
                 errors.rejectValue("donorExternalId", "person.externalId.notFound");
             if (!StringUtils.isEmpty(request.getBloodInvoiceExternalId()) && !bloodInvoiceService.isIdExists(request.getBloodInvoiceExternalId()))

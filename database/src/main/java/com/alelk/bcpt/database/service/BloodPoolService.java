@@ -54,7 +54,7 @@ public class BloodPoolService {
     }
 
     @Transactional
-    public BloodPoolDto update(String externalId, BloodPoolDto dto, boolean mergeWithNullValues) {
+    public BloodPoolDto update(String externalId, BloodPoolDto dto, boolean mergeWithNullValues, boolean softUpdate) {
         final String message = "Error updating blood pool info " + dto + ": ";
         validateNotNull(dto, message + "Blood pool DTO object must be not null.");
         if (mergeWithNullValues)
@@ -62,7 +62,7 @@ public class BloodPoolService {
         final BloodPoolEntity entity = findEntityByExternalId(externalId, message);
         validateNotNull(entity, message + "Blood Pool external id does'nt exist.");
         return new BloodPoolDtoBuilder().apply(
-                new BloodPoolEntityBuilder(entity, mergeWithNullValues)
+                new BloodPoolEntityBuilder(entity, mergeWithNullValues, softUpdate)
                         .apply(dto)
                         .apply(getBloodInvoiceEntitiesByExternalIds(dto.getBloodInvoiceIds(), message))
                         .apply(findProductBatchEntityByExternalId(dto.getProductBatchExternalId(), message))

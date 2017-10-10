@@ -1,5 +1,6 @@
 package com.alelk.bcpt.restapi.request;
 
+import com.alelk.bcpt.model.DonationType;
 import com.alelk.bcpt.model.dto.BloodDonationDto;
 
 import java.util.Date;
@@ -17,6 +18,8 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
     private Double amount;
     private Date donationDate;
     private Date quarantineDate;
+    private Date expirationDate;
+    private DonationType donationType;
 
     public String getDonorExternalId() {
         return donorExternalId;
@@ -60,7 +63,8 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
 
     @Override
     public BloodDonationDto toDto() {
-        return new BloodDonationDto(getExternalId(), null, null, donorExternalId, bloodInvoiceExternalId, amount, donationDate, quarantineDate);
+        return new BloodDonationDto(getExternalId(), null, null, donorExternalId,
+                bloodInvoiceExternalId, amount, donationDate, quarantineDate, expirationDate, donationType);
     }
 
     @Override
@@ -70,7 +74,9 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
                 ", bloodInvoiceExternalId='" + bloodInvoiceExternalId + '\'' +
                 ", donorExternalId='" + donorExternalId + '\'' +
                 ", amount=" + amount +
+                ", donationType=" + donationType +
                 ", donationDate=" + donationDate +
+                ", expirationDate=" + expirationDate +
                 ", quarantineDate=" + quarantineDate +
                 '}';
     }

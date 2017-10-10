@@ -20,32 +20,29 @@ public class BloodDonationEntityBuilder extends AbstractEntityBuilder<BloodDonat
         super(BloodDonationEntity.class, mergeWithNullValues);
     }
 
-    public BloodDonationEntityBuilder(BloodDonationEntity existingEntity, boolean mergeWithNullValues) {
-        super(existingEntity, mergeWithNullValues);
+    public BloodDonationEntityBuilder(BloodDonationEntity existingEntity, boolean mergeWithNullValues, boolean softUpdate) {
+        super(existingEntity, mergeWithNullValues, softUpdate);
     }
 
     @Override
     public BloodDonationEntityBuilder apply(BloodDonationDto dto) {
         super.apply(dto);
         if (dto == null) return this;
-        if (mergeWithNullValues || dto.getAmount() != null)
-            entity.setAmount(dto.getAmount());
-        if (mergeWithNullValues || dto.getDonationDate() != null)
-            entity.setDonationDate(dto.getDonationDate());
-        if (mergeWithNullValues || dto.getQuarantineDate() != null)
-            entity.setQuarantineDate(dto.getQuarantineDate());
+        setEntityFieldValue("amount", dto.getAmount());
+        setEntityFieldValue("donationType", dto.getDonationType());
+        setEntityFieldValue("donationDate", dto.getDonationDate());
+        setEntityFieldValue("expirationDate", dto.getExpirationDate());
+        setEntityFieldValue("quarantineDate", dto.getQuarantineDate());
         return this;
     }
 
     public BloodDonationEntityBuilder apply(PersonEntity personEntity) {
-        if (mergeWithNullValues || personEntity != null)
-            entity.setDonor(personEntity);
+        setEntityFieldValue("donor", personEntity);
         return this;
     }
 
     public BloodDonationEntityBuilder apply(BloodInvoiceEntity bloodInvoiceEntity) {
-        if (mergeWithNullValues || bloodInvoiceEntity != null)
-            entity.setBloodInvoice(bloodInvoiceEntity);
+        setEntityFieldValue("bloodInvoice", bloodInvoiceEntity);
         return this;
     }
 }

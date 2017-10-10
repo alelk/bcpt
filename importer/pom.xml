@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.alelk.bcpt</groupId>
+		<artifactId>bcpt</artifactId>
+		<version>1.0.0-ALPHA</version>
+	</parent>
+
+	<artifactId>importer</artifactId>
+	<packaging>jar</packaging>
+	<name>BCPT Importer</name>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler.version}</version>
+					<configuration>
+						<source>${jdk.version}</source>
+						<target>${jdk.version}</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencies>
+		<!-- Spring Framework dependency -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<!-- End Spring Framework dependency -->
+
+		<!-- RxJava dependency -->
+		<dependency>
+			<groupId>io.reactivex.rxjava2</groupId>
+			<artifactId>rxjava</artifactId>
+			<version>${rxjava.version}</version>
+		</dependency>
+		<!-- End RxJava dependency -->
+
+		<!-- Project modules dependencies -->
+		<dependency>
+			<groupId>com.alelk.bcpt</groupId>
+			<artifactId>model</artifactId>
+			<version>1.0.0-ALPHA</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alelk.bcpt</groupId>
+			<artifactId>database</artifactId>
+			<version>1.0.0-ALPHA</version>
+		</dependency>
+		<!-- End project modules dependencies -->
+	</dependencies>
+</project>

@@ -2,15 +2,10 @@ package com.alelk.bcpt.database;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -24,10 +19,11 @@ import java.util.Properties;
  * Created by Alex Elkin on 07.09.2017.
  */
 @Configuration
+@Import(BcptServiceAdaptersConfig.class)
 @EnableTransactionManagement
 @ComponentScan({"com.alelk.bcpt.database"})
 @PropertySource({"bcpt-database.properties"})
-public class BcptDatabaseConfig {
+class BcptDatabaseConfig {
 
     private Environment environment;
 
