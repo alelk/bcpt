@@ -1,9 +1,11 @@
 package com.alelk.bcpt.database.model;
 
+import com.alelk.bcpt.model.util.Util;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import static com.alelk.bcpt.database.model.BloodInvoiceEntity.*;
@@ -77,9 +79,7 @@ public class BloodInvoiceEntity extends AbstractEntity {
         return "BloodInvoiceEntity{" +
                 "id=" + getId() +
                 ", externalId='" + getExternalId() + '\'' +
-                ", bloodDonations=" + (bloodDonations != null
-                ? '[' + bloodDonations.stream().map(BloodDonationEntity::getExternalId).collect(Collectors.joining(", ")) + ']'
-                : null) +
+                ", bloodDonations=" + Util.toString(bloodDonations) +
                 ", bloodPoolExternalId='" + (bloodPool != null ? bloodPool.getExternalId() : null) + '\'' +
                 ", totalAmount='" + totalAmount + '\'' +
                 ", creationTimestamp=" + getCreationTimestamp() +

@@ -22,6 +22,9 @@
 					<configuration>
 						<source>${jdk.version}</source>
 						<target>${jdk.version}</target>
+						<compilerArguments>
+							<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+						</compilerArguments>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -66,7 +69,12 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate.core.version}</version>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<version>${hibernate.version}</version>
 		</dependency>
 		<!-- end hibernate dependencies -->
 
@@ -77,6 +85,14 @@
 			<version>${postgresql.version}</version>
 		</dependency>
 		<!-- end database driver dependencies -->
+
+		<!-- reflections library dependency -->
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>${reflections.version}</version>
+		</dependency>
+		<!-- end reflections library dependency -->
 
 		<!-- project module dependencies -->
 		<dependency>

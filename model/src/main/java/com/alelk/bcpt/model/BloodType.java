@@ -3,12 +3,14 @@ package com.alelk.bcpt.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import java.io.Serializable;
+
 /**
  * Blood Group
  *
  * Created by Alex Elkin on 13.09.2017.
  */
-public enum BloodType {
+public enum BloodType implements Serializable {
 
     O ("I", "0"),
     A ("II", "A"),

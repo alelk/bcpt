@@ -1,5 +1,6 @@
 package com.alelk.bcpt.database.model;
 
+import com.alelk.bcpt.database.util.Sortable;
 import com.alelk.bcpt.model.BloodType;
 import com.alelk.bcpt.model.RhFactor;
 
@@ -22,10 +23,19 @@ public class PersonEntity extends AbstractEntity {
 
     public static final String QUERY_FIND_ALL = "findAllPersons";
 
+    @Sortable
     private String firstName;
+
+    @Sortable
     private String lastName;
+
+    @Sortable
     private String middleName;
+
+    @Sortable
     private BloodType bloodType;
+
+    @Sortable
     private RhFactor rhFactor;
 
     public PersonEntity() {}

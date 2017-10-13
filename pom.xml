@@ -25,9 +25,10 @@
         <maven-war.version>3.1.0</maven-war.version>
         <log4j2.version>2.7</log4j2.version>
         <javax-servlet.version>3.1.0</javax-servlet.version>
-        <hibernate.core.version>5.2.10.Final</hibernate.core.version>
+        <hibernate.version>5.2.11.Final</hibernate.version>
         <postgresql.version>9.4.1212</postgresql.version>
         <rxjava.version>2.1.4</rxjava.version>
+        <reflections.version>0.9.11</reflections.version>
     </properties>
 
     <build>
