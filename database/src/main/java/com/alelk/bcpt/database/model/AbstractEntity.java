@@ -1,5 +1,6 @@
 package com.alelk.bcpt.database.model;
 
+import com.alelk.bcpt.database.util.Sortable;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
@@ -22,13 +23,16 @@ public abstract class AbstractEntity implements Serializable {
     @GenericGenerator(name = "increment", strategy = "increment")
     private Long id;
 
+    @Sortable
     @NaturalId
     private String externalId;
 
+    @Sortable
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationTimestamp;
 
+    @Sortable
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTimestamp;

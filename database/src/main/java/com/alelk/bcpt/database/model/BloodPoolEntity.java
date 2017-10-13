@@ -1,8 +1,10 @@
 package com.alelk.bcpt.database.model;
 
+import com.alelk.bcpt.model.util.Util;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import static com.alelk.bcpt.database.model.BloodPoolEntity.*;
@@ -29,6 +31,7 @@ public class BloodPoolEntity extends AbstractEntity {
 
     @OneToMany
     @JoinColumn(name = "bloodpool_id")
+    @OrderBy("externalId ASC")
     private Set<BloodInvoiceEntity> bloodInvoices;
 
     @Formula("(SELECT sum(donations.amount) from bloodDonations donations JOIN  bloodInvoices invoices " +
@@ -82,9 +85,7 @@ public class BloodPoolEntity extends AbstractEntity {
                 "id=" + getId() +
                 ", externalId='" + getExternalId() + '\'' +
                 ", poolNumber=" + poolNumber +
-                ", bloodInvoices=" + (bloodInvoices != null
-                ? '[' + bloodInvoices.stream().map(AbstractEntity::getExternalId).collect(Collectors.joining(", ")) + ']'
-                : null)+
+                ", bloodInvoices=" + Util.toString(bloodInvoices)+
                 ", productBatchExternalId='" + (productBatch != null ? productBatch.getExternalId() : null) + '\'' +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", totalAmount=" + totalAmount +

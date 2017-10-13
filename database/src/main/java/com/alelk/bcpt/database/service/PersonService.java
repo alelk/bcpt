@@ -4,7 +4,11 @@ import com.alelk.bcpt.database.builder.PersonDtoBuilder;
 import com.alelk.bcpt.database.builder.PersonEntityBuilder;
 import com.alelk.bcpt.database.model.PersonEntity;
 import com.alelk.bcpt.database.repository.PersonRepository;
+import com.alelk.bcpt.database.util.DatabaseUtil;
 import com.alelk.bcpt.model.dto.PersonDto;
+import com.alelk.bcpt.model.pagination.Filter;
+import com.alelk.bcpt.model.pagination.Page;
+import com.alelk.bcpt.model.pagination.SortBy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,21 +48,33 @@ public class PersonService {
         validateNotNull(person, message + "Person DTO object must be not null.");
         PersonEntity pe = findEntityByExternalId(externalId, message);
         validateNotNull(pe, message + "Person external id does'nt exist.");
-        return new PersonDtoBuilder().apply(
+        return DatabaseUtil.mapEntityToDto(
                 new PersonEntityBuilder(pe, mergeWithNullValues, softUpdate).apply(person).build()
-        ).build();
+        );
     }
 
     @Transactional(readOnly = true)
     public List<PersonDto> findAll() {
         return personRepository.findAll().stream()
-                .map(personEntity -> new PersonDtoBuilder().apply(personEntity).build())
+                .map(DatabaseUtil::mapEntityToDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
+    public Page<PersonDto> findAll(int pageNumber, int itemsPerPage, List<SortBy> sortByList, List<Filter> filterList) {
+        return new Page<>(
+                pageNumber,
+                itemsPerPage,
+                personRepository.findAll(pageNumber, itemsPerPage, sortByList, filterList)
+                        .stream().map(DatabaseUtil::mapEntityToDto).collect(Collectors.toList()),
+                personRepository.countItems(filterList),
+                sortByList,
+                filterList);
+    }
+
+    @Transactional(readOnly = true)
     public PersonDto findByExternalId(String externalId) {
-        return new PersonDtoBuilder().apply(findEntityByExternalId(externalId, "")).build();
+        return DatabaseUtil.mapEntityToDto(findEntityByExternalId(externalId, ""));
     }
 
     @Transactional
@@ -67,7 +83,7 @@ public class PersonService {
         final PersonEntity pe = findEntityByExternalId(externalId, message);
         validateNotNull(pe, message + "no entity found for external id '" + externalId + '\'');
         personRepository.remove(pe);
-        return new PersonDtoBuilder().apply(pe).build();
+        return DatabaseUtil.mapEntityToDto(pe);
     }
 
     @Transactional
