@@ -1,14 +1,14 @@
 package com.alelk.bcpt.database.model;
 
+import com.alelk.bcpt.database.util.Sortable;
 import com.alelk.bcpt.model.util.Util;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import static com.alelk.bcpt.database.model.BloodInvoiceEntity.*;
+
+import static com.alelk.bcpt.database.model.BloodInvoiceEntity.QUERY_FIND_ALL;
 
 /**
  * Blood Donation Delivery Entity
@@ -25,6 +25,7 @@ import static com.alelk.bcpt.database.model.BloodInvoiceEntity.*;
 public class BloodInvoiceEntity extends AbstractEntity {
     public static final String QUERY_FIND_ALL = "findAllBloodInvoices";
 
+    @Sortable
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
 
@@ -32,10 +33,12 @@ public class BloodInvoiceEntity extends AbstractEntity {
     @JoinColumn(name = "bloodinvoice_id")
     private Set<BloodDonationEntity> bloodDonations;
 
+    @Sortable
     @ManyToOne
     private BloodPoolEntity bloodPool;
 
-    @Formula("(select sum(donations.amount) from bloodDonations donations where donations.bloodinvoice_id = id)")
+    @Sortable
+    //@Formula("(select sum(donations.amount) from bloodDonations donations where donations.bloodinvoice_id = id)")
     private Double totalAmount;
 
     protected BloodInvoiceEntity() {}
@@ -72,6 +75,13 @@ public class BloodInvoiceEntity extends AbstractEntity {
 
     public Double getTotalAmount() {
         return totalAmount;
+    }
+
+    @PostLoad
+    void calculateAmount() {
+        totalAmount = 0.0;
+        if (bloodDonations == null) return;
+        for (BloodDonationEntity bde : bloodDonations) totalAmount += bde.getAmount();
     }
 
     @Override

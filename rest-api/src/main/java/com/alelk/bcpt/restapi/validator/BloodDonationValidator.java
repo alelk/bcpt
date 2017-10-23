@@ -52,9 +52,9 @@ public class BloodDonationValidator implements Validator {
         if ((target instanceof BloodDonationCreateRequest || target instanceof BloodDonationUpdateRequest)) {
             if (!request.getExternalId().matches(EXTERNAL_ID_REGEX))
                 errors.rejectValue("externalId", "bloodDonation.externalId.invalid");
-            if (!StringUtils.isEmpty(request.getDonorExternalId()) && !personService.isIdExists(request.getDonorExternalId()))
+            if (!StringUtils.isEmpty(request.getDonor()) && !personService.isIdExists(request.getDonor()))
                 errors.rejectValue("donorExternalId", "person.externalId.notFound");
-            if (!StringUtils.isEmpty(request.getBloodInvoiceExternalId()) && !bloodInvoiceService.isIdExists(request.getBloodInvoiceExternalId()))
+            if (!StringUtils.isEmpty(request.getBloodInvoice()) && !bloodInvoiceService.isIdExists(request.getBloodInvoice()))
                 errors.rejectValue("bloodInvoiceExternalId", "bloodInvoice.externalId.notFound");
         }
         if (target instanceof BloodDonationDeleteRequest) {

@@ -1,5 +1,6 @@
 package com.alelk.bcpt.database.model;
 
+import com.alelk.bcpt.database.util.Sortable;
 import com.alelk.bcpt.model.DonationType;
 
 import javax.persistence.*;
@@ -28,22 +29,29 @@ public class BloodDonationEntity extends AbstractEntity {
     public static final String QUERY_FIND_BY_DONOR = "findBloodDonationsByDonor";
     public static final String PARAMETER_DONOR = "donorId";
 
+    @Sortable
     @ManyToOne
     private PersonEntity donor;
 
+    @Sortable
     @ManyToOne
     private BloodInvoiceEntity bloodInvoice;
 
+    @Sortable
     private Double amount;
 
+    @Sortable
     private DonationType donationType;
 
+    @Sortable
     @Temporal(TemporalType.TIMESTAMP)
     private Date donationDate;
 
+    @Sortable
     @Temporal(TemporalType.TIMESTAMP)
     private Date quarantineDate;
 
+    @Sortable
     @Temporal(TemporalType.TIMESTAMP)
     private Date expirationDate;
 

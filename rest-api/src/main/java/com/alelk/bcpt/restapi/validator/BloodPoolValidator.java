@@ -47,8 +47,8 @@ public class BloodPoolValidator implements Validator {
         if (target instanceof BloodPoolCreateRequest && isIdExists)
             errors.rejectValue("externalId", "bloodPool.externalId.exists");
         if (target instanceof BloodPoolCreateRequest || target instanceof BloodPoolUpdateRequest) {
-            if (request.getBloodInvoiceIds() != null)
-                request.getBloodInvoiceIds().forEach(id -> {
+            if (request.getBloodInvoices() != null)
+                request.getBloodInvoices().forEach(id -> {
                     if (!StringUtils.isEmpty(id) && !bloodInvoiceService.isIdExists(id))
                         errors.rejectValue(
                                 "bloodInvoiceIds",
@@ -56,7 +56,7 @@ public class BloodPoolValidator implements Validator {
                                 new String[]{id}, null
                         );
                 });
-            if (!StringUtils.isEmpty(request.getProductBatchExternalId()) && !productBatchService.isIdExists(request.getProductBatchExternalId())) {
+            if (!StringUtils.isEmpty(request.getProductBatch()) && !productBatchService.isIdExists(request.getProductBatch())) {
                 errors.rejectValue("productBatchExternalId", "productBatch.externalId.notFound");
             }
         }

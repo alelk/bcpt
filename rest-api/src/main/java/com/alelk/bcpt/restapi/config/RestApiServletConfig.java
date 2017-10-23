@@ -23,7 +23,7 @@ public class RestApiServletConfig extends WebMvcConfigurerAdapter {
     public void addCorsMappings(CorsRegistry registry) {
         super.addCorsMappings(registry);
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "http://localhost:8080")
+                .allowedOrigins("http://localhost:3000", "http://localhost:3001", "http://localhost:8080")
                 .allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
     }
 

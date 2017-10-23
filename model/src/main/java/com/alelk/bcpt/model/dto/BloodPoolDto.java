@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 public class BloodPoolDto extends AbstractBcptDto {
 
     private Integer poolNumber;
-    private Set<String> bloodInvoiceIds;
-    private String productBatchExternalId;
+    private Set<String> bloodInvoices;
+    private String productBatch;
     private Double totalAmount;
 
     public BloodPoolDto() {}
@@ -24,35 +24,35 @@ public class BloodPoolDto extends AbstractBcptDto {
         super(externalId, creationTimestamp, updateTimestamp);
     }
 
-    public BloodPoolDto(String externalId, Date creationTimestamp, Date updateTimestamp, Integer poolNumber, Set<String> bloodInvoiceIds, String productBatchExternalId, Double totalAmount) {
+    public BloodPoolDto(String externalId, Date creationTimestamp, Date updateTimestamp, Integer poolNumber, Set<String> bloodInvoices, String productBatch, Double totalAmount) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.poolNumber = poolNumber;
-        this.bloodInvoiceIds = bloodInvoiceIds;
-        this.productBatchExternalId = productBatchExternalId;
+        this.bloodInvoices = bloodInvoices;
+        this.productBatch = productBatch;
     }
 
     public Integer getPoolNumber() {
         return poolNumber;
     }
 
-    public Set<String> getBloodInvoiceIds() {
-        return bloodInvoiceIds;
+    public Set<String> getBloodInvoices() {
+        return bloodInvoices;
     }
 
     public void setPoolNumber(Integer poolNumber) {
         this.poolNumber = poolNumber;
     }
 
-    public void setBloodInvoiceIds(Set<String> bloodInvoiceIds) {
-        this.bloodInvoiceIds = bloodInvoiceIds;
+    public void setBloodInvoices(Set<String> bloodInvoices) {
+        this.bloodInvoices = bloodInvoices;
     }
 
-    public String getProductBatchExternalId() {
-        return productBatchExternalId;
+    public String getProductBatch() {
+        return productBatch;
     }
 
-    public void setProductBatchExternalId(String productBatchExternalId) {
-        this.productBatchExternalId = productBatchExternalId;
+    public void setProductBatch(String productBatch) {
+        this.productBatch = productBatch;
     }
 
     public Double getTotalAmount() {
@@ -67,10 +67,10 @@ public class BloodPoolDto extends AbstractBcptDto {
     public String toString() {
         return "BloodPoolDto{" +
                 "externalId='" + getExternalId() +
-                ", productBatchExternalId='" + productBatchExternalId +
+                ", productBatch='" + productBatch +
                 ", poolNumber='" + poolNumber +
-                ", bloodInvoiceIds=" + (bloodInvoiceIds != null
-                ? '[' + bloodInvoiceIds.stream().collect(Collectors.joining(", ")) + ']'
+                ", bloodInvoices=" + (bloodInvoices != null
+                ? '[' + bloodInvoices.stream().collect(Collectors.joining(", ")) + ']'
                 : null) +
                 ", totalAmount=" + totalAmount +
                 ", creationTimestamp=" + getCreationTimestamp() +

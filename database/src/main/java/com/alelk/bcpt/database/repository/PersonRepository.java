@@ -45,38 +45,22 @@ public class PersonRepository {
     }
 
     public Long countItems() {
-        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
-        countQuery.select(criteriaBuilder.count(countQuery.from(PersonEntity.class)));
-        return em.createQuery(countQuery).getSingleResult();
+        return countItems(null);
     }
 
     public List<PersonEntity> findAll(int pageNumber, int itemsPerPage, List<SortBy> sortBy, List<Filter> filters) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        TypedQuery<PersonEntity> query =  em.createQuery(createQuery(cb, sortBy, filters));
+        TypedQuery<PersonEntity> query =  em.createQuery(
+                RepositoryUtil.query(PersonEntity.class, em.getCriteriaBuilder(), sortBy, filters, predicateBuilder)
+        );
         query.setFirstResult((pageNumber-1) * itemsPerPage);
         query.setMaxResults(itemsPerPage);
         return query.getResultList();
     }
 
     public Long countItems(List<Filter> filters) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        Root<PersonEntity> root = countQuery.from(PersonEntity.class);
-        countQuery.select(cb.count(root));
-        Predicate predicate = predicateBuilder.buildPredicate(root, countQuery, cb, filters);
-        if (predicate != null) countQuery.where(predicate);
-        return em.createQuery(countQuery).getSingleResult();
-    }
-
-    private CriteriaQuery<PersonEntity> createQuery(CriteriaBuilder cb, List<SortBy> sortBy, List<Filter> filters) {
-        CriteriaQuery<PersonEntity> criteriaQuery = cb.createQuery(PersonEntity.class);
-        Root<PersonEntity> root = criteriaQuery.from(PersonEntity.class);
-        CriteriaQuery<PersonEntity> select = criteriaQuery.select(root);
-        RepositoryUtil.sort(PersonEntity.class, criteriaQuery, root, cb, sortBy);
-        Predicate predicate = predicateBuilder.buildPredicate(root, criteriaQuery, cb, filters);
-        if (predicate != null) select.where(predicate);
-        return select;
+        return em.createQuery(
+                RepositoryUtil.countItemsQuery(PersonEntity.class, em.getCriteriaBuilder(), filters, predicateBuilder)
+        ).getSingleResult();
     }
 
     public PersonEntity findByExternalId(String externalId) {

@@ -43,7 +43,7 @@ public class ProductBatchService {
                 productBatchRepository.save(
                         new ProductBatchEntityBuilder()
                                 .apply(dto)
-                                .apply(getBloodPoolEntitiesByExternalIds(dto.getBloodPoolIds(), message))
+                                .apply(getBloodPoolEntitiesByExternalIds(dto.getBloodPools(), message))
                                 .build())
         ).build();
     }
@@ -59,7 +59,7 @@ public class ProductBatchService {
         return new ProductBatchDtoBuilder().apply(
                 new ProductBatchEntityBuilder(entity, mergeWithNullValues, softUpdate)
                         .apply(dto)
-                        .apply(getBloodPoolEntitiesByExternalIds(dto.getBloodPoolIds(), message))
+                        .apply(getBloodPoolEntitiesByExternalIds(dto.getBloodPools(), message))
                         .build()
         ).build();
     }

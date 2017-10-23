@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public abstract class ProductBatchAbstractRequest extends BcptDtoApiRequest<ProductBatchDto> {
 
     private Date batchDate;
-    private Set<String> bloodPoolIds;
+    private Set<String> bloodPools;
     private Double totalAmount;
 
     public Date getBatchDate() {
@@ -26,12 +26,12 @@ public abstract class ProductBatchAbstractRequest extends BcptDtoApiRequest<Prod
         this.batchDate = batchDate;
     }
 
-    public Set<String> getBloodPoolIds() {
-        return bloodPoolIds;
+    public Set<String> getBloodPools() {
+        return bloodPools;
     }
 
-    public void setBloodPoolIds(Set<String> bloodPoolIds) {
-        this.bloodPoolIds = bloodPoolIds;
+    public void setBloodPools(Set<String> bloodPools) {
+        this.bloodPools = bloodPools;
     }
 
     public Double getTotalAmount() {
@@ -44,7 +44,7 @@ public abstract class ProductBatchAbstractRequest extends BcptDtoApiRequest<Prod
 
     @Override
     public ProductBatchDto toDto() {
-        return new ProductBatchDto(getExternalId(), null, null, batchDate, bloodPoolIds, totalAmount);
+        return new ProductBatchDto(getExternalId(), null, null, batchDate, bloodPools, totalAmount);
     }
 
     @Override
@@ -53,8 +53,8 @@ public abstract class ProductBatchAbstractRequest extends BcptDtoApiRequest<Prod
                 "externalId='" + getExternalId() + '\'' +
                 ", batchDate=" + batchDate +
                 ", totalAmount=" + totalAmount +
-                ", bloodPoolIds=" + (bloodPoolIds != null ?
-                '[' + bloodPoolIds.stream().collect(Collectors.joining(", ")) + ']' : null) +
+                ", bloodPools=" + (bloodPools != null ?
+                '[' + bloodPools.stream().collect(Collectors.joining(", ")) + ']' : null) +
                 '}';
     }
 }

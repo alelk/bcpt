@@ -23,8 +23,8 @@ public class BloodInvoiceDtoBuilder extends AbstractDtoBuilder<BloodInvoiceEntit
         if (entity == null) return this;
         dto.setDeliveryDate(entity.getDeliveryDate());
         dto.setTotalAmount(entity.getTotalAmount());
-        dto.setBloodPoolExternalId(entity.getBloodPool() != null ? entity.getBloodPool().getExternalId() : null);
-        dto.setBloodDonationExternalIds(entity.getBloodDonations() != null ? entity.getBloodDonations().stream().map(BloodDonationEntity::getExternalId).collect(Collectors.toSet()) : null);
+        dto.setBloodPool(entity.getBloodPool() != null ? entity.getBloodPool().getExternalId() : null);
+        dto.setBloodDonations(entity.getBloodDonations() != null ? entity.getBloodDonations().stream().map(BloodDonationEntity::getExternalId).collect(Collectors.toSet()) : null);
         return this;
     }
 }

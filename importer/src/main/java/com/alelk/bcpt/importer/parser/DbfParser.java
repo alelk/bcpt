@@ -147,10 +147,10 @@ public class DbfParser implements Parser {
             bloodInvoice = new BloodInvoiceDto();
             bloodInvoice.setExternalId(bloodInvoiceId);
         }
-        Set<String> donationIds = bloodInvoice.getBloodDonationExternalIds();
+        Set<String> donationIds = bloodInvoice.getBloodDonations();
         if (donationIds == null) donationIds = new HashSet<>();
         donationIds.add(donationId);
-        bloodInvoice.setBloodDonationExternalIds(donationIds);
+        bloodInvoice.setBloodDonations(donationIds);
         parsedBundle.addBloodInvoice(bloodInvoice);
     }
 
