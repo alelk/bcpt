@@ -2,10 +2,17 @@ package com.alelk.bcpt.restapi.controller;
 
 import com.alelk.bcpt.database.service.BloodDonationService;
 import com.alelk.bcpt.model.dto.BloodDonationDto;
+import com.alelk.bcpt.model.pagination.Filter;
+import com.alelk.bcpt.model.pagination.Page;
+import com.alelk.bcpt.model.pagination.SortBy;
+import com.alelk.bcpt.model.util.Util;
 import com.alelk.bcpt.restapi.request.BloodDonationCreateRequest;
 import com.alelk.bcpt.restapi.request.BloodDonationDeleteRequest;
 import com.alelk.bcpt.restapi.request.BloodDonationUpdateRequest;
+import com.alelk.bcpt.restapi.util.RestApiUtil;
 import com.alelk.bcpt.restapi.validator.BloodDonationValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +30,7 @@ import java.util.List;
 @RequestMapping("/bloodDonations")
 public class BloodDonationController {
 
+    private static final Logger log = LoggerFactory.getLogger(BloodDonationController.class);
     private BloodDonationService bloodDonationService;
     private BloodDonationValidator bloodDonationValidator;
 
@@ -40,6 +48,18 @@ public class BloodDonationController {
     @GetMapping("/")
     public List<BloodDonationDto> getAll() {
         return bloodDonationService.findAll();
+    }
+
+    @GetMapping("/page/{pageNumber}")
+    public Page<BloodDonationDto> getAll(@PathVariable int pageNumber,
+                                         @RequestParam(required = false) Integer itemsPerPage,
+                                         @RequestParam(value = "sortBy", required = false) List<String> sortBy,
+                                         @RequestParam(value = "filter", required = false) List<String> filter) {
+        final List<SortBy> sortByList = RestApiUtil.parseSortParams(sortBy);
+        final List<Filter> filterList = RestApiUtil.parseFilterParams(filter);
+        log.debug("Request /bloodDonations/page/" + pageNumber + "?itemsPerPage=" + itemsPerPage + ": sortBy=" +
+                Util.toString(sortByList) + " filter=" + Util.toString(filterList));
+        return bloodDonationService.findAll(pageNumber, itemsPerPage == null ? 100 : itemsPerPage, sortByList, filterList);
     }
 
     @PostMapping("/")

@@ -12,8 +12,8 @@ import java.util.Date;
  */
 public class BloodDonationDto extends AbstractBcptDto {
 
-    private String donorExternalId;
-    private String bloodInvoiceExternalId;
+    private String donor;
+    private String bloodInvoice;
     private Double amount;
     private Date donationDate;
     private Date expirationDate;
@@ -27,11 +27,11 @@ public class BloodDonationDto extends AbstractBcptDto {
     }
 
     public BloodDonationDto(String externalId, Date creationTimestamp, Date updateTimestamp,
-                            String donorExternalId, String bloodInvoiceExternalId, Double amount,
+                            String donor, String bloodInvoiceExternalId, Double amount,
                             Date donationDate, Date quarantineDate, Date expirationDate, DonationType donationType) {
         super(externalId, creationTimestamp, updateTimestamp);
-        this.donorExternalId = donorExternalId;
-        this.bloodInvoiceExternalId = bloodInvoiceExternalId;
+        this.donor = donor;
+        this.bloodInvoice = bloodInvoiceExternalId;
         this.amount = amount;
         this.donationDate = donationDate;
         this.quarantineDate = quarantineDate;
@@ -39,8 +39,8 @@ public class BloodDonationDto extends AbstractBcptDto {
         this.donationType = donationType;
     }
 
-    public void setDonorExternalId(String donorExternalId) {
-        this.donorExternalId = donorExternalId;
+    public void setDonor(String donor) {
+        this.donor = donor;
     }
 
     public void setAmount(Double amount) {
@@ -55,8 +55,8 @@ public class BloodDonationDto extends AbstractBcptDto {
         this.quarantineDate = quarantineDate;
     }
 
-    public String getDonorExternalId() {
-        return donorExternalId;
+    public String getDonor() {
+        return donor;
     }
 
     public Double getAmount() {
@@ -75,12 +75,12 @@ public class BloodDonationDto extends AbstractBcptDto {
         this.donationType = donationType;
     }
 
-    public String getBloodInvoiceExternalId() {
-        return bloodInvoiceExternalId;
+    public String getBloodInvoice() {
+        return bloodInvoice;
     }
 
-    public void setBloodInvoiceExternalId(String bloodInvoiceExternalId) {
-        this.bloodInvoiceExternalId = bloodInvoiceExternalId;
+    public void setBloodInvoice(String bloodInvoice) {
+        this.bloodInvoice = bloodInvoice;
     }
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -102,8 +102,8 @@ public class BloodDonationDto extends AbstractBcptDto {
     public String toString() {
         return "BloodDonationDto{" +
                 "externalId='" + getExternalId() +
-                "', donorExternalId=" + donorExternalId +
-                "', bloodInvoiceExternalId=" + bloodInvoiceExternalId +
+                "', donor=" + donor +
+                "', bloodInvoice=" + bloodInvoice +
                 ", amount=" + amount +
                 ", donationDate=" + donationDate +
                 ", quarantineDate=" + quarantineDate +

@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 public abstract class BloodInvoiceAbstractRequest extends BcptDtoApiRequest<BloodInvoiceDto> {
 
     private Date deliveryDate;
-    private Set<String> bloodDonationExternalIds;
-    private String bloodPoolExternalId;
+    private Set<String> bloodDonations;
+    private String bloodPool;
     private Double totalAmount;
 
     public Date getDeliveryDate() {
@@ -27,20 +27,20 @@ public abstract class BloodInvoiceAbstractRequest extends BcptDtoApiRequest<Bloo
         this.deliveryDate = deliveryDate;
     }
 
-    public Set<String> getBloodDonationExternalIds() {
-        return bloodDonationExternalIds;
+    public Set<String> getBloodDonations() {
+        return bloodDonations;
     }
 
-    public void setBloodDonationExternalIds(Set<String> bloodDonationExternalIds) {
-        this.bloodDonationExternalIds = bloodDonationExternalIds;
+    public void setBloodDonations(Set<String> bloodDonations) {
+        this.bloodDonations = bloodDonations;
     }
 
-    public String getBloodPoolExternalId() {
-        return bloodPoolExternalId;
+    public String getBloodPool() {
+        return bloodPool;
     }
 
-    public void setBloodPoolExternalId(String bloodPoolExternalId) {
-        this.bloodPoolExternalId = bloodPoolExternalId;
+    public void setBloodPool(String bloodPool) {
+        this.bloodPool = bloodPool;
     }
 
     public Double getTotalAmount() {
@@ -53,18 +53,18 @@ public abstract class BloodInvoiceAbstractRequest extends BcptDtoApiRequest<Bloo
 
     @Override
     public BloodInvoiceDto toDto() {
-        return new BloodInvoiceDto(getExternalId(), null, null, deliveryDate, bloodDonationExternalIds, bloodPoolExternalId, totalAmount);
+        return new BloodInvoiceDto(getExternalId(), null, null, deliveryDate, bloodDonations, bloodPool, totalAmount);
     }
 
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + "{" +
                 "externalId='" + getExternalId() + '\'' +
-                ", bloodPoolExternalId='" + bloodPoolExternalId + '\'' +
+                ", bloodPool='" + bloodPool + '\'' +
                 ", deliveryDate='" + deliveryDate + '\'' +
                 ", totalAmount='" + totalAmount + '\'' +
-                ", bloodDonationExternalIds=" + (bloodDonationExternalIds != null
-                ? '[' + bloodDonationExternalIds.stream().collect(Collectors.joining(", ")) + ']' : null) +
+                ", bloodDonations=" + (bloodDonations != null
+                ? '[' + bloodDonations.stream().collect(Collectors.joining(", ")) + ']' : null) +
                 '}';
     }
 }

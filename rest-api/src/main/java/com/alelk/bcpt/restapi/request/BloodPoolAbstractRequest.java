@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 public class BloodPoolAbstractRequest extends BcptDtoApiRequest<BloodPoolDto> {
 
     private Integer poolNumber;
-    private Set<String> bloodInvoiceIds;
-    private String productBatchExternalId;
+    private Set<String> bloodInvoices;
+    private String productBatch;
     private Double totalAmount;
 
     public Integer getPoolNumber() {
@@ -26,20 +26,20 @@ public class BloodPoolAbstractRequest extends BcptDtoApiRequest<BloodPoolDto> {
         this.poolNumber = poolNumber;
     }
 
-    public Set<String> getBloodInvoiceIds() {
-        return bloodInvoiceIds;
+    public Set<String> getBloodInvoices() {
+        return bloodInvoices;
     }
 
-    public void setBloodInvoiceIds(Set<String> bloodInvoiceIds) {
-        this.bloodInvoiceIds = bloodInvoiceIds;
+    public void setBloodInvoices(Set<String> bloodInvoices) {
+        this.bloodInvoices = bloodInvoices;
     }
 
-    public String getProductBatchExternalId() {
-        return productBatchExternalId;
+    public String getProductBatch() {
+        return productBatch;
     }
 
-    public void setProductBatchExternalId(String productBatchExternalId) {
-        this.productBatchExternalId = productBatchExternalId;
+    public void setProductBatch(String productBatch) {
+        this.productBatch = productBatch;
     }
 
     public Double getTotalAmount() {
@@ -52,7 +52,7 @@ public class BloodPoolAbstractRequest extends BcptDtoApiRequest<BloodPoolDto> {
 
     @Override
     public BloodPoolDto toDto() {
-        return new BloodPoolDto(getExternalId(), null, null, poolNumber, bloodInvoiceIds, productBatchExternalId, totalAmount);
+        return new BloodPoolDto(getExternalId(), null, null, poolNumber, bloodInvoices, productBatch, totalAmount);
     }
 
     @Override
@@ -60,10 +60,10 @@ public class BloodPoolAbstractRequest extends BcptDtoApiRequest<BloodPoolDto> {
         return this.getClass().getSimpleName() + "{" +
                 "externalId='" + getExternalId() + '\'' +
                 ", poolNumber=" + poolNumber +
-                ", bloodInvoiceIds=" + (bloodInvoiceIds != null ?
-                '[' + bloodInvoiceIds.stream().collect(Collectors.joining(", ")) + ']' : null) +
+                ", bloodInvoices=" + (bloodInvoices != null ?
+                '[' + bloodInvoices.stream().collect(Collectors.joining(", ")) + ']' : null) +
                 ", totalAmount='" + totalAmount + '\'' +
-                ", productBatchExternalId='" + productBatchExternalId + '\'' +
+                ", productBatch='" + productBatch + '\'' +
                 '}';
     }
 }

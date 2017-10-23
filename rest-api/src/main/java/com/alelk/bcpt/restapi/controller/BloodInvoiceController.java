@@ -2,9 +2,14 @@ package com.alelk.bcpt.restapi.controller;
 
 import com.alelk.bcpt.database.service.BloodInvoiceService;
 import com.alelk.bcpt.model.dto.BloodInvoiceDto;
+import com.alelk.bcpt.model.pagination.Filter;
+import com.alelk.bcpt.model.pagination.Page;
+import com.alelk.bcpt.model.pagination.SortBy;
+import com.alelk.bcpt.model.util.Util;
 import com.alelk.bcpt.restapi.request.BloodInvoiceCreateRequest;
 import com.alelk.bcpt.restapi.request.BloodInvoiceDeleteRequest;
 import com.alelk.bcpt.restapi.request.BloodInvoiceUpdateRequest;
+import com.alelk.bcpt.restapi.util.RestApiUtil;
 import com.alelk.bcpt.restapi.validator.BloodInvoiceValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +46,18 @@ public class BloodInvoiceController {
     @GetMapping("/")
     public List<BloodInvoiceDto> getAll() {
         return bloodInvoiceService.findAll();
+    }
+
+    @GetMapping("/page/{pageNumber}")
+    public Page<BloodInvoiceDto> getAll(@PathVariable int pageNumber,
+                                         @RequestParam(required = false) Integer itemsPerPage,
+                                         @RequestParam(value = "sortBy", required = false) List<String> sortBy,
+                                         @RequestParam(value = "filter", required = false) List<String> filter) {
+        final List<SortBy> sortByList = RestApiUtil.parseSortParams(sortBy);
+        final List<Filter> filterList = RestApiUtil.parseFilterParams(filter);
+        log.debug("Request /bloodInvoices/page/" + pageNumber + "?itemsPerPage=" + itemsPerPage + ": sortBy=" +
+                Util.toString(sortByList) + " filter=" + Util.toString(filterList));
+        return bloodInvoiceService.findAll(pageNumber, itemsPerPage == null ? 100 : itemsPerPage, sortByList, filterList);
     }
 
     @PostMapping("/")

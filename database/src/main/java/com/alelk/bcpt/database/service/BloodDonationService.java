@@ -1,6 +1,5 @@
 package com.alelk.bcpt.database.service;
 
-import com.alelk.bcpt.database.builder.BloodDonationDtoBuilder;
 import com.alelk.bcpt.database.builder.BloodDonationEntityBuilder;
 import com.alelk.bcpt.database.model.BloodDonationEntity;
 import com.alelk.bcpt.database.model.BloodInvoiceEntity;
@@ -8,17 +7,22 @@ import com.alelk.bcpt.database.model.PersonEntity;
 import com.alelk.bcpt.database.repository.BloodDonationRepository;
 import com.alelk.bcpt.database.repository.BloodInvoiceRepository;
 import com.alelk.bcpt.database.repository.PersonRepository;
+import com.alelk.bcpt.database.util.DatabaseUtil;
 import com.alelk.bcpt.model.dto.BloodDonationDto;
 import com.alelk.bcpt.model.dto.PersonDto;
+import com.alelk.bcpt.model.pagination.Filter;
+import com.alelk.bcpt.model.pagination.Page;
+import com.alelk.bcpt.model.pagination.SortBy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import static com.alelk.bcpt.database.util.ValidationUtil.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.alelk.bcpt.database.util.ValidationUtil.validateNotEmpty;
+import static com.alelk.bcpt.database.util.ValidationUtil.validateNotNull;
 
 /**
  * Blood Donation Service
@@ -44,13 +48,13 @@ public class BloodDonationService {
         final String message = "Cannot add new blood donation info '" + bloodDonation + "' to the database: ";
         validateNotNull(bloodDonation, message + "BloodDonation DTO must be not null!");
         validateNotEmpty(bloodDonation.getExternalId(), message + "no external id provided!");
-        return new BloodDonationDtoBuilder().apply(
+        return DatabaseUtil.mapBloodDonationEntityToDto(
                 bloodDonationRepository.save(new BloodDonationEntityBuilder()
                         .apply(bloodDonation)
-                        .apply(findPersonByExternalId(bloodDonation.getDonorExternalId(), message))
-                        .apply(findBloodInvoiceByExternalId(bloodDonation.getBloodInvoiceExternalId(), message))
+                        .apply(findPersonByExternalId(bloodDonation.getDonor(), message))
+                        .apply(findBloodInvoiceByExternalId(bloodDonation.getBloodInvoice(), message))
                         .build())
-        ).build();
+        );
     }
 
     @Transactional
@@ -61,19 +65,31 @@ public class BloodDonationService {
             validateNotEmpty(dto.getExternalId(), message + "no Blood Donation external id provided!");
         BloodDonationEntity entity = findEntityByExternalId(externalId, message);
         validateNotNull(entity, message + "Blood Donation external id does'nt exist.");
-        return new BloodDonationDtoBuilder().apply(
+        return DatabaseUtil.mapBloodDonationEntityToDto(
                 new BloodDonationEntityBuilder(entity, mergeWithNullValues, softUpdate)
-                        .apply(dto).apply(findPersonByExternalId(dto.getDonorExternalId(), message))
-                        .apply(findBloodInvoiceByExternalId(dto.getBloodInvoiceExternalId(), message))
+                        .apply(dto).apply(findPersonByExternalId(dto.getDonor(), message))
+                        .apply(findBloodInvoiceByExternalId(dto.getBloodInvoice(), message))
                         .build()
-        ).build();
+        );
     }
 
     @Transactional(readOnly = true)
     public List<BloodDonationDto> findAll() {
         return bloodDonationRepository.findAll().stream()
-                .map(entity -> new BloodDonationDtoBuilder().apply(entity).build())
+                .map(DatabaseUtil::mapBloodDonationEntityToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<BloodDonationDto> findAll(int pageNumber, int itemsPerPage, List<SortBy> sortByList, List<Filter> filterList) {
+        return new Page<>(
+                pageNumber,
+                itemsPerPage,
+                bloodDonationRepository.findAll(pageNumber, itemsPerPage, sortByList, filterList)
+                        .stream().map(DatabaseUtil::mapBloodDonationEntityToDto).collect(Collectors.toList()),
+                bloodDonationRepository.countItems(filterList),
+                sortByList,
+                filterList);
     }
 
     @Transactional(readOnly = true)
@@ -84,13 +100,13 @@ public class BloodDonationService {
         final PersonEntity pe = personRepository.findByExternalId(donor.getExternalId());
         validateNotNull(pe, message + "No donor found for the external id '" + donor.getExternalId() + "'");
         return bloodDonationRepository.findFor(pe).stream()
-                .map(entity -> new BloodDonationDtoBuilder().apply(entity).build())
+                .map(DatabaseUtil::mapBloodDonationEntityToDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public BloodDonationDto findByExternalId(String externalId) {
-        return new BloodDonationDtoBuilder().apply(findEntityByExternalId(externalId, "")).build();
+        return DatabaseUtil.mapBloodDonationEntityToDto(findEntityByExternalId(externalId, ""));
     }
 
     @Transactional
@@ -99,7 +115,7 @@ public class BloodDonationService {
         final BloodDonationEntity entity = findEntityByExternalId(externalId, message);
         validateNotNull(entity, message + "no entity found for the external id '" + externalId + '\'');
         bloodDonationRepository.remove(entity);
-        return new BloodDonationDtoBuilder().apply(entity).build();
+        return DatabaseUtil.mapBloodDonationEntityToDto(entity);
     }
 
     @Transactional

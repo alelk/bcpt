@@ -9,6 +9,7 @@ import com.alelk.bcpt.model.util.Util;
 import com.alelk.bcpt.restapi.request.PersonCreateRequest;
 import com.alelk.bcpt.restapi.request.PersonDeleteRequest;
 import com.alelk.bcpt.restapi.request.PersonUpdateRequest;
+import com.alelk.bcpt.restapi.util.RestApiUtil;
 import com.alelk.bcpt.restapi.validator.PersonValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -56,11 +57,9 @@ public class PersonController {
                                   @RequestParam(required = false) Integer itemsPerPage,
                                   @RequestParam(value = "sortBy", required = false) List<String> sortBy,
                                   @RequestParam(value = "filter", required = false) List<String> filter) {
-        final List<SortBy> sortByList = sortBy == null ? null
-                : sortBy.stream().map(SortBy::parse).filter(Objects::nonNull).collect(Collectors.toList());
-        final List<Filter> filterList = filter == null ? null
-                : filter.stream().map(Filter::parse).filter(Objects::nonNull).collect(Collectors.toList());
-        log.info("Request /persons/page/" + pageNumber + "?itemsPerPage=" + itemsPerPage + ": sortBy=" +
+        final List<SortBy> sortByList = RestApiUtil.parseSortParams(sortBy);
+        final List<Filter> filterList = RestApiUtil.parseFilterParams(filter);
+        log.debug("Request /persons/page/" + pageNumber + "?itemsPerPage=" + itemsPerPage + ": sortBy=" +
                 Util.toString(sortByList) + " filter=" + Util.toString(filterList));
         return personService.findAll(pageNumber, itemsPerPage == null ? 100 : itemsPerPage, sortByList, filterList);
     }

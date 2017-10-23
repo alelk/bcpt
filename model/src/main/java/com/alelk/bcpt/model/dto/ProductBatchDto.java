@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class ProductBatchDto extends AbstractBcptDto {
 
     private Date batchDate;
-    private Set<String> bloodPoolIds;
+    private Set<String> bloodPools;
     private Double totalAmount;
 
     public ProductBatchDto() {}
@@ -25,10 +25,10 @@ public class ProductBatchDto extends AbstractBcptDto {
         super(externalId, creationTimestamp, updateTimestamp);
     }
 
-    public ProductBatchDto(String externalId, Date creationTimestamp, Date updateTimestamp, Date batchDate, Set<String> bloodPoolIds, Double totalAmount) {
+    public ProductBatchDto(String externalId, Date creationTimestamp, Date updateTimestamp, Date batchDate, Set<String> bloodPools, Double totalAmount) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.batchDate = batchDate;
-        this.bloodPoolIds = bloodPoolIds;
+        this.bloodPools = bloodPools;
         this.totalAmount = totalAmount;
     }
 
@@ -37,16 +37,16 @@ public class ProductBatchDto extends AbstractBcptDto {
         return batchDate;
     }
 
-    public Set<String> getBloodPoolIds() {
-        return bloodPoolIds;
+    public Set<String> getBloodPools() {
+        return bloodPools;
     }
 
     public void setBatchDate(Date batchDate) {
         this.batchDate = batchDate;
     }
 
-    public void setBloodPoolIds(Set<String> bloodPoolIds) {
-        this.bloodPoolIds = bloodPoolIds;
+    public void setBloodPools(Set<String> bloodPools) {
+        this.bloodPools = bloodPools;
     }
 
     public Double getTotalAmount() {
@@ -62,8 +62,8 @@ public class ProductBatchDto extends AbstractBcptDto {
         return "ProductBatchDto{" +
                 "externalId='" + getExternalId() +
                 ", batchDate='" + batchDate +
-                ", bloodPoolIds=" + (bloodPoolIds != null
-                ? '[' + bloodPoolIds.stream().collect(Collectors.joining(", ")) + ']'
+                ", bloodPools=" + (bloodPools != null
+                ? '[' + bloodPools.stream().collect(Collectors.joining(", ")) + ']'
                 : null) +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", totalAmount=" + totalAmount +

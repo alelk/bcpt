@@ -2,25 +2,18 @@ package com.alelk.bcpt.database.util;
 
 import com.alelk.bcpt.database.model.AbstractEntity;
 import com.alelk.bcpt.database.model.AbstractEntity_;
+import com.alelk.bcpt.database.predicate.AbstractPredicateBuilder;
+import com.alelk.bcpt.database.specifications.AbstractSpecifications;
+import com.alelk.bcpt.model.pagination.Filter;
 import com.alelk.bcpt.model.pagination.SortBy;
 import com.alelk.bcpt.model.pagination.SortDirection;
-import com.alelk.bcpt.model.util.Util;
-import org.hibernate.hql.internal.ast.util.PathHelper;
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
-import org.reflections.scanners.FieldAnnotationsScanner;
-import org.reflections.scanners.TypeElementsScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.Attribute;
+import javax.persistence.criteria.*;
 import javax.persistence.metamodel.StaticMetamodel;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -35,8 +28,6 @@ import java.util.stream.Collectors;
  */
 public class RepositoryUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(RepositoryUtil.class);
-
     private static Reflections reflections = new Reflections(
             new ConfigurationBuilder().setUrls(ClasspathHelper.forPackage(AbstractEntity.class.getPackage().getName()))
                     .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(AbstractEntity.class.getPackage().getName())))
@@ -45,7 +36,7 @@ public class RepositoryUtil {
     /**
      * Modifies query with sort criteria
      *
-     * @param clazz class on entity
+     * @param clazz class of entity
      * @param query original query
      * @param root JPA root object
      * @param cb criteria builder
@@ -68,6 +59,59 @@ public class RepositoryUtil {
                                 : cb.asc(root.get(order.getFieldName()))
                 ).collect(Collectors.toList());
         return query.orderBy(orders);
+    }
+
+    /**
+     * Build query with sort and filter criteria
+     *
+     * @param clazz the class of the result entity
+     * @param cb criteria builder
+     * @param sort sort criteria
+     * @param filters filter criteria
+     * @param predicateBuilder predicate builder
+     * @param <E> the type of entity
+     * @param <M> the type of entity JPA meta model
+     * @return criteria query
+     */
+    public static <E extends AbstractEntity, M extends AbstractEntity_> CriteriaQuery<E> query(
+            Class<E> clazz,
+            CriteriaBuilder cb,
+            List<SortBy> sort,
+            List<Filter> filters,
+            AbstractPredicateBuilder<E, M, ? extends AbstractSpecifications<E, M>> predicateBuilder
+    ) {
+        final CriteriaQuery<E> criteriaQuery = cb.createQuery(clazz);
+        final Root<E> root = criteriaQuery.from(clazz);
+        final Predicate predicate = predicateBuilder.buildPredicate(root, criteriaQuery, cb, filters);
+        final CriteriaQuery<E> select = criteriaQuery.select(root);
+        if (predicate != null) select.where(predicate);
+        sort(clazz, criteriaQuery, root, cb, sort);
+        return select;
+    }
+
+    /**
+     * Query count items after filter criteria applying
+     *
+     * @param clazz the class of the target entity
+     * @param cb criteria builder
+     * @param filters filters
+     * @param predicateBuilder predicate builder for the target entity
+     * @param <E> the type of the target entity
+     * @param <M> the type of entity JPA meta model
+     * @return count query
+     */
+    public static <E extends AbstractEntity, M extends AbstractEntity_> CriteriaQuery<Long> countItemsQuery
+            (Class<E> clazz,
+             CriteriaBuilder cb,
+             List<Filter> filters,
+             AbstractPredicateBuilder<E, M, ? extends AbstractSpecifications<E, M>> predicateBuilder
+            ) {
+        final CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
+        final Root<E> root = countQuery.from(clazz);
+        countQuery.select(cb.count(root));
+        final Predicate predicate = predicateBuilder.buildPredicate(root, countQuery, cb, filters);
+        if (predicate != null) countQuery.where(predicate);
+        return countQuery;
     }
 
     @SuppressWarnings("unchecked")

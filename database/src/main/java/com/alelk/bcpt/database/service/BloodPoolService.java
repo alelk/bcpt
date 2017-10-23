@@ -47,8 +47,8 @@ public class BloodPoolService {
         validateNotEmpty(dto.getExternalId(), message + " no external id provided!");
         return new BloodPoolDtoBuilder().apply(
                 bloodPoolRepository.save(new BloodPoolEntityBuilder().apply(dto)
-                        .apply(getBloodInvoiceEntitiesByExternalIds(dto.getBloodInvoiceIds(), message))
-                        .apply(findProductBatchEntityByExternalId(dto.getProductBatchExternalId(), message))
+                        .apply(getBloodInvoiceEntitiesByExternalIds(dto.getBloodInvoices(), message))
+                        .apply(findProductBatchEntityByExternalId(dto.getProductBatch(), message))
                         .build())
         ).build();
     }
@@ -64,8 +64,8 @@ public class BloodPoolService {
         return new BloodPoolDtoBuilder().apply(
                 new BloodPoolEntityBuilder(entity, mergeWithNullValues, softUpdate)
                         .apply(dto)
-                        .apply(getBloodInvoiceEntitiesByExternalIds(dto.getBloodInvoiceIds(), message))
-                        .apply(findProductBatchEntityByExternalId(dto.getProductBatchExternalId(), message))
+                        .apply(getBloodInvoiceEntitiesByExternalIds(dto.getBloodInvoices(), message))
+                        .apply(findProductBatchEntityByExternalId(dto.getProductBatch(), message))
                         .build()
         ).build();
     }

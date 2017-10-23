@@ -4,6 +4,7 @@ import com.alelk.bcpt.database.model.AbstractEntity;
 import com.alelk.bcpt.database.model.AbstractEntity_;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.criteria.Path;
 import javax.persistence.metamodel.SingularAttribute;
 
 /**
@@ -21,7 +22,15 @@ public abstract class AbstractSpecifications<E extends AbstractEntity, M extends
         return (root, query, cb) -> stringValue == null ? null : cb.like(root.get(field), stringValue + '%');
     }
 
+    <T> Specification<E> stringStartsWith(Path<String> path, String stringValue) {
+        return (root, query, cb) -> stringValue == null ? null : cb.like(path, stringValue + '%');
+    }
+
     <T> Specification<E> valueEqual(SingularAttribute<? super E, T> field, T value) {
         return (root, query, cb) -> value == null ? null : cb.equal(root.get(field), value);
+    }
+
+    <T> Specification<E> valueEqual(Path<T> path, T value) {
+        return (root, query, cb) -> value == null ? null : cb.equal(path, value);
     }
 }

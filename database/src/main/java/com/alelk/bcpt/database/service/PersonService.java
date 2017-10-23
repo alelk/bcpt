@@ -1,6 +1,5 @@
 package com.alelk.bcpt.database.service;
 
-import com.alelk.bcpt.database.builder.PersonDtoBuilder;
 import com.alelk.bcpt.database.builder.PersonEntityBuilder;
 import com.alelk.bcpt.database.model.PersonEntity;
 import com.alelk.bcpt.database.repository.PersonRepository;
@@ -17,7 +16,8 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.alelk.bcpt.database.util.ValidationUtil.*;
+import static com.alelk.bcpt.database.util.ValidationUtil.validateNotEmpty;
+import static com.alelk.bcpt.database.util.ValidationUtil.validateNotNull;
 
 /**
  * Person Service
@@ -39,7 +39,9 @@ public class PersonService {
         final String message = "Error inserting person " + person + " to the database: ";
         validateNotNull(person, message + "Person DTO object must be not null.");
         validateNotEmpty(person.getExternalId(), message + "Person's external id must be not empty.");
-        return new PersonDtoBuilder().apply(personRepository.save(new PersonEntityBuilder().apply(person).build())).build();
+        return DatabaseUtil.mapPersonEntityToDto(
+                personRepository.save(new PersonEntityBuilder().apply(person).build())
+        );
     }
 
     @Transactional
@@ -48,7 +50,7 @@ public class PersonService {
         validateNotNull(person, message + "Person DTO object must be not null.");
         PersonEntity pe = findEntityByExternalId(externalId, message);
         validateNotNull(pe, message + "Person external id does'nt exist.");
-        return DatabaseUtil.mapEntityToDto(
+        return DatabaseUtil.mapPersonEntityToDto(
                 new PersonEntityBuilder(pe, mergeWithNullValues, softUpdate).apply(person).build()
         );
     }
@@ -56,7 +58,7 @@ public class PersonService {
     @Transactional(readOnly = true)
     public List<PersonDto> findAll() {
         return personRepository.findAll().stream()
-                .map(DatabaseUtil::mapEntityToDto)
+                .map(DatabaseUtil::mapPersonEntityToDto)
                 .collect(Collectors.toList());
     }
 
@@ -66,7 +68,7 @@ public class PersonService {
                 pageNumber,
                 itemsPerPage,
                 personRepository.findAll(pageNumber, itemsPerPage, sortByList, filterList)
-                        .stream().map(DatabaseUtil::mapEntityToDto).collect(Collectors.toList()),
+                        .stream().map(DatabaseUtil::mapPersonEntityToDto).collect(Collectors.toList()),
                 personRepository.countItems(filterList),
                 sortByList,
                 filterList);
@@ -74,7 +76,7 @@ public class PersonService {
 
     @Transactional(readOnly = true)
     public PersonDto findByExternalId(String externalId) {
-        return DatabaseUtil.mapEntityToDto(findEntityByExternalId(externalId, ""));
+        return DatabaseUtil.mapPersonEntityToDto(findEntityByExternalId(externalId, ""));
     }
 
     @Transactional
@@ -83,7 +85,7 @@ public class PersonService {
         final PersonEntity pe = findEntityByExternalId(externalId, message);
         validateNotNull(pe, message + "no entity found for external id '" + externalId + '\'');
         personRepository.remove(pe);
-        return DatabaseUtil.mapEntityToDto(pe);
+        return DatabaseUtil.mapPersonEntityToDto(pe);
     }
 
     @Transactional

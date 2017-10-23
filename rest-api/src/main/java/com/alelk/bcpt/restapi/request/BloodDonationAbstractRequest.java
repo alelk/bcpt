@@ -13,20 +13,20 @@ import java.util.Date;
 @SuppressWarnings("unused")
 public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonationDto> {
 
-    private String donorExternalId;
-    private String bloodInvoiceExternalId;
+    private String donor;
+    private String bloodInvoice;
     private Double amount;
     private Date donationDate;
     private Date quarantineDate;
     private Date expirationDate;
     private DonationType donationType;
 
-    public String getDonorExternalId() {
-        return donorExternalId;
+    public String getDonor() {
+        return donor;
     }
 
-    public void setDonorExternalId(String donorExternalId) {
-        this.donorExternalId = donorExternalId;
+    public void setDonor(String donor) {
+        this.donor = donor;
     }
 
     public Double getAmount() {
@@ -53,26 +53,26 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
         this.quarantineDate = quarantineDate;
     }
 
-    public String getBloodInvoiceExternalId() {
-        return bloodInvoiceExternalId;
+    public String getBloodInvoice() {
+        return bloodInvoice;
     }
 
-    public void setBloodInvoiceExternalId(String bloodInvoiceExternalId) {
-        this.bloodInvoiceExternalId = bloodInvoiceExternalId;
+    public void setBloodInvoice(String bloodInvoice) {
+        this.bloodInvoice = bloodInvoice;
     }
 
     @Override
     public BloodDonationDto toDto() {
-        return new BloodDonationDto(getExternalId(), null, null, donorExternalId,
-                bloodInvoiceExternalId, amount, donationDate, quarantineDate, expirationDate, donationType);
+        return new BloodDonationDto(getExternalId(), null, null, donor,
+                bloodInvoice, amount, donationDate, quarantineDate, expirationDate, donationType);
     }
 
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + "{" +
                 "externalId='" + getExternalId() + '\'' +
-                ", bloodInvoiceExternalId='" + bloodInvoiceExternalId + '\'' +
-                ", donorExternalId='" + donorExternalId + '\'' +
+                ", bloodInvoice='" + bloodInvoice + '\'' +
+                ", donor='" + donor + '\'' +
                 ", amount=" + amount +
                 ", donationType=" + donationType +
                 ", donationDate=" + donationDate +

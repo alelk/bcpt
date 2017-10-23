@@ -1,13 +1,13 @@
 package com.alelk.bcpt.database.model;
 
+import com.alelk.bcpt.database.util.Sortable;
 import com.alelk.bcpt.model.util.Util;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import static com.alelk.bcpt.database.model.BloodPoolEntity.*;
+
+import static com.alelk.bcpt.database.model.BloodPoolEntity.QUERY_FIND_ALL;
 
 /**
  * Blood Donation Pool Entity
@@ -24,9 +24,11 @@ import static com.alelk.bcpt.database.model.BloodPoolEntity.*;
 public class BloodPoolEntity extends AbstractEntity {
     public static final String QUERY_FIND_ALL = "findAllBloodPools";
 
+    @Sortable
     private Integer poolNumber;
 
     @ManyToOne
+    @Sortable
     private ProductBatchEntity productBatch;
 
     @OneToMany
@@ -34,6 +36,7 @@ public class BloodPoolEntity extends AbstractEntity {
     @OrderBy("externalId ASC")
     private Set<BloodInvoiceEntity> bloodInvoices;
 
+    @Sortable
     @Formula("(SELECT sum(donations.amount) from bloodDonations donations JOIN  bloodInvoices invoices " +
             "ON donations.bloodinvoice_id = invoices.id WHERE invoices.bloodpool_id = id)")
     private Double totalAmount;

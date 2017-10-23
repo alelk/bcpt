@@ -45,8 +45,8 @@ public class ProductBatchValidator implements Validator {
         if (target instanceof ProductBatchCreateRequest && isIdExists)
             errors.rejectValue("externalId", "productBatch.externalId.exists");
         if (target instanceof ProductBatchUpdateRequest || target instanceof ProductBatchCreateRequest) {
-            if (request.getBloodPoolIds() != null)
-                request.getBloodPoolIds().forEach(id -> {
+            if (request.getBloodPools() != null)
+                request.getBloodPools().forEach(id -> {
                     if (!StringUtils.isEmpty(id) && !bloodPoolService.isIdExists(id))
                         errors.rejectValue(
                                 "bloodPoolIds",

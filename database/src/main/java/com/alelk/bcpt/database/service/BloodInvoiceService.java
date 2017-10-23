@@ -1,6 +1,5 @@
 package com.alelk.bcpt.database.service;
 
-import com.alelk.bcpt.database.builder.BloodInvoiceDtoBuilder;
 import com.alelk.bcpt.database.builder.BloodInvoiceEntityBuilder;
 import com.alelk.bcpt.database.model.BloodDonationEntity;
 import com.alelk.bcpt.database.model.BloodInvoiceEntity;
@@ -8,7 +7,11 @@ import com.alelk.bcpt.database.model.BloodPoolEntity;
 import com.alelk.bcpt.database.repository.BloodDonationRepository;
 import com.alelk.bcpt.database.repository.BloodInvoiceRepository;
 import com.alelk.bcpt.database.repository.BloodPoolRepository;
+import com.alelk.bcpt.database.util.DatabaseUtil;
 import com.alelk.bcpt.model.dto.BloodInvoiceDto;
+import com.alelk.bcpt.model.pagination.Filter;
+import com.alelk.bcpt.model.pagination.Page;
+import com.alelk.bcpt.model.pagination.SortBy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,12 +49,12 @@ public class BloodInvoiceService {
         final String message = "Cannot add new blood invoice info " + dto + ": ";
         validateNotNull(dto, "Blood invoice DTO must be not null!");
         validateNotEmpty(dto.getExternalId(), message + "external id does'nt provided.");
-        return new BloodInvoiceDtoBuilder().apply(
+        return DatabaseUtil.mapBloodInvoiceEntityToDto(
                 bloodInvoiceRepository.save(new BloodInvoiceEntityBuilder().apply(dto)
-                        .apply(getBloodDonationEntitiesByExternalIds(dto.getBloodDonationExternalIds(), message))
-                        .apply(findBloodPoolByExternalId(dto.getBloodPoolExternalId(), message))
+                        .apply(getBloodDonationEntitiesByExternalIds(dto.getBloodDonations(), message))
+                        .apply(findBloodPoolByExternalId(dto.getBloodPool(), message))
                         .build())
-        ).build();
+        );
     }
 
     @Transactional
@@ -62,25 +65,37 @@ public class BloodInvoiceService {
             validateNotEmpty(dto.getExternalId(), message + "no Blood invoice external id provided!");
         final BloodInvoiceEntity entity = findEntityByExternalId(externalId, message);
         validateNotNull(entity, message + "Blood Invoice external id does'nt exist.");
-        return new BloodInvoiceDtoBuilder().apply(
+        return DatabaseUtil.mapBloodInvoiceEntityToDto(
                 new BloodInvoiceEntityBuilder(entity, mergeWithNullValues, softUpdate)
                         .apply(dto)
-                        .apply(getBloodDonationEntitiesByExternalIds(dto.getBloodDonationExternalIds(), message))
-                        .apply(findBloodPoolByExternalId(dto.getBloodPoolExternalId(), message))
+                        .apply(getBloodDonationEntitiesByExternalIds(dto.getBloodDonations(), message))
+                        .apply(findBloodPoolByExternalId(dto.getBloodPool(), message))
                         .build()
-        ).build();
+        );
     }
 
     @Transactional(readOnly = true)
     public List<BloodInvoiceDto> findAll() {
         return bloodInvoiceRepository.findAll().stream()
-                .map(entity -> new BloodInvoiceDtoBuilder().apply(entity).build())
+                .map(DatabaseUtil::mapBloodInvoiceEntityToDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
+    public Page<BloodInvoiceDto> findAll(int pageNumber, int itemsPerPage, List<SortBy> sortByList, List<Filter> filterList) {
+        return new Page<>(
+                pageNumber,
+                itemsPerPage,
+                bloodInvoiceRepository.findAll(pageNumber, itemsPerPage, sortByList, filterList)
+                        .stream().map(DatabaseUtil::mapBloodInvoiceEntityToDto).collect(Collectors.toList()),
+                bloodInvoiceRepository.countItems(filterList),
+                sortByList,
+                filterList);
+    }
+
+    @Transactional(readOnly = true)
     public BloodInvoiceDto findByExternalId(String externalId) {
-        return new BloodInvoiceDtoBuilder().apply(findEntityByExternalId(externalId, "")).build();
+        return DatabaseUtil.mapBloodInvoiceEntityToDto(findEntityByExternalId(externalId, ""));
     }
 
     @Transactional
@@ -89,7 +104,7 @@ public class BloodInvoiceService {
         final BloodInvoiceEntity entity = findEntityByExternalId(externalId, message);
         validateNotNull(entity, message + "no entity found for the external id '" + externalId + '\'');
         bloodInvoiceRepository.remove(entity);
-        return new BloodInvoiceDtoBuilder().apply(entity).build();
+        return DatabaseUtil.mapBloodInvoiceEntityToDto(entity);
     }
 
     @Transactional

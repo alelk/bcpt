@@ -1,13 +1,14 @@
 package com.alelk.bcpt.database.model;
 
+import com.alelk.bcpt.database.util.Sortable;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import static com.alelk.bcpt.database.model.ProductBatchEntity.*;
+
+import static com.alelk.bcpt.database.model.ProductBatchEntity.QUERY_FIND_ALL;
 
 /**
  * Product Batch Entity
@@ -24,12 +25,14 @@ import static com.alelk.bcpt.database.model.ProductBatchEntity.*;
 public class ProductBatchEntity extends AbstractEntity {
     public static final String QUERY_FIND_ALL = "findAllProductBatches";
 
+    @Sortable
     private Date batchDate;
 
     @OneToMany
     @JoinColumn(name = "productbatch_id")
     private Set<BloodPoolEntity> bloodPools;
 
+    @Sortable
     @Formula("(SELECT sum(donations.amount) from bloodDonations donations " +
             "JOIN  bloodInvoices invoices ON donations.bloodinvoice_id = invoices.id " +
             "JOIN bloodPools pools ON invoices.bloodpool_id = pools.id " +

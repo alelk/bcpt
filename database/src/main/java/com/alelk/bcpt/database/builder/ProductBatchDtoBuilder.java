@@ -23,7 +23,7 @@ public class ProductBatchDtoBuilder extends AbstractDtoBuilder<ProductBatchEntit
         if (entity == null) return this;
         dto.setBatchDate(entity.getBatchDate());
         dto.setTotalAmount(entity.getTotalAmount());
-        dto.setBloodPoolIds(
+        dto.setBloodPools(
                 entity.getBloodPools() != null ?
                 entity.getBloodPools().stream().map(BloodPoolEntity::getExternalId).collect(Collectors.toSet()) : null
         );

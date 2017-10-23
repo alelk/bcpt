@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 public class BloodInvoiceDto extends AbstractBcptDto {
 
     private Date deliveryDate;
-    private Set<String> bloodDonationExternalIds;
-    private String bloodPoolExternalId;
+    private Set<String> bloodDonations;
+    private String bloodPool;
     private Double totalAmount;
 
     public BloodInvoiceDto() {}
@@ -26,11 +26,11 @@ public class BloodInvoiceDto extends AbstractBcptDto {
         super(externalId, creationTimestamp, updateTimestamp);
     }
 
-    public BloodInvoiceDto(String externalId, Date creationTimestamp, Date updateTimestamp, Date deliveryDate, Set<String> bloodDonationExternalIds, String bloodPoolExternalId, Double totalAmount) {
+    public BloodInvoiceDto(String externalId, Date creationTimestamp, Date updateTimestamp, Date deliveryDate, Set<String> bloodDonations, String bloodPool, Double totalAmount) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.deliveryDate = deliveryDate;
-        this.bloodDonationExternalIds = bloodDonationExternalIds;
-        this.bloodPoolExternalId = bloodPoolExternalId;
+        this.bloodDonations = bloodDonations;
+        this.bloodPool = bloodPool;
         this.totalAmount = totalAmount;
     }
 
@@ -39,24 +39,24 @@ public class BloodInvoiceDto extends AbstractBcptDto {
         return deliveryDate;
     }
 
-    public Set<String> getBloodDonationExternalIds() {
-        return bloodDonationExternalIds;
+    public Set<String> getBloodDonations() {
+        return bloodDonations;
     }
 
     public void setDeliveryDate(Date deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
-    public void setBloodDonationExternalIds(Set<String> bloodDonationExternalIds) {
-        this.bloodDonationExternalIds = bloodDonationExternalIds;
+    public void setBloodDonations(Set<String> bloodDonations) {
+        this.bloodDonations = bloodDonations;
     }
 
-    public String getBloodPoolExternalId() {
-        return bloodPoolExternalId;
+    public String getBloodPool() {
+        return bloodPool;
     }
 
-    public void setBloodPoolExternalId(String bloodPoolExternalId) {
-        this.bloodPoolExternalId = bloodPoolExternalId;
+    public void setBloodPool(String bloodPool) {
+        this.bloodPool = bloodPool;
     }
 
     public Double getTotalAmount() {
@@ -72,10 +72,10 @@ public class BloodInvoiceDto extends AbstractBcptDto {
         return "BloodInvoiceDto{" +
                 "externalId='" + getExternalId() +
                 ", deliveryDate=" + deliveryDate +
-                ", bloodDonationExternalIds=" + (bloodDonationExternalIds != null
-                ? '[' + bloodDonationExternalIds.stream().collect(Collectors.joining(", ")) + ']'
+                ", bloodDonations=" + (bloodDonations != null
+                ? '[' + bloodDonations.stream().collect(Collectors.joining(", ")) + ']'
                 : null) +
-                ", bloodPoolExternalId='" + getBloodPoolExternalId() + '\'' +
+                ", bloodPool='" + getBloodPool() + '\'' +
                 ", totalAmount='" + getTotalAmount() + '\'' +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +
