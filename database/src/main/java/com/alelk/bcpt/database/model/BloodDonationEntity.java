@@ -38,6 +38,10 @@ public class BloodDonationEntity extends AbstractEntity {
     private BloodInvoiceEntity bloodInvoice;
 
     @Sortable
+    @ManyToOne
+    private BloodPoolEntity bloodPool;
+
+    @Sortable
     private Double amount;
 
     @Sortable
@@ -57,9 +61,10 @@ public class BloodDonationEntity extends AbstractEntity {
 
     public BloodDonationEntity() {}
 
-    public BloodDonationEntity(String externalId, PersonEntity donor, Double amount, DonationType donationType, Date donationDate, Date quarantineDate, Date expirationDate) {
+    public BloodDonationEntity(String externalId, PersonEntity donor, BloodPoolEntity bloodPool, Double amount, DonationType donationType, Date donationDate, Date quarantineDate, Date expirationDate) {
         super(externalId);
         this.donor = donor;
+        this.bloodPool = bloodPool;
         this.amount = amount;
         this.donationType = donationType;
         this.donationDate = donationDate;
@@ -107,6 +112,14 @@ public class BloodDonationEntity extends AbstractEntity {
         this.bloodInvoice = bloodInvoice;
     }
 
+    public BloodPoolEntity getBloodPool() {
+        return bloodPool;
+    }
+
+    public void setBloodPool(BloodPoolEntity bloodPool) {
+        this.bloodPool = bloodPool;
+    }
+
     public DonationType getDonationType() {
         return donationType;
     }
@@ -128,8 +141,9 @@ public class BloodDonationEntity extends AbstractEntity {
         return "BloodDonationEntity{" +
                 "id=" + getId() +
                 ", externalId='" + getExternalId() +
-                "', donorExternalId=" + (donor != null ? '\'' + donor.getExternalId() + '\'' : null) +
-                "', bloodInvoiceExternalId=" + (bloodInvoice != null ? '\'' + bloodInvoice.getExternalId() + '\'' : null) +
+                "', donor=" + (donor != null ? '\'' + donor.getExternalId() + '\'' : null) +
+                "', bloodInvoice=" + (bloodInvoice != null ? '\'' + bloodInvoice.getExternalId() + '\'' : null) +
+                "', bloodPool=" + (bloodPool != null ? '\'' + bloodPool.getExternalId() + '\'' : null) +
                 ", amount=" + amount +
                 ", donationType=" + donationType +
                 ", donationDate=" + donationDate +

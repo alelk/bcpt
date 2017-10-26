@@ -2,7 +2,6 @@ package com.alelk.bcpt.database.model;
 
 import com.alelk.bcpt.database.util.Sortable;
 import com.alelk.bcpt.model.util.Util;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -33,14 +32,6 @@ public class BloodInvoiceEntity extends AbstractEntity {
     @JoinColumn(name = "bloodinvoice_id")
     private Set<BloodDonationEntity> bloodDonations;
 
-    @Sortable
-    @ManyToOne
-    private BloodPoolEntity bloodPool;
-
-    @Sortable
-    //@Formula("(select sum(donations.amount) from bloodDonations donations where donations.bloodinvoice_id = id)")
-    private Double totalAmount;
-
     protected BloodInvoiceEntity() {}
 
     public BloodInvoiceEntity(String externalId, Date deliveryDate, Set<BloodDonationEntity> bloodDonations) {
@@ -65,23 +56,13 @@ public class BloodInvoiceEntity extends AbstractEntity {
         this.bloodDonations = bloodDonations;
     }
 
-    public BloodPoolEntity getBloodPool() {
-        return bloodPool;
-    }
-
-    public void setBloodPool(BloodPoolEntity bloodPool) {
-        this.bloodPool = bloodPool;
+    boolean needCalculateTotalAmount() {
+        return false;
     }
 
     public Double getTotalAmount() {
-        return totalAmount;
-    }
-
-    @PostLoad
-    void calculateAmount() {
-        totalAmount = 0.0;
-        if (bloodDonations == null) return;
-        for (BloodDonationEntity bde : bloodDonations) totalAmount += bde.getAmount();
+        if (bloodDonations == null) return null;
+        return bloodDonations.stream().mapToDouble(BloodDonationEntity::getAmount).sum();
     }
 
     @Override
@@ -90,8 +71,6 @@ public class BloodInvoiceEntity extends AbstractEntity {
                 "id=" + getId() +
                 ", externalId='" + getExternalId() + '\'' +
                 ", bloodDonations=" + Util.toString(bloodDonations) +
-                ", bloodPoolExternalId='" + (bloodPool != null ? bloodPool.getExternalId() : null) + '\'' +
-                ", totalAmount='" + totalAmount + '\'' +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';

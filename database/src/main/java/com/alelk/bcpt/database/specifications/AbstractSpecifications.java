@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.criteria.Path;
 import javax.persistence.metamodel.SingularAttribute;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * AbstractSpecifications
@@ -14,16 +17,26 @@ import javax.persistence.metamodel.SingularAttribute;
  */
 @Component
 public abstract class AbstractSpecifications<E extends AbstractEntity, M extends AbstractEntity_> {
+
+    private static String normalizeSearchString(String stringValue) {
+       return stringValue == null ? null : stringValue
+               .replaceAll("-", "\\-")
+               .replaceAll("%", "\\%")
+               .replaceAll("_", "\\_");
+    }
+
     public Specification<E> externalIdStartsWith(String externalId) {
         return stringFieldStartsWith(M.externalId, externalId);
     }
 
     Specification<E> stringFieldStartsWith(SingularAttribute<? super E, String> field, String stringValue) {
-        return (root, query, cb) -> stringValue == null ? null : cb.like(root.get(field), stringValue + '%');
+        return (root, query, cb) -> stringValue == null ? null
+                : cb.like(root.get(field), normalizeSearchString(stringValue) + '%', '\\');
     }
 
     <T> Specification<E> stringStartsWith(Path<String> path, String stringValue) {
-        return (root, query, cb) -> stringValue == null ? null : cb.like(path, stringValue + '%');
+        return (root, query, cb) -> stringValue == null ? null
+                : cb.like(path, normalizeSearchString(stringValue) + '%', '\\');
     }
 
     <T> Specification<E> valueEqual(SingularAttribute<? super E, T> field, T value) {

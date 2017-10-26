@@ -33,21 +33,15 @@ public class BloodPoolEntity extends AbstractEntity {
 
     @OneToMany
     @JoinColumn(name = "bloodpool_id")
-    @OrderBy("externalId ASC")
-    private Set<BloodInvoiceEntity> bloodInvoices;
-
-    @Sortable
-    @Formula("(SELECT sum(donations.amount) from bloodDonations donations JOIN  bloodInvoices invoices " +
-            "ON donations.bloodinvoice_id = invoices.id WHERE invoices.bloodpool_id = id)")
-    private Double totalAmount;
+    private Set<BloodDonationEntity> bloodDonations;
 
     public BloodPoolEntity() {
     }
 
-    public BloodPoolEntity(String externalId, Integer poolNumber, Set<BloodInvoiceEntity> bloodInvoices) {
+    public BloodPoolEntity(String externalId, Integer poolNumber, Set<BloodDonationEntity> bloodDonations) {
         super(externalId);
         this.poolNumber = poolNumber;
-        this.bloodInvoices = bloodInvoices;
+        this.bloodDonations = bloodDonations;
     }
 
     public Integer getPoolNumber() {
@@ -58,12 +52,12 @@ public class BloodPoolEntity extends AbstractEntity {
         this.poolNumber = poolNumber;
     }
 
-    public Set<BloodInvoiceEntity> getBloodInvoices() {
-        return bloodInvoices;
+    public Set<BloodDonationEntity> getBloodDonations() {
+        return bloodDonations;
     }
 
-    public void setBloodInvoices(Set<BloodInvoiceEntity> bloodInvoices) {
-        this.bloodInvoices = bloodInvoices;
+    public void setBloodDonations(Set<BloodDonationEntity> bloodDonations) {
+        this.bloodDonations = bloodDonations;
     }
 
     public ProductBatchEntity getProductBatch() {
@@ -75,11 +69,8 @@ public class BloodPoolEntity extends AbstractEntity {
     }
 
     public Double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
+        if (bloodDonations == null) return null;
+        return bloodDonations.stream().mapToDouble(BloodDonationEntity::getAmount).sum();
     }
 
     @Override
@@ -88,10 +79,9 @@ public class BloodPoolEntity extends AbstractEntity {
                 "id=" + getId() +
                 ", externalId='" + getExternalId() + '\'' +
                 ", poolNumber=" + poolNumber +
-                ", bloodInvoices=" + Util.toString(bloodInvoices)+
+                ", bloodDonations=" + Util.toString(bloodDonations)+
                 ", productBatchExternalId='" + (productBatch != null ? productBatch.getExternalId() : null) + '\'' +
                 ", creationTimestamp=" + getCreationTimestamp() +
-                ", totalAmount=" + totalAmount +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';
     }

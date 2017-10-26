@@ -1,11 +1,17 @@
 package com.alelk.bcpt.database.repository;
 
 import com.alelk.bcpt.database.model.BloodPoolEntity;
+import com.alelk.bcpt.database.predicate.BloodPoolPredicateBuilder;
+import com.alelk.bcpt.database.util.RepositoryUtil;
+import com.alelk.bcpt.model.pagination.Filter;
+import com.alelk.bcpt.model.pagination.SortBy;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
@@ -18,6 +24,13 @@ public class BloodPoolRepository {
 
     @PersistenceContext
     private EntityManager em;
+
+    private BloodPoolPredicateBuilder predicateBuilder;
+
+    @Autowired
+    public BloodPoolRepository(BloodPoolPredicateBuilder predicateBuilder) {
+        this.predicateBuilder = predicateBuilder;
+    }
 
     public BloodPoolEntity save(BloodPoolEntity entity) {
         return em.merge(entity);
@@ -34,6 +47,25 @@ public class BloodPoolRepository {
 
     public List<BloodPoolEntity> findAll() {
         return em.createNamedQuery(BloodPoolEntity.QUERY_FIND_ALL, BloodPoolEntity.class).getResultList();
+    }
+
+    public Long countItems() {
+        return countItems(null);
+    }
+
+    public List<BloodPoolEntity> findAll(int pageNumber, int itemsPerPage, List<SortBy> sortBy, List<Filter> filters) {
+        TypedQuery<BloodPoolEntity> query =  em.createQuery(
+                RepositoryUtil.query(BloodPoolEntity.class, em.getCriteriaBuilder(), sortBy, filters, predicateBuilder).distinct(true)
+        );
+        query.setFirstResult((pageNumber-1) * itemsPerPage);
+        query.setMaxResults(itemsPerPage);
+        return query.getResultList();
+    }
+
+    public Long countItems(List<Filter> filters) {
+        return em.createQuery(
+                RepositoryUtil.countItemsQuery(BloodPoolEntity.class, em.getCriteriaBuilder(), filters, predicateBuilder)
+        ).getSingleResult();
     }
 
     public void remove(BloodPoolEntity entity) {

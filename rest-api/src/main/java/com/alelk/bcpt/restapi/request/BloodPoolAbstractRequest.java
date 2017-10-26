@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class BloodPoolAbstractRequest extends BcptDtoApiRequest<BloodPoolDto> {
 
     private Integer poolNumber;
-    private Set<String> bloodInvoices;
+    private Set<String> bloodDonations;
     private String productBatch;
     private Double totalAmount;
 
@@ -26,12 +26,12 @@ public class BloodPoolAbstractRequest extends BcptDtoApiRequest<BloodPoolDto> {
         this.poolNumber = poolNumber;
     }
 
-    public Set<String> getBloodInvoices() {
-        return bloodInvoices;
+    public Set<String> getBloodDonations() {
+        return bloodDonations;
     }
 
-    public void setBloodInvoices(Set<String> bloodInvoices) {
-        this.bloodInvoices = bloodInvoices;
+    public void setBloodDonations(Set<String> bloodDonations) {
+        this.bloodDonations = bloodDonations;
     }
 
     public String getProductBatch() {
@@ -52,7 +52,7 @@ public class BloodPoolAbstractRequest extends BcptDtoApiRequest<BloodPoolDto> {
 
     @Override
     public BloodPoolDto toDto() {
-        return new BloodPoolDto(getExternalId(), null, null, poolNumber, bloodInvoices, productBatch, totalAmount);
+        return new BloodPoolDto(getExternalId(), null, null, poolNumber, bloodDonations, productBatch, totalAmount);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class BloodPoolAbstractRequest extends BcptDtoApiRequest<BloodPoolDto> {
         return this.getClass().getSimpleName() + "{" +
                 "externalId='" + getExternalId() + '\'' +
                 ", poolNumber=" + poolNumber +
-                ", bloodInvoices=" + (bloodInvoices != null ?
-                '[' + bloodInvoices.stream().collect(Collectors.joining(", ")) + ']' : null) +
+                ", bloodDonations=" + (bloodDonations != null ?
+                '[' + bloodDonations.stream().collect(Collectors.joining(", ")) + ']' : null) +
                 ", totalAmount='" + totalAmount + '\'' +
                 ", productBatch='" + productBatch + '\'' +
                 '}';

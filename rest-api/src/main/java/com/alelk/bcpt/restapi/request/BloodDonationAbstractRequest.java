@@ -15,6 +15,7 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
 
     private String donor;
     private String bloodInvoice;
+    private String bloodPool;
     private Double amount;
     private Date donationDate;
     private Date quarantineDate;
@@ -61,10 +62,18 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
         this.bloodInvoice = bloodInvoice;
     }
 
+    public String getBloodPool() {
+        return bloodPool;
+    }
+
+    public void setBloodPool(String bloodPool) {
+        this.bloodPool = bloodPool;
+    }
+
     @Override
     public BloodDonationDto toDto() {
         return new BloodDonationDto(getExternalId(), null, null, donor,
-                bloodInvoice, amount, donationDate, quarantineDate, expirationDate, donationType);
+                bloodInvoice, bloodPool, amount, donationDate, quarantineDate, expirationDate, donationType);
     }
 
     @Override
@@ -72,6 +81,7 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
         return this.getClass().getSimpleName() + "{" +
                 "externalId='" + getExternalId() + '\'' +
                 ", bloodInvoice='" + bloodInvoice + '\'' +
+                ", bloodPool='" + bloodPool + '\'' +
                 ", donor='" + donor + '\'' +
                 ", amount=" + amount +
                 ", donationType=" + donationType +

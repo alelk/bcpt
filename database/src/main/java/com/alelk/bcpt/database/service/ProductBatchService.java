@@ -6,7 +6,11 @@ import com.alelk.bcpt.database.model.BloodPoolEntity;
 import com.alelk.bcpt.database.model.ProductBatchEntity;
 import com.alelk.bcpt.database.repository.BloodPoolRepository;
 import com.alelk.bcpt.database.repository.ProductBatchRepository;
+import com.alelk.bcpt.database.util.DatabaseUtil;
 import com.alelk.bcpt.model.dto.ProductBatchDto;
+import com.alelk.bcpt.model.pagination.Filter;
+import com.alelk.bcpt.model.pagination.Page;
+import com.alelk.bcpt.model.pagination.SortBy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,6 +73,18 @@ public class ProductBatchService {
         return productBatchRepository.findAll().stream()
                 .map(entity -> new ProductBatchDtoBuilder().apply(entity).build())
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProductBatchDto> findAll(int pageNumber, int itemsPerPage, List<SortBy> sortByList, List<Filter> filterList) {
+        return new Page<>(
+                pageNumber,
+                itemsPerPage,
+                productBatchRepository.findAll(pageNumber, itemsPerPage, sortByList, filterList)
+                        .stream().map(DatabaseUtil::mapProductBatchEntityToDto).collect(Collectors.toList()),
+                productBatchRepository.countItems(filterList),
+                sortByList,
+                filterList);
     }
 
     @Transactional(readOnly = true)

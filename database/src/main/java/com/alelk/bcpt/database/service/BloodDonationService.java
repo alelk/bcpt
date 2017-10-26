@@ -3,9 +3,11 @@ package com.alelk.bcpt.database.service;
 import com.alelk.bcpt.database.builder.BloodDonationEntityBuilder;
 import com.alelk.bcpt.database.model.BloodDonationEntity;
 import com.alelk.bcpt.database.model.BloodInvoiceEntity;
+import com.alelk.bcpt.database.model.BloodPoolEntity;
 import com.alelk.bcpt.database.model.PersonEntity;
 import com.alelk.bcpt.database.repository.BloodDonationRepository;
 import com.alelk.bcpt.database.repository.BloodInvoiceRepository;
+import com.alelk.bcpt.database.repository.BloodPoolRepository;
 import com.alelk.bcpt.database.repository.PersonRepository;
 import com.alelk.bcpt.database.util.DatabaseUtil;
 import com.alelk.bcpt.model.dto.BloodDonationDto;
@@ -35,12 +37,14 @@ public class BloodDonationService {
     private BloodDonationRepository bloodDonationRepository;
     private PersonRepository personRepository;
     private BloodInvoiceRepository bloodInvoiceRepository;
+    private BloodPoolRepository bloodPoolRepository;
 
     @Autowired
-    BloodDonationService(BloodDonationRepository bloodDonationRepository, PersonRepository personRepository, BloodInvoiceRepository bloodInvoiceRepository) {
+    BloodDonationService(BloodDonationRepository bloodDonationRepository, PersonRepository personRepository, BloodInvoiceRepository bloodInvoiceRepository, BloodPoolRepository bloodPoolRepository) {
         this.bloodDonationRepository = bloodDonationRepository;
         this.personRepository = personRepository;
         this.bloodInvoiceRepository = bloodInvoiceRepository;
+        this.bloodPoolRepository = bloodPoolRepository;
     }
 
     @Transactional
@@ -53,6 +57,7 @@ public class BloodDonationService {
                         .apply(bloodDonation)
                         .apply(findPersonByExternalId(bloodDonation.getDonor(), message))
                         .apply(findBloodInvoiceByExternalId(bloodDonation.getBloodInvoice(), message))
+                        .apply(findBloodPoolByExternalId(bloodDonation.getBloodPool(), message))
                         .build())
         );
     }
@@ -67,8 +72,10 @@ public class BloodDonationService {
         validateNotNull(entity, message + "Blood Donation external id does'nt exist.");
         return DatabaseUtil.mapBloodDonationEntityToDto(
                 new BloodDonationEntityBuilder(entity, mergeWithNullValues, softUpdate)
-                        .apply(dto).apply(findPersonByExternalId(dto.getDonor(), message))
+                        .apply(dto)
+                        .apply(findPersonByExternalId(dto.getDonor(), message))
                         .apply(findBloodInvoiceByExternalId(dto.getBloodInvoice(), message))
+                        .apply(findBloodPoolByExternalId(dto.getBloodPool(), message))
                         .build()
         );
     }
@@ -135,6 +142,13 @@ public class BloodDonationService {
         BloodInvoiceEntity bie = bloodInvoiceRepository.findByExternalId(externalId);
         validateNotNull(bie, message + "No blood invoice found with the external id = '" + externalId + '\'');
         return bie;
+    }
+
+    private BloodPoolEntity findBloodPoolByExternalId(String externalId, String message) {
+        if (StringUtils.isEmpty(externalId)) return null;
+        BloodPoolEntity bpe = bloodPoolRepository.findByExternalId(externalId);
+        validateNotNull(bpe, message + "No blood pool found with the external id = '" + externalId + '\'');
+        return bpe;
     }
 
     private BloodDonationEntity findEntityByExternalId(String externalId, String message) {

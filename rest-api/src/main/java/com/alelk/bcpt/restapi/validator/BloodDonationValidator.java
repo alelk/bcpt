@@ -2,6 +2,7 @@ package com.alelk.bcpt.restapi.validator;
 
 import com.alelk.bcpt.database.service.BloodDonationService;
 import com.alelk.bcpt.database.service.BloodInvoiceService;
+import com.alelk.bcpt.database.service.BloodPoolService;
 import com.alelk.bcpt.database.service.PersonService;
 import com.alelk.bcpt.restapi.request.BloodDonationAbstractRequest;
 import com.alelk.bcpt.restapi.request.BloodDonationCreateRequest;
@@ -26,12 +27,14 @@ public class BloodDonationValidator implements Validator {
     private PersonService personService;
     private BloodDonationService bloodDonationService;
     private BloodInvoiceService bloodInvoiceService;
+    private BloodPoolService bloodPoolService;
 
     @Autowired
-    public BloodDonationValidator(PersonService personService, BloodDonationService bloodDonationService, BloodInvoiceService bloodInvoiceService) {
+    public BloodDonationValidator(PersonService personService, BloodDonationService bloodDonationService, BloodInvoiceService bloodInvoiceService, BloodPoolService bloodPoolService) {
         this.personService = personService;
         this.bloodDonationService = bloodDonationService;
         this.bloodInvoiceService = bloodInvoiceService;
+        this.bloodPoolService = bloodPoolService;
     }
 
     @Override
@@ -53,9 +56,11 @@ public class BloodDonationValidator implements Validator {
             if (!request.getExternalId().matches(EXTERNAL_ID_REGEX))
                 errors.rejectValue("externalId", "bloodDonation.externalId.invalid");
             if (!StringUtils.isEmpty(request.getDonor()) && !personService.isIdExists(request.getDonor()))
-                errors.rejectValue("donorExternalId", "person.externalId.notFound");
+                errors.rejectValue("donor", "person.externalId.notFound");
             if (!StringUtils.isEmpty(request.getBloodInvoice()) && !bloodInvoiceService.isIdExists(request.getBloodInvoice()))
-                errors.rejectValue("bloodInvoiceExternalId", "bloodInvoice.externalId.notFound");
+                errors.rejectValue("bloodInvoice", "bloodInvoice.externalId.notFound");
+            if (!StringUtils.isEmpty(request.getBloodPool()) && !bloodPoolService.isIdExists(request.getBloodPool()))
+                errors.rejectValue("bloodPool", "bloodPool.externalId.notFound");
         }
         if (target instanceof BloodDonationDeleteRequest) {
             if (!isIdExists) errors.rejectValue("externalId", "bloodDonation.externalId.notFound");
