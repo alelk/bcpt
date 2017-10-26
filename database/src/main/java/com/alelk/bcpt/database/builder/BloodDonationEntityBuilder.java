@@ -2,6 +2,7 @@ package com.alelk.bcpt.database.builder;
 
 import com.alelk.bcpt.database.model.BloodDonationEntity;
 import com.alelk.bcpt.database.model.BloodInvoiceEntity;
+import com.alelk.bcpt.database.model.BloodPoolEntity;
 import com.alelk.bcpt.database.model.PersonEntity;
 import com.alelk.bcpt.model.dto.BloodDonationDto;
 
@@ -43,6 +44,11 @@ public class BloodDonationEntityBuilder extends AbstractEntityBuilder<BloodDonat
 
     public BloodDonationEntityBuilder apply(BloodInvoiceEntity bloodInvoiceEntity) {
         setEntityFieldValue("bloodInvoice", bloodInvoiceEntity);
+        return this;
+    }
+
+    public BloodDonationEntityBuilder apply(BloodPoolEntity bloodPoolEntity) {
+        setEntityFieldValue("bloodPool", bloodPoolEntity);
         return this;
     }
 }

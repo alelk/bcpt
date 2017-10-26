@@ -1,9 +1,6 @@
 package com.alelk.bcpt.database.predicate;
 
-import com.alelk.bcpt.database.model.BloodDonationEntity;
-import com.alelk.bcpt.database.model.BloodDonationEntity_;
-import com.alelk.bcpt.database.model.BloodInvoiceEntity;
-import com.alelk.bcpt.database.model.PersonEntity;
+import com.alelk.bcpt.database.model.*;
 import com.alelk.bcpt.database.specifications.BloodDonationSpecifications;
 import com.alelk.bcpt.database.specifications.Specification;
 import com.alelk.bcpt.model.DonationType;
@@ -34,14 +31,17 @@ public class BloodDonationPredicateBuilder extends AbstractPredicateBuilder<Bloo
         List<Specification<BloodDonationEntity>> specifications = new ArrayList<>(filters.size());
         Join<BloodDonationEntity, PersonEntity> persons = root.join(BloodDonationEntity_.donor, JoinType.LEFT);
         Join<BloodDonationEntity, BloodInvoiceEntity> invoices = root.join(BloodDonationEntity_.bloodInvoice, JoinType.LEFT);
+        Join<BloodDonationEntity, BloodPoolEntity> pools = root.join(BloodDonationEntity_.bloodPool, JoinType.LEFT);
         Predicate commonPredicate = super.buildPredicate(root, query, cb, filters);
         for (Filter filter: filters) {
             if ("donationType".equals(filter.getFieldName()))
                 specifications.add(this.specifications.donationTypeEqual(DonationType.forSignature(filter.getFilter())));
-            if ("donorExternalId".equals(filter.getFieldName()))
+            if ("donor".equals(filter.getFieldName()))
                 specifications.add(this.specifications.donorExternalIdStartsWith(persons, filter.getFilter()));
-            if ("bloodInvoiceExternalId".equals(filter.getFieldName()))
+            if ("bloodInvoice".equals(filter.getFieldName()))
                 specifications.add(this.specifications.invoiceExternalIdStartsWith(invoices, filter.getFilter()));
+            if ("bloodPool".equals(filter.getFieldName()))
+                specifications.add(this.specifications.poolExternalIdStartsWith(pools, filter.getFilter()));
         }
         return and(cb, commonPredicate, and(root, query, cb, specifications));
     }

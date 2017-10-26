@@ -1,6 +1,6 @@
 package com.alelk.bcpt.database.builder;
 
-import com.alelk.bcpt.database.model.BloodInvoiceEntity;
+import com.alelk.bcpt.database.model.BloodDonationEntity;
 import com.alelk.bcpt.database.model.BloodPoolEntity;
 import com.alelk.bcpt.model.dto.BloodPoolDto;
 
@@ -24,9 +24,9 @@ public class BloodPoolDtoBuilder extends AbstractDtoBuilder<BloodPoolEntity, Blo
         dto.setPoolNumber(entity.getPoolNumber());
         dto.setTotalAmount(entity.getTotalAmount());
         dto.setProductBatch(entity.getProductBatch() != null ? entity.getProductBatch().getExternalId() : null);
-        dto.setBloodInvoices(
-                entity.getBloodInvoices() != null ? entity.getBloodInvoices().stream()
-                        .map(BloodInvoiceEntity::getExternalId).collect(Collectors.toSet()) : null
+        dto.setBloodDonations(
+                entity.getBloodDonations() != null ? entity.getBloodDonations().stream()
+                        .map(BloodDonationEntity::getExternalId).collect(Collectors.toSet()) : null
         );
         return this;
     }

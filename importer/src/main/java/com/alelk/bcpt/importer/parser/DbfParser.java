@@ -45,7 +45,7 @@ public class DbfParser implements Parser {
             "\\s*(?<donationId>\\d{14})\\s*\\|\\s*(?<bloodType>\\d)\\s*\\|\\s*(?<rh>\\d)\\s*\\|" +
             "\\s*(?<donationType>\\d{1,5})\\s*\\|\\s*(?<donationAmount>\\d{1,6})\\s*\\|" +
             "\\s*(?<anticoagulant>\\d+)\\s*\\|\\s*(?<donorId>\\d{1,20})\\s*\\|\\s*(?<expirationDate>\\d{8})\\s*\\|" +
-            "\\s*(?<donorLastName>\\p{L}{0,30})\\s+(?<donorFirstName>\\p{L}{0,20})\\.?\\s+(?<donorMiddleName>\\p{L}{0,20})\\.?" +
+            "\\s*(?<donorLastName>(\\p{L}|[-()]){0,30})\\s+(?<donorFirstName>(\\p{L}|[-()]){0,20})\\.?\\s+(?<donorMiddleName>(\\p{L}|[-()]){0,20})\\.?" +
             "\\s*\\|\\s*(?<bloodInvoiceId>\\d{4,20})\\s*\\|\\s*(?<isQuaranteened>[TF])?\\s*\\|\\s*(\\d{8})?\\s*\\|" +
             "\\s*(\\d{1,10}?)\\s*\\|\\s*(\\d)\\s*\\|\\s*(\\d{1,20})\\s*$");
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("YYYYMMDD");
@@ -133,7 +133,7 @@ public class DbfParser implements Parser {
             String donorMiddleName = matcher.group("donorMiddleName");
             String bloodInvoiceId = matcher.group("bloodInvoiceId");
             saveDonor(parsedBundle, bloodType, rhFactor, donorId, donorLastName, donorFirstName, donorMiddleName);
-            saveDonation(parsedBundle, donationDate, donationExpirationDate, donationId, donationAmount, bloodInvoiceId);
+            saveDonation(parsedBundle, donationDate, donationExpirationDate, donationId, donationAmount, bloodInvoiceId, donorId);
             saveInvoice(parsedBundle, donationId, bloodInvoiceId);
 
         } catch (BcptImporterException exc) {
@@ -154,13 +154,14 @@ public class DbfParser implements Parser {
         parsedBundle.addBloodInvoice(bloodInvoice);
     }
 
-    private void saveDonation(BcptDtoBundle parsedBundle, Date donationDate, Date donationExpirationDate, String donationId, Double donationAmount, String bloodInvoiceId) {
+    private void saveDonation(BcptDtoBundle parsedBundle, Date donationDate, Date donationExpirationDate, String donationId, Double donationAmount, String bloodInvoiceId, String donorId) {
         BloodDonationDto bloodDonation = parsedBundle.getBloodDonation(donationId);
         if (bloodDonation == null) bloodDonation = new BloodDonationDto();
         bloodDonation.setExternalId(donationId);
         bloodDonation.setDonationDate(donationDate);
         bloodDonation.setExpirationDate(donationExpirationDate);
         bloodDonation.setAmount(donationAmount);
+        bloodDonation.setDonor(donorId);
         parsedBundle.addBloodDonation(bloodDonation);
     }
 

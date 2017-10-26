@@ -53,13 +53,13 @@ public class BloodInvoiceValidator implements Validator{
                 request.getBloodDonations().forEach(bloodDonationId -> {
                     if (!StringUtils.isEmpty(bloodDonationId) && !bloodDonationService.isIdExists(bloodDonationId))
                         errors.rejectValue(
-                            "bloodDonationExternalIds",
-                            "bloodInvoice.bloodDonationExternalIds.notFound",
+                            "bloodDonations",
+                            "bloodInvoice.bloodDonations.notFound",
                             new String[]{bloodDonationId}, null
                     );
             });
             if (!StringUtils.isEmpty(request.getBloodPool()) && !bloodPoolService.isIdExists(request.getBloodPool())) {
-                errors.rejectValue("bloodPoolExternalId", "bloodPool.externalId.notFound");
+                errors.rejectValue("bloodPool", "bloodPool.externalId.notFound");
             }
         }
         if (target instanceof BloodInvoiceDeleteRequest) {

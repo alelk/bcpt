@@ -14,6 +14,7 @@ public class BloodDonationDto extends AbstractBcptDto {
 
     private String donor;
     private String bloodInvoice;
+    private String bloodPool;
     private Double amount;
     private Date donationDate;
     private Date expirationDate;
@@ -27,11 +28,12 @@ public class BloodDonationDto extends AbstractBcptDto {
     }
 
     public BloodDonationDto(String externalId, Date creationTimestamp, Date updateTimestamp,
-                            String donor, String bloodInvoiceExternalId, Double amount,
+                            String donor, String bloodInvoiceExternalId, String bloodPool, Double amount,
                             Date donationDate, Date quarantineDate, Date expirationDate, DonationType donationType) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.donor = donor;
         this.bloodInvoice = bloodInvoiceExternalId;
+        this.bloodPool = bloodPool;
         this.amount = amount;
         this.donationDate = donationDate;
         this.quarantineDate = quarantineDate;
@@ -83,6 +85,14 @@ public class BloodDonationDto extends AbstractBcptDto {
         this.bloodInvoice = bloodInvoice;
     }
 
+    public String getBloodPool() {
+        return bloodPool;
+    }
+
+    public void setBloodPool(String bloodPool) {
+        this.bloodPool = bloodPool;
+    }
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     public Date getDonationDate() {
         return donationDate;
@@ -104,6 +114,7 @@ public class BloodDonationDto extends AbstractBcptDto {
                 "externalId='" + getExternalId() +
                 "', donor=" + donor +
                 "', bloodInvoice=" + bloodInvoice +
+                "', bloodPool=" + bloodPool +
                 ", amount=" + amount +
                 ", donationDate=" + donationDate +
                 ", quarantineDate=" + quarantineDate +

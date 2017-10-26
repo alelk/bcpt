@@ -2,24 +2,28 @@ package com.alelk.bcpt.database.service;
 
 import com.alelk.bcpt.database.builder.BloodPoolDtoBuilder;
 import com.alelk.bcpt.database.builder.BloodPoolEntityBuilder;
-import com.alelk.bcpt.database.model.BloodInvoiceEntity;
 import com.alelk.bcpt.database.model.BloodPoolEntity;
 import com.alelk.bcpt.database.model.ProductBatchEntity;
-import com.alelk.bcpt.database.repository.BloodInvoiceRepository;
+import com.alelk.bcpt.database.repository.BloodDonationRepository;
 import com.alelk.bcpt.database.repository.BloodPoolRepository;
 import com.alelk.bcpt.database.repository.ProductBatchRepository;
+import com.alelk.bcpt.database.util.DatabaseUtil;
 import com.alelk.bcpt.model.dto.BloodPoolDto;
+import com.alelk.bcpt.model.pagination.Filter;
+import com.alelk.bcpt.model.pagination.Page;
+import com.alelk.bcpt.model.pagination.SortBy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.alelk.bcpt.database.util.ValidationUtil.*;
+import static com.alelk.bcpt.database.util.ServiceUtil.getBloodDonationEntitiesByExternalIds;
+import static com.alelk.bcpt.database.util.ValidationUtil.validateNotEmpty;
+import static com.alelk.bcpt.database.util.ValidationUtil.validateNotNull;
+import static com.alelk.bcpt.database.util.DatabaseUtil.mapBloodPoolEntityToDto;
 
 /**
  * Blood Donation Pool Service
@@ -30,13 +34,13 @@ import static com.alelk.bcpt.database.util.ValidationUtil.*;
 public class BloodPoolService {
 
     private BloodPoolRepository bloodPoolRepository;
-    private BloodInvoiceRepository bloodInvoiceRepository;
+    private BloodDonationRepository bloodDonationRepository;
     private ProductBatchRepository productBatchRepository;
 
     @Autowired
-    public BloodPoolService(BloodPoolRepository bloodPoolRepository, BloodInvoiceRepository bloodInvoiceRepository, ProductBatchRepository productBatchRepository) {
+    public BloodPoolService(BloodPoolRepository bloodPoolRepository, BloodDonationRepository bloodDonationRepository, ProductBatchRepository productBatchRepository) {
         this.bloodPoolRepository = bloodPoolRepository;
-        this.bloodInvoiceRepository = bloodInvoiceRepository;
+        this.bloodDonationRepository = bloodDonationRepository;
         this.productBatchRepository = productBatchRepository;
     }
 
@@ -45,12 +49,12 @@ public class BloodPoolService {
         final String message = "Cannot add new blood pool info '" + dto + ':';
         validateNotNull(dto, message + " BloodPool DTO must be not null!");
         validateNotEmpty(dto.getExternalId(), message + " no external id provided!");
-        return new BloodPoolDtoBuilder().apply(
+        return mapBloodPoolEntityToDto(
                 bloodPoolRepository.save(new BloodPoolEntityBuilder().apply(dto)
-                        .apply(getBloodInvoiceEntitiesByExternalIds(dto.getBloodInvoices(), message))
+                        .apply(getBloodDonationEntitiesByExternalIds(bloodDonationRepository, dto.getBloodDonations(), message))
                         .apply(findProductBatchEntityByExternalId(dto.getProductBatch(), message))
                         .build())
-        ).build();
+        );
     }
 
     @Transactional
@@ -61,25 +65,38 @@ public class BloodPoolService {
             validateNotEmpty(dto.getExternalId(), message + "no Blood pool external id provided!");
         final BloodPoolEntity entity = findEntityByExternalId(externalId, message);
         validateNotNull(entity, message + "Blood Pool external id does'nt exist.");
-        return new BloodPoolDtoBuilder().apply(
+        return mapBloodPoolEntityToDto(
                 new BloodPoolEntityBuilder(entity, mergeWithNullValues, softUpdate)
                         .apply(dto)
-                        .apply(getBloodInvoiceEntitiesByExternalIds(dto.getBloodInvoices(), message))
+                        .apply(getBloodDonationEntitiesByExternalIds(bloodDonationRepository, dto.getBloodDonations(), message))
                         .apply(findProductBatchEntityByExternalId(dto.getProductBatch(), message))
                         .build()
-        ).build();
+        );
     }
 
     @Transactional(readOnly = true)
     public List<BloodPoolDto> findAll() {
         return bloodPoolRepository.findAll().stream()
-                .map(entity -> new BloodPoolDtoBuilder().apply(entity).build())
+                .map(DatabaseUtil::mapBloodPoolEntityToDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
+    public Page<BloodPoolDto> findAll(int pageNumber, int itemsPerPage, List<SortBy> sortByList, List<Filter> filterList) {
+        return new Page<>(
+                pageNumber,
+                itemsPerPage,
+                bloodPoolRepository.findAll(pageNumber, itemsPerPage, sortByList, filterList)
+                        .stream().map(DatabaseUtil::mapBloodPoolEntityToDto).collect(Collectors.toList()),
+                bloodPoolRepository.countItems(filterList),
+                sortByList,
+                filterList);
+    }
+
+
+    @Transactional(readOnly = true)
     public BloodPoolDto findByExternalId(String externalId) {
-        return new BloodPoolDtoBuilder().apply(findEntityByExternalId(externalId, "")).build();
+        return mapBloodPoolEntityToDto(findEntityByExternalId(externalId, ""));
     }
 
     @Transactional
@@ -88,24 +105,12 @@ public class BloodPoolService {
         final BloodPoolEntity entity = findEntityByExternalId(externalId, message);
         validateNotNull(entity, message + "no entity found for the external id '" + externalId + '\'');
         bloodPoolRepository.remove(entity);
-        return new BloodPoolDtoBuilder().apply(entity).build();
+        return mapBloodPoolEntityToDto(entity);
     }
 
     @Transactional
     public boolean isIdExists(String externalId) {
         return !StringUtils.isEmpty(externalId) && findEntityByExternalId(externalId, "Error checking if the blood pool exists: ") != null;
-    }
-
-    private Set<BloodInvoiceEntity> getBloodInvoiceEntitiesByExternalIds(Set<String> externalIds, String message) {
-        if (externalIds == null) return null;
-        final Set<BloodInvoiceEntity> entities = new HashSet<>();
-        externalIds.forEach(externalId -> {
-            if (StringUtils.isEmpty(externalId)) return;
-            BloodInvoiceEntity bie = bloodInvoiceRepository.findByExternalId(externalId);
-            validateNotNull(bie, message + "Cannot find blood invoice entity for the external id '" + externalId + '\'');
-            entities.add(bie);
-        });
-        return entities.size() > 0 ? entities : null;
     }
 
     private ProductBatchEntity findProductBatchEntityByExternalId(String externalId, String message) {

@@ -22,6 +22,10 @@ public class BloodDonationSpecifications extends AbstractSpecifications<BloodDon
         return stringStartsWith(invoices.get(BloodInvoiceEntity_.externalId), invoiceExternalId);
     }
 
+    public Specification<BloodDonationEntity> poolExternalIdStartsWith(Join<BloodDonationEntity, BloodPoolEntity> pools, String poolExternalId) {
+        return stringStartsWith(pools.get(BloodPoolEntity_.externalId), poolExternalId);
+    }
+
     public Specification<BloodDonationEntity> donationTypeEqual(DonationType donationType) {
         return valueEqual(BloodDonationEntity_.donationType, donationType);
     }

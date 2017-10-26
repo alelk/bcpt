@@ -19,6 +19,7 @@ public class BloodDonationDtoBuilder extends AbstractDtoBuilder<BloodDonationEnt
         super.apply(entity);
         dto.setDonor(entity.getDonor() != null ? entity.getDonor().getExternalId() : null);
         dto.setBloodInvoice(entity.getBloodInvoice() != null ? entity.getBloodInvoice().getExternalId() : null);
+        dto.setBloodPool(entity.getBloodPool() != null ? entity.getBloodPool().getExternalId() : null);
         dto.setAmount(entity.getAmount());
         dto.setDonationType(entity.getDonationType());
         dto.setDonationDate(entity.getDonationDate());

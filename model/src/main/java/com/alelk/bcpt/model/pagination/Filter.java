@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * Created by Alex Elkin on 11.10.2017.
  */
 public class Filter {
-    private static final Pattern PATTERN = Pattern.compile("^['\"]?(?<fieldName>\\w+)['\"]?(:['\"]?(?<filter>[\\p{L}\\w]+)['\"]?)?$");
+    private static final Pattern PATTERN = Pattern.compile("^['\"]?(?<fieldName>\\w+)['\"]?(:['\"]?(?<filter>[-_\\p{L}\\w]+)['\"]?)?$");
 
     private String fieldName;
 

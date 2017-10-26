@@ -2,10 +2,17 @@ package com.alelk.bcpt.restapi.controller;
 
 import com.alelk.bcpt.database.service.ProductBatchService;
 import com.alelk.bcpt.model.dto.ProductBatchDto;
+import com.alelk.bcpt.model.pagination.Filter;
+import com.alelk.bcpt.model.pagination.Page;
+import com.alelk.bcpt.model.pagination.SortBy;
+import com.alelk.bcpt.model.util.Util;
 import com.alelk.bcpt.restapi.request.ProductBatchCreateRequest;
 import com.alelk.bcpt.restapi.request.ProductBatchDeleteRequest;
 import com.alelk.bcpt.restapi.request.ProductBatchUpdateRequest;
+import com.alelk.bcpt.restapi.util.RestApiUtil;
 import com.alelk.bcpt.restapi.validator.ProductBatchValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,6 +31,7 @@ import java.util.List;
 @RequestMapping("/productBatches")
 public class ProductBatchController {
 
+    private final static Logger log = LoggerFactory.getLogger(ProductBatchController.class);
     private ProductBatchService productBatchService;
     private ProductBatchValidator productBatchValidator;
 
@@ -41,6 +49,18 @@ public class ProductBatchController {
     @GetMapping("/")
     public ResponseEntity<List<ProductBatchDto>> getAll() {
         return ResponseEntity.ok(productBatchService.findAll());
+    }
+
+    @GetMapping("/page/{pageNumber}")
+    public Page<ProductBatchDto> getAll(@PathVariable int pageNumber,
+                                        @RequestParam(required = false) Integer itemsPerPage,
+                                        @RequestParam(value = "sortBy", required = false) List<String> sortBy,
+                                        @RequestParam(value = "filter", required = false) List<String> filter) {
+        final List<SortBy> sortByList = RestApiUtil.parseSortParams(sortBy);
+        final List<Filter> filterList = RestApiUtil.parseFilterParams(filter);
+        log.debug("Request /productBatches/page/" + pageNumber + "?itemsPerPage=" + itemsPerPage + ": sortBy=" +
+                Util.toString(sortByList) + " filter=" + Util.toString(filterList));
+        return productBatchService.findAll(pageNumber, itemsPerPage == null ? 100 : itemsPerPage, sortByList, filterList);
     }
 
     @PostMapping("/")

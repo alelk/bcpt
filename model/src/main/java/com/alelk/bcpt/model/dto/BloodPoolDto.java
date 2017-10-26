@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class BloodPoolDto extends AbstractBcptDto {
 
     private Integer poolNumber;
-    private Set<String> bloodInvoices;
+    private Set<String> bloodDonations;
     private String productBatch;
     private Double totalAmount;
 
@@ -24,10 +24,10 @@ public class BloodPoolDto extends AbstractBcptDto {
         super(externalId, creationTimestamp, updateTimestamp);
     }
 
-    public BloodPoolDto(String externalId, Date creationTimestamp, Date updateTimestamp, Integer poolNumber, Set<String> bloodInvoices, String productBatch, Double totalAmount) {
+    public BloodPoolDto(String externalId, Date creationTimestamp, Date updateTimestamp, Integer poolNumber, Set<String> bloodDonations, String productBatch, Double totalAmount) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.poolNumber = poolNumber;
-        this.bloodInvoices = bloodInvoices;
+        this.bloodDonations = bloodDonations;
         this.productBatch = productBatch;
     }
 
@@ -35,16 +35,16 @@ public class BloodPoolDto extends AbstractBcptDto {
         return poolNumber;
     }
 
-    public Set<String> getBloodInvoices() {
-        return bloodInvoices;
+    public Set<String> getBloodDonations() {
+        return bloodDonations;
     }
 
     public void setPoolNumber(Integer poolNumber) {
         this.poolNumber = poolNumber;
     }
 
-    public void setBloodInvoices(Set<String> bloodInvoices) {
-        this.bloodInvoices = bloodInvoices;
+    public void setBloodDonations(Set<String> bloodDonations) {
+        this.bloodDonations = bloodDonations;
     }
 
     public String getProductBatch() {
@@ -69,8 +69,8 @@ public class BloodPoolDto extends AbstractBcptDto {
                 "externalId='" + getExternalId() +
                 ", productBatch='" + productBatch +
                 ", poolNumber='" + poolNumber +
-                ", bloodInvoices=" + (bloodInvoices != null
-                ? '[' + bloodInvoices.stream().collect(Collectors.joining(", ")) + ']'
+                ", bloodDonations=" + (bloodDonations != null
+                ? '[' + bloodDonations.stream().collect(Collectors.joining(", ")) + ']'
                 : null) +
                 ", totalAmount=" + totalAmount +
                 ", creationTimestamp=" + getCreationTimestamp() +

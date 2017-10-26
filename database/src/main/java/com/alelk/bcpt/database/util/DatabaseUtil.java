@@ -1,14 +1,8 @@
 package com.alelk.bcpt.database.util;
 
-import com.alelk.bcpt.database.builder.BloodDonationDtoBuilder;
-import com.alelk.bcpt.database.builder.BloodInvoiceDtoBuilder;
-import com.alelk.bcpt.database.builder.PersonDtoBuilder;
-import com.alelk.bcpt.database.model.BloodDonationEntity;
-import com.alelk.bcpt.database.model.BloodInvoiceEntity;
-import com.alelk.bcpt.database.model.PersonEntity;
-import com.alelk.bcpt.model.dto.BloodDonationDto;
-import com.alelk.bcpt.model.dto.BloodInvoiceDto;
-import com.alelk.bcpt.model.dto.PersonDto;
+import com.alelk.bcpt.database.builder.*;
+import com.alelk.bcpt.database.model.*;
+import com.alelk.bcpt.model.dto.*;
 
 /**
  * DatabaseUtil
@@ -27,5 +21,13 @@ public class DatabaseUtil {
 
     public static BloodInvoiceDto mapBloodInvoiceEntityToDto(BloodInvoiceEntity entity) {
         return new BloodInvoiceDtoBuilder().apply(entity).build();
+    }
+
+    public static BloodPoolDto mapBloodPoolEntityToDto(BloodPoolEntity entity) {
+        return new BloodPoolDtoBuilder().apply(entity).build();
+    }
+
+    public static ProductBatchDto mapProductBatchEntityToDto(ProductBatchEntity entity) {
+        return new ProductBatchDtoBuilder().apply(entity).build();
     }
 }

@@ -1,5 +1,6 @@
 package com.alelk.bcpt.restapi.validator;
 
+import com.alelk.bcpt.database.service.BloodDonationService;
 import com.alelk.bcpt.database.service.BloodInvoiceService;
 import com.alelk.bcpt.database.service.BloodPoolService;
 import com.alelk.bcpt.database.service.ProductBatchService;
@@ -7,6 +8,7 @@ import com.alelk.bcpt.restapi.request.BloodPoolAbstractRequest;
 import com.alelk.bcpt.restapi.request.BloodPoolCreateRequest;
 import com.alelk.bcpt.restapi.request.BloodPoolDeleteRequest;
 import com.alelk.bcpt.restapi.request.BloodPoolUpdateRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
@@ -22,12 +24,13 @@ import org.springframework.validation.Validator;
 public class BloodPoolValidator implements Validator {
 
     private BloodPoolService bloodPoolService;
-    private BloodInvoiceService bloodInvoiceService;
+    private BloodDonationService bloodDonationService;
     private ProductBatchService productBatchService;
 
-    public BloodPoolValidator(BloodPoolService bloodPoolService, BloodInvoiceService bloodInvoiceService, ProductBatchService productBatchService) {
+    @Autowired
+    public BloodPoolValidator(BloodPoolService bloodPoolService, BloodDonationService bloodDonationService, ProductBatchService productBatchService) {
         this.bloodPoolService = bloodPoolService;
-        this.bloodInvoiceService = bloodInvoiceService;
+        this.bloodDonationService = bloodDonationService;
         this.productBatchService = productBatchService;
     }
 
@@ -47,12 +50,12 @@ public class BloodPoolValidator implements Validator {
         if (target instanceof BloodPoolCreateRequest && isIdExists)
             errors.rejectValue("externalId", "bloodPool.externalId.exists");
         if (target instanceof BloodPoolCreateRequest || target instanceof BloodPoolUpdateRequest) {
-            if (request.getBloodInvoices() != null)
-                request.getBloodInvoices().forEach(id -> {
-                    if (!StringUtils.isEmpty(id) && !bloodInvoiceService.isIdExists(id))
+            if (request.getBloodDonations() != null)
+                request.getBloodDonations().forEach(id -> {
+                    if (!StringUtils.isEmpty(id) && !bloodDonationService.isIdExists(id))
                         errors.rejectValue(
-                                "bloodInvoiceIds",
-                                "bloodPool.bloodInvoiceIds.notFound",
+                                "bloodDonations",
+                                "bloodPool.bloodDonations.notFound",
                                 new String[]{id}, null
                         );
                 });

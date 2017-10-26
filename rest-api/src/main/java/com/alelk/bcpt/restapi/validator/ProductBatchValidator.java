@@ -50,7 +50,7 @@ public class ProductBatchValidator implements Validator {
                     if (!StringUtils.isEmpty(id) && !bloodPoolService.isIdExists(id))
                         errors.rejectValue(
                                 "bloodPoolIds",
-                                "productBatch.bloodPoolIds.notFound",
+                                "productBatch.bloodPools.notFound",
                                 new String[]{id}, null
                         );
                 });
