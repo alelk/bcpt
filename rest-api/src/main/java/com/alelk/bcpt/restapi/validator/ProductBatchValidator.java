@@ -49,7 +49,7 @@ public class ProductBatchValidator implements Validator {
                 request.getBloodPools().forEach(id -> {
                     if (!StringUtils.isEmpty(id) && !bloodPoolService.isIdExists(id))
                         errors.rejectValue(
-                                "bloodPoolIds",
+                                "bloodPools",
                                 "productBatch.bloodPools.notFound",
                                 new String[]{id}, null
                         );
