@@ -52,7 +52,7 @@ public class ProductBatchController {
     }
 
     @GetMapping("/page/{pageNumber}")
-    public Page<ProductBatchDto> getAll(@PathVariable int pageNumber,
+    public ResponseEntity<Page<ProductBatchDto>> getAll(@PathVariable int pageNumber,
                                         @RequestParam(required = false) Integer itemsPerPage,
                                         @RequestParam(value = "sortBy", required = false) List<String> sortBy,
                                         @RequestParam(value = "filter", required = false) List<String> filter) {
@@ -60,7 +60,7 @@ public class ProductBatchController {
         final List<Filter> filterList = RestApiUtil.parseFilterParams(filter);
         log.debug("Request /productBatches/page/" + pageNumber + "?itemsPerPage=" + itemsPerPage + ": sortBy=" +
                 Util.toString(sortByList) + " filter=" + Util.toString(filterList));
-        return productBatchService.findAll(pageNumber, itemsPerPage == null ? 100 : itemsPerPage, sortByList, filterList);
+        return ResponseEntity.ok(productBatchService.findAll(pageNumber, itemsPerPage == null ? 100 : itemsPerPage, sortByList, filterList));
     }
 
     @PostMapping("/")

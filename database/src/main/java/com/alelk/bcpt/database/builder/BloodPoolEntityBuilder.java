@@ -40,7 +40,7 @@ public class BloodPoolEntityBuilder extends AbstractEntityBuilder<BloodPoolDto, 
     }
 
     public BloodPoolEntityBuilder apply(ProductBatchEntity productBatchEntity) {
-        setEntityFieldValue("productBatchEntity", productBatchEntity);
+        setEntityFieldValue("productBatch", productBatchEntity);
         return this;
     }
 }

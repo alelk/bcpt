@@ -33,7 +33,7 @@ public class ProductBatchEntityBuilder extends AbstractEntityBuilder<ProductBatc
     public ProductBatchEntityBuilder apply(ProductBatchDto dto) {
         super.apply(dto);
         if (dto == null) return this;
-        setEntityFieldValue("batchDate", entity.getBatchDate());
+        setEntityFieldValue("batchDate", dto.getBatchDate());
         return this;
     }
 
