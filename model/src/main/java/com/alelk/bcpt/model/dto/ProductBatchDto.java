@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  */
 public class ProductBatchDto extends AbstractBcptDto {
 
+    private Integer batchNumber;
     private Date batchDate;
     private Set<String> bloodPools;
     private Double totalAmount;
@@ -25,11 +26,20 @@ public class ProductBatchDto extends AbstractBcptDto {
         super(externalId, creationTimestamp, updateTimestamp);
     }
 
-    public ProductBatchDto(String externalId, Date creationTimestamp, Date updateTimestamp, Date batchDate, Set<String> bloodPools, Double totalAmount) {
+    public ProductBatchDto(String externalId, Date creationTimestamp, Date updateTimestamp, Integer batchNumber, Date batchDate, Set<String> bloodPools, Double totalAmount) {
         super(externalId, creationTimestamp, updateTimestamp);
+        this.batchNumber = batchNumber;
         this.batchDate = batchDate;
         this.bloodPools = bloodPools;
         this.totalAmount = totalAmount;
+    }
+
+    public Integer getBatchNumber() {
+        return batchNumber;
+    }
+
+    public void setBatchNumber(Integer batchNumber) {
+        this.batchNumber = batchNumber;
     }
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -61,6 +71,7 @@ public class ProductBatchDto extends AbstractBcptDto {
     public String toString() {
         return "ProductBatchDto{" +
                 "externalId='" + getExternalId() +
+                ", batchNumber='" + batchNumber +
                 ", batchDate='" + batchDate +
                 ", bloodPools=" + (bloodPools != null
                 ? '[' + bloodPools.stream().collect(Collectors.joining(", ")) + ']'

@@ -26,6 +26,9 @@ public class ProductBatchEntity extends AbstractEntity {
     public static final String QUERY_FIND_ALL = "findAllProductBatches";
 
     @Sortable
+    private Integer batchNumber;
+
+    @Sortable
     private Date batchDate;
 
     @OneToMany
@@ -35,10 +38,18 @@ public class ProductBatchEntity extends AbstractEntity {
     public ProductBatchEntity() {
     }
 
-    public ProductBatchEntity(String externalId, Date batchDate, Set<BloodPoolEntity> bloodPools) {
+    public ProductBatchEntity(String externalId, Integer batchNumber, Date batchDate, Set<BloodPoolEntity> bloodPools) {
         super(externalId);
         this.batchDate = batchDate;
         this.bloodPools = bloodPools;
+    }
+
+    public Integer getBatchNumber() {
+        return batchNumber;
+    }
+
+    public void setBatchNumber(Integer batchNumber) {
+        this.batchNumber = batchNumber;
     }
 
     public Date getBatchDate() {
@@ -67,6 +78,7 @@ public class ProductBatchEntity extends AbstractEntity {
         return "ProductBatchEntity{" +
                 "id=" + getId() +
                 ", externalId='" + getExternalId() + '\'' +
+                ", batchNumber=" + batchNumber +
                 ", batchDate=" + batchDate +
                 ", bloodPools=" + (bloodPools != null
                 ? '[' + bloodPools.stream().map(AbstractEntity::getExternalId).collect(Collectors.joining(", ")) + ']'

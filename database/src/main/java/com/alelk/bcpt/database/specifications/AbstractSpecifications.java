@@ -34,12 +34,12 @@ public abstract class AbstractSpecifications<E extends AbstractEntity, M extends
                 : cb.like(root.get(field), normalizeSearchString(stringValue) + '%', '\\');
     }
 
-    <T> Specification<E> stringStartsWith(Path<String> path, String stringValue) {
+    Specification<E> stringStartsWith(Path<String> path, String stringValue) {
         return (root, query, cb) -> stringValue == null ? null
                 : cb.like(path, normalizeSearchString(stringValue) + '%', '\\');
     }
 
-    <T> Specification<E> valueEqual(SingularAttribute<? super E, T> field, T value) {
+    Specification<E> valueEqual(SingularAttribute<? super E, ?> field, Object value) {
         return (root, query, cb) -> value == null ? null : cb.equal(root.get(field), value);
     }
 

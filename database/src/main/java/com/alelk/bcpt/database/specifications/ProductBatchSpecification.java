@@ -11,4 +11,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProductBatchSpecification extends AbstractSpecifications<ProductBatchEntity, ProductBatchEntity_> {
+
+    public Specification<ProductBatchEntity> batchNumberEqual(String batchNumber) {
+        return valueEqual(ProductBatchEntity_.batchNumber, batchNumber);
+    }
 }
