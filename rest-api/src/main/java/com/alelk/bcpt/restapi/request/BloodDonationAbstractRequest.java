@@ -1,6 +1,8 @@
 package com.alelk.bcpt.restapi.request;
 
+import com.alelk.bcpt.model.BloodType;
 import com.alelk.bcpt.model.DonationType;
+import com.alelk.bcpt.model.RhFactor;
 import com.alelk.bcpt.model.dto.BloodDonationDto;
 
 import java.util.Date;
@@ -21,6 +23,8 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
     private Date quarantineDate;
     private Date expirationDate;
     private DonationType donationType;
+    private BloodType bloodType;
+    private RhFactor rhFactor;
 
     public String getDonor() {
         return donor;
@@ -70,10 +74,42 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
         this.bloodPool = bloodPool;
     }
 
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public DonationType getDonationType() {
+        return donationType;
+    }
+
+    public void setDonationType(DonationType donationType) {
+        this.donationType = donationType;
+    }
+
+    public BloodType getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(BloodType bloodType) {
+        this.bloodType = bloodType;
+    }
+
+    public RhFactor getRhFactor() {
+        return rhFactor;
+    }
+
+    public void setRhFactor(RhFactor rhFactor) {
+        this.rhFactor = rhFactor;
+    }
+
     @Override
     public BloodDonationDto toDto() {
         return new BloodDonationDto(getExternalId(), null, null, donor,
-                bloodInvoice, bloodPool, amount, donationDate, quarantineDate, expirationDate, donationType);
+                bloodInvoice, bloodPool, amount, donationDate, quarantineDate, expirationDate, donationType, bloodType, rhFactor);
     }
 
     @Override
@@ -85,6 +121,8 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
                 ", donor='" + donor + '\'' +
                 ", amount=" + amount +
                 ", donationType=" + donationType +
+                ", bloodType=" + bloodType +
+                ", rhFactor=" + rhFactor +
                 ", donationDate=" + donationDate +
                 ", expirationDate=" + expirationDate +
                 ", quarantineDate=" + quarantineDate +

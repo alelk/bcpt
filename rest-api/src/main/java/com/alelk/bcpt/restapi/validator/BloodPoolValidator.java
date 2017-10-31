@@ -60,7 +60,7 @@ public class BloodPoolValidator implements Validator {
                         );
                 });
             if (!StringUtils.isEmpty(request.getProductBatch()) && !productBatchService.isIdExists(request.getProductBatch())) {
-                errors.rejectValue("productBatchExternalId", "productBatch.externalId.notFound");
+                errors.rejectValue("productBatch", "productBatch.externalId.notFound");
             }
         }
         if (target instanceof BloodPoolDeleteRequest) {

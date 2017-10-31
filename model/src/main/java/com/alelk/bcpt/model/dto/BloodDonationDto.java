@@ -1,6 +1,8 @@
 package com.alelk.bcpt.model.dto;
 
+import com.alelk.bcpt.model.BloodType;
 import com.alelk.bcpt.model.DonationType;
+import com.alelk.bcpt.model.RhFactor;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -20,6 +22,8 @@ public class BloodDonationDto extends AbstractBcptDto {
     private Date expirationDate;
     private Date quarantineDate;
     private DonationType donationType;
+    private BloodType bloodType;
+    private RhFactor rhFactor;
 
     public BloodDonationDto() {}
 
@@ -29,7 +33,7 @@ public class BloodDonationDto extends AbstractBcptDto {
 
     public BloodDonationDto(String externalId, Date creationTimestamp, Date updateTimestamp,
                             String donor, String bloodInvoiceExternalId, String bloodPool, Double amount,
-                            Date donationDate, Date quarantineDate, Date expirationDate, DonationType donationType) {
+                            Date donationDate, Date quarantineDate, Date expirationDate, DonationType donationType, BloodType bloodType, RhFactor rhFactor) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.donor = donor;
         this.bloodInvoice = bloodInvoiceExternalId;
@@ -39,6 +43,8 @@ public class BloodDonationDto extends AbstractBcptDto {
         this.quarantineDate = quarantineDate;
         this.expirationDate = expirationDate;
         this.donationType = donationType;
+        this.bloodType = bloodType;
+        this.rhFactor = rhFactor;
     }
 
     public void setDonor(String donor) {
@@ -108,6 +114,22 @@ public class BloodDonationDto extends AbstractBcptDto {
         return expirationDate;
     }
 
+    public BloodType getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(BloodType bloodType) {
+        this.bloodType = bloodType;
+    }
+
+    public RhFactor getRhFactor() {
+        return rhFactor;
+    }
+
+    public void setRhFactor(RhFactor rhFactor) {
+        this.rhFactor = rhFactor;
+    }
+
     @Override
     public String toString() {
         return "BloodDonationDto{" +
@@ -120,6 +142,8 @@ public class BloodDonationDto extends AbstractBcptDto {
                 ", quarantineDate=" + quarantineDate +
                 ", donationType=" + donationType +
                 ", expirationDate=" + expirationDate +
+                ", bloodType=" + bloodType +
+                ", rhFactor=" + rhFactor +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';

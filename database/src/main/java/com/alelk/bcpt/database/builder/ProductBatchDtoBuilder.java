@@ -21,6 +21,7 @@ public class ProductBatchDtoBuilder extends AbstractDtoBuilder<ProductBatchEntit
     public ProductBatchDtoBuilder apply(ProductBatchEntity entity) {
         super.apply(entity);
         if (entity == null) return this;
+        dto.setBatchNumber(entity.getBatchNumber());
         dto.setBatchDate(entity.getBatchDate());
         dto.setTotalAmount(entity.getTotalAmount());
         dto.setBloodPools(

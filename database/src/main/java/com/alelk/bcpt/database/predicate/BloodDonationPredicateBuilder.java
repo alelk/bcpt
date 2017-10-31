@@ -3,7 +3,9 @@ package com.alelk.bcpt.database.predicate;
 import com.alelk.bcpt.database.model.*;
 import com.alelk.bcpt.database.specifications.BloodDonationSpecifications;
 import com.alelk.bcpt.database.specifications.Specification;
+import com.alelk.bcpt.model.BloodType;
 import com.alelk.bcpt.model.DonationType;
+import com.alelk.bcpt.model.RhFactor;
 import com.alelk.bcpt.model.pagination.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,6 +44,10 @@ public class BloodDonationPredicateBuilder extends AbstractPredicateBuilder<Bloo
                 specifications.add(this.specifications.invoiceExternalIdStartsWith(invoices, filter.getFilter()));
             if ("bloodPool".equals(filter.getFieldName()))
                 specifications.add(this.specifications.poolExternalIdStartsWith(pools, filter.getFilter()));
+            if ("bloodType".equals(filter.getFieldName()))
+                specifications.add(this.specifications.bloodTypeEqual(persons, BloodType.forString(filter.getFilter())));
+            if ("rhFactor".equals(filter.getFieldName()))
+                specifications.add(this.specifications.rhFactorEqual(persons, RhFactor.forSignature(filter.getFilter())));
         }
         return and(cb, commonPredicate, and(root, query, cb, specifications));
     }

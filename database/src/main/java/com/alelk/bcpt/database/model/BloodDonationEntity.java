@@ -1,7 +1,9 @@
 package com.alelk.bcpt.database.model;
 
 import com.alelk.bcpt.database.util.Sortable;
+import com.alelk.bcpt.model.BloodType;
 import com.alelk.bcpt.model.DonationType;
+import com.alelk.bcpt.model.RhFactor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -59,7 +61,8 @@ public class BloodDonationEntity extends AbstractEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date expirationDate;
 
-    public BloodDonationEntity() {}
+    public BloodDonationEntity() {
+    }
 
     public BloodDonationEntity(String externalId, PersonEntity donor, BloodPoolEntity bloodPool, Double amount, DonationType donationType, Date donationDate, Date quarantineDate, Date expirationDate) {
         super(externalId);
@@ -134,6 +137,14 @@ public class BloodDonationEntity extends AbstractEntity {
 
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public BloodType getBloodType() {
+        return donor != null ? donor.getBloodType() : null;
+    }
+
+    public RhFactor getRhFactor() {
+        return donor != null ? donor.getRhFactor() : null;
     }
 
     @Override

@@ -14,9 +14,18 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public abstract class ProductBatchAbstractRequest extends BcptDtoApiRequest<ProductBatchDto> {
 
+    private Integer batchNumber;
     private Date batchDate;
     private Set<String> bloodPools;
     private Double totalAmount;
+
+    public Integer getBatchNumber() {
+        return batchNumber;
+    }
+
+    public void setBatchNumber(Integer batchNumber) {
+        this.batchNumber = batchNumber;
+    }
 
     public Date getBatchDate() {
         return batchDate;
@@ -44,13 +53,14 @@ public abstract class ProductBatchAbstractRequest extends BcptDtoApiRequest<Prod
 
     @Override
     public ProductBatchDto toDto() {
-        return new ProductBatchDto(getExternalId(), null, null, batchDate, bloodPools, totalAmount);
+        return new ProductBatchDto(getExternalId(), null, null, batchNumber, batchDate, bloodPools, totalAmount);
     }
 
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + "{" +
                 "externalId='" + getExternalId() + '\'' +
+                ", batchNumber=" + batchNumber +
                 ", batchDate=" + batchDate +
                 ", totalAmount=" + totalAmount +
                 ", bloodPools=" + (bloodPools != null ?
