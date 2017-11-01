@@ -5,10 +5,10 @@ import com.alelk.bcpt.model.BloodType;
 import com.alelk.bcpt.model.RhFactor;
 
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import static com.alelk.bcpt.database.model.PersonEntity.*;
+
+import static com.alelk.bcpt.database.model.PersonEntity.QUERY_FIND_ALL;
 
 /**
  * PersonEntity Entity
@@ -40,7 +40,7 @@ public class PersonEntity extends AbstractEntity {
 
     public PersonEntity() {}
 
-    public PersonEntity(String externalId, String firstName, String lastName, String middleName, String bloodInfo, BloodType bloodType, RhFactor rhFactor) {
+    public PersonEntity(String externalId, String firstName, String lastName, String middleName, BloodType bloodType, RhFactor rhFactor) {
         super(externalId);
         this.firstName = firstName;
         this.lastName = lastName;
