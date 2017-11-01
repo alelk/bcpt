@@ -43,6 +43,16 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 		<!-- end spring framework dependencies -->
 
 		<!-- javax servlet api dependency -->
@@ -58,6 +68,11 @@
 		<dependency>
 			<groupId>com.alelk.bcpt</groupId>
 			<artifactId>database</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alelk.bcpt</groupId>
+			<artifactId>importer</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<!-- end project modules dependencies -->
