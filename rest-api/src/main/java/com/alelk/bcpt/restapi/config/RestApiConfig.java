@@ -4,7 +4,6 @@ import com.alelk.bcpt.database.BcptDatabase;
 import com.alelk.bcpt.database.service.*;
 import com.alelk.bcpt.importer.BcptImporter;
 import com.alelk.bcpt.storage.BcptStorage;
-import com.alelk.bcpt.storage.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

@@ -44,6 +44,11 @@ public class BcptStorage implements StorageService {
     }
 
     @Override
+    public void store(MultipartFile file, String category, String fileName) {
+        storageService.store(file, category, fileName);
+    }
+
+    @Override
     public Path load(String fileName) {
         return storageService.load(fileName);
     }
