@@ -3,15 +3,20 @@ package com.alelk.bcpt.restapi.config;
 import com.alelk.bcpt.database.BcptDatabase;
 import com.alelk.bcpt.database.service.*;
 import com.alelk.bcpt.importer.BcptImporter;
+import com.alelk.bcpt.storage.BcptStorage;
+import com.alelk.bcpt.storage.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+
+import javax.servlet.MultipartConfigElement;
 
 /**
  * Rest Api Config
@@ -59,6 +64,18 @@ public class RestApiConfig extends AbstractWebSocketMessageBrokerConfigurer {
     }
 
     @Bean
+    public BcptImporter bcptImporter(BcptDatabase database) {
+        BcptImporter importer = BcptImporter.get();
+        importer.setDatabase(database);
+        return importer;
+    }
+
+    @Bean
+    public BcptStorage bcptStorage() {
+        return BcptStorage.getInstance();
+    }
+
+    @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("bcpt-api-messages");
@@ -66,10 +83,16 @@ public class RestApiConfig extends AbstractWebSocketMessageBrokerConfigurer {
     }
 
     @Bean
-    public BcptImporter bcptImporter(BcptDatabase database) {
-        BcptImporter importer = BcptImporter.get();
-        importer.setDatabase(database);
-        return importer;
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(50 * 1024 * 1024);
+        multipartResolver.setMaxInMemorySize(80 * 1024 * 1024);
+        return multipartResolver;
+    }
+
+    @Bean
+    MultipartConfigElement multipartConfigElement() {
+        return new MultipartConfigElement(null, 50 * 1024 * 1024, 50* 1024 * 1024, 1024 * 1024);
     }
 
     @Override
