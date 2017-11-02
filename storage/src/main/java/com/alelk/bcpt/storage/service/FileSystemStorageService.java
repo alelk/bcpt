@@ -1,6 +1,8 @@
 package com.alelk.bcpt.storage.service;
 
 import com.alelk.bcpt.storage.exception.BcptStorageException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
@@ -25,6 +27,7 @@ import java.util.stream.Stream;
 @Service
 public class FileSystemStorageService implements StorageService {
 
+    private static final Logger log = LoggerFactory.getLogger(FileSystemStorageService.class);
     private final Path rootLocation;
 
     @Autowired
@@ -39,9 +42,18 @@ public class FileSystemStorageService implements StorageService {
 
     @Override
     public void store(MultipartFile file, String category) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        store(file, null, null);
+    }
+
+    @Override
+    public void store(MultipartFile file, String category, String name) {
+        String fileName = StringUtils.cleanPath(name != null ? name : file.getOriginalFilename());
+        Path location = location(category);
+        init(location);
+        Path filePath = location.resolve(fileName);
         try {
-            Files.copy(file.getInputStream(), location(category).resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), location.resolve(filePath), StandardCopyOption.REPLACE_EXISTING);
+            log.debug("The file '" + fileName + "' category '" + category + "': saved to '" + filePath.toAbsolutePath() + '\'');
         } catch (IOException e) {
             throw new BcptStorageException("Cannot store the file '" + fileName + "' in the category '" + category + '\'', e);
         }
@@ -62,8 +74,7 @@ public class FileSystemStorageService implements StorageService {
         try {
             final Path location = location(category);
             return Files.walk(location, 1)
-                    .filter(path -> !path.equals(location))
-                    .map(location::relativize);
+                    .filter(path -> !path.equals(location));
         } catch (IOException e) {
             throw new BcptStorageException("Cannot load file list from category '" + category + "'", e);
         }
@@ -122,4 +133,13 @@ public class FileSystemStorageService implements StorageService {
             throw new BcptStorageException("Cannot find the file '" + filePath.toAbsolutePath() + "': malformed URL", e);
         }
     }
+
+    private void init(Path directory) {
+        try {
+            Files.createDirectories(directory);
+        } catch (IOException e) {
+            log.error("Cannot create directory '" + directory + '\'');
+        }
+    }
+
 }
