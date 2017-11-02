@@ -13,6 +13,7 @@
         <module>rest-api</module>
         <module>model</module>
         <module>importer</module>
+        <module>storage</module>
     </modules>
 
     <properties>

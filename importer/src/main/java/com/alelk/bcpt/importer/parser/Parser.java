@@ -5,6 +5,7 @@ import com.alelk.bcpt.importer.result.OperationResult;
 import io.reactivex.Flowable;
 
 import java.io.File;
+import java.io.InputStream;
 
 
 /**

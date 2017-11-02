@@ -64,6 +64,12 @@
 		</dependency>
 		<!-- end javax servlet api dependency -->
 
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3.3</version>
+		</dependency>
+
 		<!-- project modules dependencies -->
 		<dependency>
 			<groupId>com.alelk.bcpt</groupId>
@@ -73,6 +79,11 @@
 		<dependency>
 			<groupId>com.alelk.bcpt</groupId>
 			<artifactId>importer</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alelk.bcpt</groupId>
+			<artifactId>storage</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<!-- end project modules dependencies -->
