@@ -108,7 +108,7 @@ public class FileSystemStorageService implements StorageService {
     @Override
     public void delete(String fileName, String category) {
         try {
-            Files.deleteIfExists(rootLocation.resolve(fileName));
+            Files.deleteIfExists(location(category).resolve(fileName));
         } catch (IOException e) {
             throw new BcptStorageException("Cannot delete the file '" + fileName + "' from the category '" + category + '\'', e);
         }
