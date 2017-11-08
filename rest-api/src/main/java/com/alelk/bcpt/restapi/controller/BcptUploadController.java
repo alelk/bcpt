@@ -8,7 +8,6 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
  *
  * Created by Alex Elkin on 02.11.2017.
  */
-@Controller
+@RestController
 @RequestMapping("/upload")
 public class BcptUploadController {
 
@@ -50,7 +49,7 @@ public class BcptUploadController {
 
     @GetMapping("download/{category}")
     public ResponseEntity<InputStreamResource> getFile(@PathVariable String category, @RequestParam String fileName) throws IOException {
-        log.info("Request to download {} file: '{}'", category, fileName);
+        log.debug("Request to download {} file: '{}'", category, fileName);
         Resource fileResource = storage.loadAsResource(fileName, category(category));
         return ResponseEntity.ok()
                 .header("Cache-Control", "no-cache, no-store, must-revalidate")
@@ -58,6 +57,12 @@ public class BcptUploadController {
                 .header("Content-Disposition", "attachment; filename=" + fileName)
                 .contentLength(fileResource.contentLength()).contentType(MediaType.TEXT_PLAIN)
                 .body(new InputStreamResource(fileResource.getInputStream()));
+    }
+
+    @DeleteMapping("/{category}")
+    public void deleteFile(@PathVariable String category, @RequestParam String fileName) {
+        log.debug("Request to remove {} file: '{}'", category, fileName);
+        storage.delete(fileName, category(category));
     }
 
     private String category(String externalCategory) {
