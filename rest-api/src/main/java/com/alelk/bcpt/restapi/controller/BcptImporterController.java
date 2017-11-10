@@ -70,6 +70,7 @@ public class BcptImporterController {
 
     private void postOperationProgress(OperationResult<BcptDtoBundle> operationProgress, String operationName, ImportStateDto importState) {
         log.info("Operation '{}' :" + operationProgress, operationName);
+        simpMessagingTemplate.convertAndSend("/socket-output/importer/" + importState.getImportProcessId(), operationProgress);
     }
 
     private static String generateProcessId(String category) {

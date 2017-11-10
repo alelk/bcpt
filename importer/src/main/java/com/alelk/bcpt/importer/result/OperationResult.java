@@ -19,9 +19,15 @@ public class OperationResult<SUBJECT> {
     }
 
     private SUBJECT subject;
+    private String operationName;
     private Double progress;
     private Result result;
     private List<Throwable> errors;
+
+    public OperationResult() {
+        this.progress = 0.0;
+        this.result = Result.IN_PROGRESS;
+    }
 
     public OperationResult(SUBJECT subject, Double progress, Result result, List<Throwable> errors) {
         this.subject = subject;
@@ -40,6 +46,14 @@ public class OperationResult<SUBJECT> {
 
     public Result getResult() {
         return result;
+    }
+
+    public String getOperationName() {
+        return operationName;
+    }
+
+    public void setOperationName(String operationName) {
+        this.operationName = operationName;
     }
 
     public void setProgress(Double progress) {
@@ -64,6 +78,7 @@ public class OperationResult<SUBJECT> {
     public String toString() {
         return "OperationResult{" +
                 "subject=" + subject +
+                ", operationName=" + operationName +
                 ", progress=" + progress +
                 ", result=" + result +
                 ", errorMessages=" + (errors != null && errors.size() > 0
