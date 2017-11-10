@@ -15,10 +15,7 @@ import io.reactivex.FlowableEmitter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +25,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Blood Centre CDBF exported txt file parser
@@ -65,19 +63,19 @@ public class DbfParser implements Parser {
             OperationResult<BcptDtoBundle> operationResult = new OperationResult<>(
                     parsedBundle, 0.0, OperationResult.Result.IN_PROGRESS, new ArrayList<>()
             );
-            FileReader fileReader = null;
+            InputStreamReader inputStreamReader = null;
             try {
                 if (file == null || !file.exists() || !file.isFile())
                     throw new BcptImporterException(messages.get("file.notFound", file == null ? null : file.getAbsolutePath()));
                 e.onNext(operationResult);
-                fileReader = new FileReader(file);
+                inputStreamReader = new InputStreamReader(new FileInputStream(file), "UTF-8");
                 final long fileSize = file.length();
                 long symbolsRead = 0;
-                final BufferedReader bufferedReader = new BufferedReader(fileReader);
+                final BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String line = nextLine(bufferedReader);
                 symbolsRead += line.length();
                 if (!line.matches(FILE_HEADER_REGEX))
-                    throw new BcptImporterException(messages.get("dbfFile.incorrectHeader", FILE_HEADER_REGEX, line));
+                    throw new BcptImporterException(messages.get("dbfFile.incorrectHeader", FILE_HEADER_REGEX, line.replaceAll("\\s{2,}", " ")));
                 do {
                     line = nextLine(bufferedReader);
                     if (line == null) {
@@ -94,7 +92,9 @@ public class DbfParser implements Parser {
                     } catch (BcptImporterException exc) {
                         operationResult.addErrror(exc);
                         if (operationResult.getErrors().size() >= 200)
-                            throw new BcptImporterException(messages.get("dbfFile.aLotOfErrors"));
+                            throw new BcptImporterException(messages.get("dbfFile.aLotOfErrors",
+                                    operationResult.getErrors().stream().map(Throwable::getLocalizedMessage).distinct()
+                            .limit(10).collect(Collectors.joining(" >> "))));
                     }
                     e.onNext(operationResult);
                 } while (true);
@@ -108,8 +108,8 @@ public class DbfParser implements Parser {
                 e.onNext(operationResult);
                 e.onError(bcptExc);
             } finally {
-                if (fileReader != null) try {
-                    fileReader.close();
+                if (inputStreamReader != null) try {
+                    inputStreamReader.close();
                 } catch (IOException exc) {
                     exc.printStackTrace();
                 }
@@ -119,7 +119,7 @@ public class DbfParser implements Parser {
 
     private void parseRow(String line, BcptDtoBundle parsedBundle) throws BcptImporterException {
         Matcher matcher = FILE_ROW_REGEX.matcher(line);
-        if (!matcher.matches()) throw new BcptImporterException(messages.get("dbfFile.incorrectLine", line, "Строка не соответствует шаблону."));
+        if (!matcher.matches()) throw new BcptImporterException(messages.get("dbfFile.incorrectLine", line.replaceAll("\\s{2,}", " "), "A line not match the pattern."));
         try {
             Date donationDate = parseDate(matcher.group("donationDate"));
             Date donationExpirationDate = parseDate(matcher.group("expirationDate"));
@@ -137,7 +137,7 @@ public class DbfParser implements Parser {
             saveInvoice(parsedBundle, donationId, bloodInvoiceId);
 
         } catch (BcptImporterException exc) {
-            throw new BcptImporterException(messages.get("dbfFile.incorrectLine", line, exc.getLocalizedMessage()));
+            throw new BcptImporterException(messages.get("dbfFile.incorrectLine", line.replaceAll("\\s{2,}", " "), exc.getLocalizedMessage()));
         }
     }
 
