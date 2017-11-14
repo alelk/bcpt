@@ -1,5 +1,11 @@
 package com.alelk.bcpt.restapi.dto;
 
+import com.alelk.bcpt.importer.parsed.BcptDtoBundleInfo;
+import com.alelk.bcpt.importer.result.OperationResult;
+import com.alelk.bcpt.importer.result.Result;
+
+import java.util.List;
+
 /**
  * Import State DTO
  *
@@ -10,6 +16,15 @@ public class ImportStateDto {
     private String importProcessId;
     private String category;
     private String fileName;
+    private String operationName;
+    private Double progress;
+    private Result result;
+    private Integer countPersons;
+    private Integer countBloodDonations;
+    private Integer countBloodInvoices;
+    private Integer countBloodPools;
+    private Integer countProductBatches;
+    private List<Throwable> errors;
 
     public ImportStateDto() {
     }
@@ -48,12 +63,108 @@ public class ImportStateDto {
         this.fileName = fileName;
     }
 
+    public String getOperationName() {
+        return operationName;
+    }
+
+    public void setOperationName(String operationName) {
+        this.operationName = operationName;
+    }
+
+    public Double getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Double progress) {
+        this.progress = progress;
+    }
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
+    }
+
+    public Integer getCountPersons() {
+        return countPersons;
+    }
+
+    public void setCountPersons(Integer countPersons) {
+        this.countPersons = countPersons;
+    }
+
+    public Integer getCountBloodDonations() {
+        return countBloodDonations;
+    }
+
+    public void setCountBloodDonations(Integer countBloodDonations) {
+        this.countBloodDonations = countBloodDonations;
+    }
+
+    public Integer getCountBloodInvoices() {
+        return countBloodInvoices;
+    }
+
+    public void setCountBloodInvoices(Integer countBloodInvoices) {
+        this.countBloodInvoices = countBloodInvoices;
+    }
+
+    public Integer getCountBloodPools() {
+        return countBloodPools;
+    }
+
+    public void setCountBloodPools(Integer countBloodPools) {
+        this.countBloodPools = countBloodPools;
+    }
+
+    public Integer getCountProductBatches() {
+        return countProductBatches;
+    }
+
+    public void setCountProductBatches(Integer countProductBatches) {
+        this.countProductBatches = countProductBatches;
+    }
+
+    public List<Throwable> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<Throwable> errors) {
+        this.errors = errors;
+    }
+
+    public void applyOperationResult(OperationResult<BcptDtoBundleInfo> operationResult) {
+        if (operationResult == null) return;
+        operationName = operationResult.getOperationName();
+        progress = operationResult.getProgress();
+        result = operationResult.getResult();
+        errors = operationResult.getErrors();
+        final BcptDtoBundleInfo bundleInfo = operationResult.get();
+        if (bundleInfo == null) return;
+        countPersons = bundleInfo.getCountPersons();
+        countBloodDonations = bundleInfo.getCountBloodDonations();
+        countBloodInvoices = bundleInfo.getCountBloodInvoices();
+        countBloodPools = bundleInfo.getCountBloodPools();
+        countProductBatches = bundleInfo.getCountProductBatches();
+    }
+
     @Override
     public String toString() {
         return "ImportStateDto{" +
                 "importProcessId='" + importProcessId + '\'' +
                 ", category='" + category + '\'' +
                 ", fileName='" + fileName + '\'' +
+                ", operationName='" + operationName + '\'' +
+                ", progress=" + progress +
+                ", result=" + result +
+                ", countPersons=" + countPersons +
+                ", countBloodDonations=" + countBloodDonations +
+                ", countBloodInvoices=" + countBloodInvoices +
+                ", countBloodPools=" + countBloodPools +
+                ", countProductBatches=" + countProductBatches +
+                ", errors=" + errors +
                 '}';
     }
 }

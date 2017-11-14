@@ -1,7 +1,7 @@
 package com.alelk.bcpt.restapi.controller;
 
 import com.alelk.bcpt.importer.BcptImporter;
-import com.alelk.bcpt.importer.parsed.BcptDtoBundle;
+import com.alelk.bcpt.importer.parsed.BcptDtoBundleInfo;
 import com.alelk.bcpt.importer.result.OperationResult;
 import com.alelk.bcpt.restapi.dto.ImportStateDto;
 import com.alelk.bcpt.storage.BcptStorage;
@@ -10,7 +10,6 @@ import io.reactivex.schedulers.Schedulers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -18,11 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Bcpt Importer Controller
@@ -55,22 +53,17 @@ public class BcptImporterController {
     }
 
     private void doDbfImport(ImportStateDto importState) throws IOException {
-        Flowable<OperationResult<BcptDtoBundle>> flow = importer.parseDbf(
+        Flowable<OperationResult<BcptDtoBundleInfo>> flow = importer.importDbf(
                 storage.loadAsResource(importState.getFileName(), importState.getCategory()).getFile()
         ).subscribeOn(Schedulers.io());
-        flow.subscribe(
-                pr -> postOperationProgress(pr, "parsing dbf", importState),
-                exc -> log.error("Error when parsing dbf: " + exc.getLocalizedMessage())
-        );
-        flow.takeLast(1).subscribe(pr -> {
-                    log.info("Parsing result: " + pr);
-                }
-        );
+        flow.sample(5, TimeUnit.SECONDS, true).subscribe(progress -> {
+            importState.applyOperationResult(progress);
+            postOperationProgress(importState);
+        });
     }
 
-    private void postOperationProgress(OperationResult<BcptDtoBundle> operationProgress, String operationName, ImportStateDto importState) {
-        log.info("Operation '{}' :" + operationProgress, operationName);
-        simpMessagingTemplate.convertAndSend("/socket-output/importer/" + importState.getImportProcessId(), operationProgress);
+    private void postOperationProgress(ImportStateDto importState) {
+        simpMessagingTemplate.convertAndSend("/socket-output/importer/", importState);
     }
 
     private static String generateProcessId(String category) {

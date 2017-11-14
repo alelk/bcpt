@@ -4,6 +4,7 @@ import com.alelk.bcpt.database.service.*;
 import com.alelk.bcpt.importer.exception.BcptImporterException;
 import com.alelk.bcpt.importer.parsed.BcptDtoBundle;
 import com.alelk.bcpt.importer.result.OperationResult;
+import com.alelk.bcpt.importer.result.Result;
 import com.alelk.bcpt.importer.util.Messages;
 import com.alelk.bcpt.model.dto.*;
 import io.reactivex.BackpressureStrategy;
@@ -39,7 +40,7 @@ public class BcptDtoBundleSaver {
     public Flowable<OperationResult<BcptDtoBundle>> save(BcptDtoBundle bundle) {
         return Flowable.create((FlowableEmitter<OperationResult<BcptDtoBundle>> e) -> {
             final BcptDtoBundle bcptDtoBundle = new BcptDtoBundle();
-            final OperationResult<BcptDtoBundle> result = new OperationResult<>(bcptDtoBundle, 0.0, OperationResult.Result.IN_PROGRESS, new ArrayList<>());
+            final OperationResult<BcptDtoBundle> result = new OperationResult<>(bcptDtoBundle, 0.0, Result.IN_PROGRESS, new ArrayList<>());
             try {
                 if (bundle == null) throw new BcptImporterException("Incorrect argument provided: bundle=" + null);
                 final long countObjects = countObjects(bundle);
@@ -80,14 +81,14 @@ public class BcptDtoBundleSaver {
                             (Consumer<ProductBatchDto>) onOneProcessed
                     );
                 result.setProgress(100.0);
-                result.setResult(result.getErrors() != null && result.getErrors().size() > 0 ? OperationResult.Result.WITH_WARNINGS : OperationResult.Result.SUCCESS);
+                result.setResult(result.getErrors() != null && result.getErrors().size() > 0 ? Result.WITH_WARNINGS : Result.SUCCESS);
                 e.onNext(result);
                 e.onComplete();
 
             } catch (Exception exc) {
                 Exception exception = new BcptImporterException(messages.get("saver.unableSave", exc.getLocalizedMessage()));
                 result.addErrror(exception);
-                result.setResult(OperationResult.Result.FAILED);
+                result.setResult(Result.FAILED);
                 e.onNext(result);
                 e.onError(exception);
             }
