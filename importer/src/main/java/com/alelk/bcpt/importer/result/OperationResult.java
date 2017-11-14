@@ -11,13 +11,6 @@ import java.util.stream.Collectors;
  */
 public class OperationResult<SUBJECT> {
 
-    public enum Result {
-        IN_PROGRESS,
-        SUCCESS,
-        WITH_WARNINGS,
-        FAILED
-    }
-
     private SUBJECT subject;
     private String operationName;
     private Double progress;
@@ -34,6 +27,10 @@ public class OperationResult<SUBJECT> {
         this.progress = progress;
         this.result = result;
         this.errors = errors;
+    }
+
+    public void setSubject(SUBJECT subject) {
+        this.subject = subject;
     }
 
     public SUBJECT get() {
@@ -62,6 +59,10 @@ public class OperationResult<SUBJECT> {
 
     public void setResult(Result result) {
         this.result = result;
+    }
+
+    public void setErrors(List<Throwable> errors) {
+        this.errors = errors;
     }
 
     public List<Throwable> getErrors() {

@@ -3,6 +3,7 @@ package com.alelk.bcpt.importer.parser;
 import com.alelk.bcpt.importer.exception.BcptImporterException;
 import com.alelk.bcpt.importer.parsed.BcptDtoBundle;
 import com.alelk.bcpt.importer.result.OperationResult;
+import com.alelk.bcpt.importer.result.Result;
 import com.alelk.bcpt.importer.util.Messages;
 import com.alelk.bcpt.model.BloodType;
 import com.alelk.bcpt.model.RhFactor;
@@ -61,7 +62,7 @@ public class DbfParser implements Parser {
         return Flowable.create( (FlowableEmitter<OperationResult<BcptDtoBundle>> e) -> {
             final BcptDtoBundle parsedBundle = new BcptDtoBundle();
             OperationResult<BcptDtoBundle> operationResult = new OperationResult<>(
-                    parsedBundle, 0.0, OperationResult.Result.IN_PROGRESS, new ArrayList<>()
+                    parsedBundle, 0.0, Result.IN_PROGRESS, new ArrayList<>()
             );
             InputStreamReader inputStreamReader = null;
             try {
@@ -79,7 +80,7 @@ public class DbfParser implements Parser {
                 do {
                     line = nextLine(bufferedReader);
                     if (line == null) {
-                        operationResult.setResult(operationResult.getErrors().size() == 0 ? OperationResult.Result.SUCCESS : OperationResult.Result.WITH_WARNINGS);
+                        operationResult.setResult(operationResult.getErrors().size() == 0 ? Result.SUCCESS : Result.WITH_WARNINGS);
                         operationResult.setProgress(100.0);
                         e.onNext(operationResult);
                         e.onComplete();
@@ -104,7 +105,7 @@ public class DbfParser implements Parser {
                         exc.getLocalizedMessage())
                 );
                 operationResult.addErrror(bcptExc);
-                operationResult.setResult(OperationResult.Result.FAILED);
+                operationResult.setResult(Result.FAILED);
                 e.onNext(operationResult);
                 e.onError(bcptExc);
             } finally {
