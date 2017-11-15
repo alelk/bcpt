@@ -3,6 +3,7 @@ package com.alelk.bcpt.storage.service;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
@@ -18,6 +19,10 @@ public interface StorageService {
     void store(MultipartFile file, String category);
 
     void store(MultipartFile file, String category, String fileName);
+
+    void store(InputStream inputStream, String fileName);
+
+    void store(InputStream inputStream, String category, String fileName);
 
     Path load(String fileName);
 

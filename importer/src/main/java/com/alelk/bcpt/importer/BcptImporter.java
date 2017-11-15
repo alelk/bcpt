@@ -61,7 +61,7 @@ public class BcptImporter {
             final Flowable<OperationResult<BcptDtoBundle>> flow = parseDbf(file);
             flow.subscribe(pr -> {
                 operationResult.setProgress(pr.getProgress() / 100);
-                operationResult.setResult(pr.getResult());
+                operationResult.setResult(pr.getResult().isLessThan(Result.SUCCESS) ? pr.getResult() : Result.IN_PROGRESS);
                 operationResult.setErrors(pr.getErrors());
                 e.onNext(operationResult);
             });
