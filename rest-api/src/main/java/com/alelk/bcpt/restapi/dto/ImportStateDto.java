@@ -3,8 +3,11 @@ package com.alelk.bcpt.restapi.dto;
 import com.alelk.bcpt.importer.parsed.BcptDtoBundleInfo;
 import com.alelk.bcpt.importer.result.OperationResult;
 import com.alelk.bcpt.importer.result.Result;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Import State DTO
@@ -13,6 +16,7 @@ import java.util.List;
  */
 public class ImportStateDto {
 
+    private Date importTimestamp;
     private String importProcessId;
     private String category;
     private String fileName;
@@ -24,7 +28,7 @@ public class ImportStateDto {
     private Integer countBloodInvoices;
     private Integer countBloodPools;
     private Integer countProductBatches;
-    private List<Throwable> errors;
+    private List<String> errors;
 
     public ImportStateDto() {
     }
@@ -34,6 +38,13 @@ public class ImportStateDto {
     }
 
     public ImportStateDto(String importProcessId, String category, String fileName) {
+        this.importProcessId = importProcessId;
+        this.category = category;
+        this.fileName = fileName;
+    }
+
+    public ImportStateDto(String importProcessId, String category, String fileName, Date importTimestamp) {
+        this.importTimestamp = importTimestamp;
         this.importProcessId = importProcessId;
         this.category = category;
         this.fileName = fileName;
@@ -127,12 +138,21 @@ public class ImportStateDto {
         this.countProductBatches = countProductBatches;
     }
 
-    public List<Throwable> getErrors() {
+    public List<String> getErrors() {
         return errors;
     }
 
-    public void setErrors(List<Throwable> errors) {
+    public void setErrors(List<String> errors) {
         this.errors = errors;
+    }
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    public Date getImportTimestamp() {
+        return importTimestamp;
+    }
+
+    public void setImportTimestamp(Date importTimestamp) {
+        this.importTimestamp = importTimestamp;
     }
 
     public void applyOperationResult(OperationResult<BcptDtoBundleInfo> operationResult) {
@@ -140,7 +160,7 @@ public class ImportStateDto {
         operationName = operationResult.getOperationName();
         progress = operationResult.getProgress();
         result = operationResult.getResult();
-        errors = operationResult.getErrors();
+        errors = operationResult.getErrors() != null ? operationResult.getErrors().stream().map(Throwable::toString).collect(Collectors.toList()) : null;
         final BcptDtoBundleInfo bundleInfo = operationResult.get();
         if (bundleInfo == null) return;
         countPersons = bundleInfo.getCountPersons();
@@ -165,6 +185,7 @@ public class ImportStateDto {
                 ", countBloodPools=" + countBloodPools +
                 ", countProductBatches=" + countProductBatches +
                 ", errors=" + errors +
+                ", importTimestamp=" + importTimestamp +
                 '}';
     }
 }

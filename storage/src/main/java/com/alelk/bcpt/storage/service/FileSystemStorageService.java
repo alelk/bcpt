@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -53,6 +54,24 @@ public class FileSystemStorageService implements StorageService {
         Path filePath = location.resolve(fileName);
         try {
             Files.copy(file.getInputStream(), location.resolve(filePath), StandardCopyOption.REPLACE_EXISTING);
+            log.debug("The file '" + fileName + "' category '" + category + "': saved to '" + filePath.toAbsolutePath() + '\'');
+        } catch (IOException e) {
+            throw new BcptStorageException("Cannot store the file '" + fileName + "' in the category '" + category + '\'', e);
+        }
+    }
+
+    @Override
+    public void store(InputStream inputStream, String fileName) {
+        store(inputStream, null, fileName);
+    }
+
+    @Override
+    public void store(InputStream inputStream, String category, String fileName) {
+        Path location = location(category);
+        init(location);
+        Path filePath = location.resolve(fileName);
+        try {
+            Files.copy(inputStream, location.resolve(filePath), StandardCopyOption.REPLACE_EXISTING);
             log.debug("The file '" + fileName + "' category '" + category + "': saved to '" + filePath.toAbsolutePath() + '\'');
         } catch (IOException e) {
             throw new BcptStorageException("Cannot store the file '" + fileName + "' in the category '" + category + '\'', e);

@@ -9,6 +9,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
@@ -46,6 +47,16 @@ public class BcptStorage implements StorageService {
     @Override
     public void store(MultipartFile file, String category, String fileName) {
         storageService.store(file, category, fileName);
+    }
+
+    @Override
+    public void store(InputStream inputStream, String fileName) {
+        storageService.store(inputStream, fileName);
+    }
+
+    @Override
+    public void store(InputStream inputStream, String category, String fileName) {
+        storageService.store(inputStream, category, fileName);
     }
 
     @Override
