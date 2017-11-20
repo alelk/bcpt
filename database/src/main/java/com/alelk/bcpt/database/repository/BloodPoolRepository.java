@@ -1,6 +1,7 @@
 package com.alelk.bcpt.database.repository;
 
 import com.alelk.bcpt.database.model.BloodPoolEntity;
+import com.alelk.bcpt.database.model.ProductBatchEntity;
 import com.alelk.bcpt.database.predicate.BloodPoolPredicateBuilder;
 import com.alelk.bcpt.database.util.RepositoryUtil;
 import com.alelk.bcpt.model.pagination.Filter;
@@ -43,6 +44,12 @@ public class BloodPoolRepository {
     public BloodPoolEntity findByExternalId(String externalId) {
         Session session = em.unwrap(Session.class);
         return session.byNaturalId(BloodPoolEntity.class).using("externalId", externalId).load();
+    }
+
+    public List<BloodPoolEntity> findByProductBatch(ProductBatchEntity productBatchEntity) {
+        return em.createNamedQuery(BloodPoolEntity.QUERY_FIND_BY_PRODUCT_BATCH, BloodPoolEntity.class)
+                .setParameter(BloodPoolEntity.PARAMETER_PRODUCT_BATCH, productBatchEntity)
+                .getResultList();
     }
 
     public List<BloodPoolEntity> findAll() {

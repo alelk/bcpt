@@ -49,12 +49,17 @@
 		<dependency>
 			<groupId>com.alelk.bcpt</groupId>
 			<artifactId>model</artifactId>
-			<version>1.0.0-ALPHA</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alelk.bcpt</groupId>
 			<artifactId>database</artifactId>
-			<version>1.0.0-ALPHA</version>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alelk.bcpt</groupId>
+			<artifactId>common</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<!-- End project modules dependencies -->
 	</dependencies>

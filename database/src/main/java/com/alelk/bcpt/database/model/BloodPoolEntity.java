@@ -1,13 +1,14 @@
 package com.alelk.bcpt.database.model;
 
+import com.alelk.bcpt.common.util.StringUtil;
 import com.alelk.bcpt.database.util.Sortable;
-import com.alelk.bcpt.model.util.Util;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.Set;
 
+import static com.alelk.bcpt.database.model.BloodPoolEntity.PARAMETER_PRODUCT_BATCH;
 import static com.alelk.bcpt.database.model.BloodPoolEntity.QUERY_FIND_ALL;
+import static com.alelk.bcpt.database.model.BloodPoolEntity.QUERY_FIND_BY_PRODUCT_BATCH;
 
 /**
  * Blood Donation Pool Entity
@@ -19,10 +20,15 @@ import static com.alelk.bcpt.database.model.BloodPoolEntity.QUERY_FIND_ALL;
 @NamedQueries(value = {
         @NamedQuery(
                 name = QUERY_FIND_ALL,
-                query = "select bdpe from BloodPoolEntity bdpe"
-        )})
+                query = "select bpe from BloodPoolEntity bpe"
+        ), @NamedQuery(
+        name = QUERY_FIND_BY_PRODUCT_BATCH,
+        query = "select bpe from BloodPoolEntity bpe where bpe.productBatch=:" + PARAMETER_PRODUCT_BATCH
+)})
 public class BloodPoolEntity extends AbstractEntity {
     public static final String QUERY_FIND_ALL = "findAllBloodPools";
+    public static final String QUERY_FIND_BY_PRODUCT_BATCH = "findBloodPoolsByProductBatch";
+    public static final String PARAMETER_PRODUCT_BATCH = "pBatch";
 
     @Sortable
     private Integer poolNumber;
@@ -79,7 +85,7 @@ public class BloodPoolEntity extends AbstractEntity {
                 "id=" + getId() +
                 ", externalId='" + getExternalId() + '\'' +
                 ", poolNumber=" + poolNumber +
-                ", bloodDonations=" + Util.toString(bloodDonations)+
+                ", bloodDonations=" + StringUtil.toString(bloodDonations)+
                 ", productBatchExternalId='" + (productBatch != null ? productBatch.getExternalId() : null) + '\'' +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +

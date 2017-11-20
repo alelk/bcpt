@@ -1,7 +1,7 @@
 package com.alelk.bcpt.database.model;
 
+import com.alelk.bcpt.common.util.StringUtil;
 import com.alelk.bcpt.database.util.Sortable;
-import com.alelk.bcpt.model.util.Util;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -70,7 +70,7 @@ public class BloodInvoiceEntity extends AbstractEntity {
         return "BloodInvoiceEntity{" +
                 "id=" + getId() +
                 ", externalId='" + getExternalId() + '\'' +
-                ", bloodDonations=" + Util.toString(bloodDonations) +
+                ", bloodDonations=" + StringUtil.toString(bloodDonations) +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';

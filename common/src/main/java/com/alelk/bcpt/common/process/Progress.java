@@ -1,64 +1,64 @@
-package com.alelk.bcpt.importer.result;
+package com.alelk.bcpt.common.process;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Operation Result
+ * Process Progress
  *
  * Created by Alex Elkin on 05.10.2017.
  */
-public class OperationResult<SUBJECT> {
+public class Progress<RESULT> {
 
-    private SUBJECT subject;
-    private String operationName;
+    private RESULT result;
+    private String processName;
     private Double progress;
-    private Result result;
+    private ProcessState state;
     private List<Throwable> errors;
 
-    public OperationResult() {
+    public Progress() {
         this.progress = 0.0;
-        this.result = Result.IN_PROGRESS;
+        this.state = ProcessState.IN_PROGRESS;
     }
 
-    public OperationResult(SUBJECT subject, Double progress, Result result, List<Throwable> errors) {
-        this.subject = subject;
-        this.progress = progress;
+    public Progress(RESULT result, Double progress, ProcessState state, List<Throwable> errors) {
         this.result = result;
+        this.progress = progress;
+        this.state = state;
         this.errors = errors;
     }
 
-    public void setSubject(SUBJECT subject) {
-        this.subject = subject;
+    public void setResult(RESULT result) {
+        this.result = result;
     }
 
-    public SUBJECT get() {
-        return subject;
+    public RESULT getResult() {
+        return result;
     }
 
     public Double getProgress() {
         return progress;
     }
 
-    public Result getResult() {
-        return result;
+    public ProcessState getState() {
+        return state;
     }
 
-    public String getOperationName() {
-        return operationName;
+    public String getProcessName() {
+        return processName;
     }
 
-    public void setOperationName(String operationName) {
-        this.operationName = operationName;
+    public void setProcessName(String processName) {
+        this.processName = processName;
     }
 
     public void setProgress(Double progress) {
         this.progress = progress;
     }
 
-    public void setResult(Result result) {
-        this.result = result;
+    public void setState(ProcessState state) {
+        this.state = state;
     }
 
     public void setErrors(List<Throwable> errors) {
@@ -69,7 +69,7 @@ public class OperationResult<SUBJECT> {
         return errors;
     }
 
-    public void addErrror(Throwable error) {
+    public void addError(Throwable error) {
         if (errors == null) errors = new ArrayList<>();
         errors.add(error);
 
@@ -77,11 +77,11 @@ public class OperationResult<SUBJECT> {
 
     @Override
     public String toString() {
-        return "OperationResult{" +
-                "subject=" + subject +
-                ", operationName=" + operationName +
+        return "Progress{" +
+                "result=" + result +
+                ", processName=" + processName +
                 ", progress=" + progress +
-                ", result=" + result +
+                ", state=" + state +
                 ", errorMessages=" + (errors != null && errors.size() > 0
                 ? "[\n   " + errors.stream().map(Throwable::getLocalizedMessage).collect(Collectors.joining("\n   ")) + " ]" : "[]") +
                 '}';

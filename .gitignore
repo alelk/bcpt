@@ -1,2 +1,9 @@
 .idea
-bcpt.iml
+*.iml
+report-generator/target
+storage/target
+rest-api/target
+model/target
+importer/target
+database/target
+common/target

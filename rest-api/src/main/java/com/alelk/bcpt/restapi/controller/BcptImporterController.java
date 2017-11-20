@@ -1,8 +1,8 @@
 package com.alelk.bcpt.restapi.controller;
 
+import com.alelk.bcpt.common.process.Progress;
 import com.alelk.bcpt.importer.BcptImporter;
 import com.alelk.bcpt.importer.parsed.BcptDtoBundleInfo;
-import com.alelk.bcpt.importer.result.OperationResult;
 import com.alelk.bcpt.restapi.dto.ImportStateDto;
 import com.alelk.bcpt.storage.BcptStorage;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -66,7 +66,7 @@ public class BcptImporterController {
     }
 
     private void doDbfImport(ImportStateDto importState) throws IOException {
-        Flowable<OperationResult<BcptDtoBundleInfo>> flow = importer.importDbf(
+        Flowable<Progress<BcptDtoBundleInfo>> flow = importer.importDbf(
                 storage.loadAsResource(importState.getFileName(), "uploaded" + importState.getCategory()).getFile()
         ).subscribeOn(Schedulers.io());
         flow.sample(5, TimeUnit.SECONDS, true).subscribe(progress -> {

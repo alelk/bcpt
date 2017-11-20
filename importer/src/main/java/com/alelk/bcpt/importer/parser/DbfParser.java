@@ -1,9 +1,9 @@
 package com.alelk.bcpt.importer.parser;
 
+import com.alelk.bcpt.common.process.ProcessState;
+import com.alelk.bcpt.common.process.Progress;
 import com.alelk.bcpt.importer.exception.BcptImporterException;
 import com.alelk.bcpt.importer.parsed.BcptDtoBundle;
-import com.alelk.bcpt.importer.result.OperationResult;
-import com.alelk.bcpt.importer.result.Result;
 import com.alelk.bcpt.importer.util.Messages;
 import com.alelk.bcpt.model.BloodType;
 import com.alelk.bcpt.model.RhFactor;
@@ -58,17 +58,17 @@ public class DbfParser implements Parser {
 
 
     @Override
-    public Flowable<OperationResult<BcptDtoBundle>> parse(File file) {
-        return Flowable.create( (FlowableEmitter<OperationResult<BcptDtoBundle>> e) -> {
+    public Flowable<Progress<BcptDtoBundle>> parse(File file) {
+        return Flowable.create( (FlowableEmitter<Progress<BcptDtoBundle>> e) -> {
             final BcptDtoBundle parsedBundle = new BcptDtoBundle();
-            OperationResult<BcptDtoBundle> operationResult = new OperationResult<>(
-                    parsedBundle, 0.0, Result.IN_PROGRESS, new ArrayList<>()
+            Progress<BcptDtoBundle> progress = new Progress<>(
+                    parsedBundle, 0.0, ProcessState.IN_PROGRESS, new ArrayList<>()
             );
             InputStreamReader inputStreamReader = null;
             try {
                 if (file == null || !file.exists() || !file.isFile())
                     throw new BcptImporterException(messages.get("file.notFound", file == null ? null : file.getAbsolutePath()));
-                e.onNext(operationResult);
+                e.onNext(progress);
                 inputStreamReader = new InputStreamReader(new FileInputStream(file), "UTF-8");
                 final long fileSize = file.length();
                 long symbolsRead = 0;
@@ -80,33 +80,33 @@ public class DbfParser implements Parser {
                 do {
                     line = nextLine(bufferedReader);
                     if (line == null) {
-                        operationResult.setResult(operationResult.getErrors().size() == 0 ? Result.SUCCESS : Result.WITH_WARNINGS);
-                        operationResult.setProgress(100.0);
-                        e.onNext(operationResult);
+                        progress.setState(progress.getErrors().size() == 0 ? ProcessState.SUCCESS : ProcessState.WITH_WARNINGS);
+                        progress.setProgress(100.0);
+                        e.onNext(progress);
                         e.onComplete();
                         break;
                     }
                     symbolsRead += (line.length() + 1);
-                    operationResult.setProgress(symbolsRead * 100.0 / fileSize);
+                    progress.setProgress(symbolsRead * 100.0 / fileSize);
                     try {
                         parseRow(line, parsedBundle);
                     } catch (BcptImporterException exc) {
-                        operationResult.addErrror(exc);
-                        if (operationResult.getErrors().size() >= 200)
+                        progress.addError(exc);
+                        if (progress.getErrors().size() >= 200)
                             throw new BcptImporterException(messages.get("dbfFile.aLotOfErrors",
-                                    operationResult.getErrors().stream().map(Throwable::getLocalizedMessage).distinct()
+                                    progress.getErrors().stream().map(Throwable::getLocalizedMessage).distinct()
                             .limit(10).collect(Collectors.joining(" >> "))));
                     }
-                    e.onNext(operationResult);
+                    e.onNext(progress);
                 } while (true);
             } catch (Exception exc) {
                 Exception bcptExc = new BcptImporterException(messages.get(
                         "file.cannotRead", file != null ? file.getAbsolutePath() : null,
                         exc.getLocalizedMessage())
                 );
-                operationResult.addErrror(bcptExc);
-                operationResult.setResult(Result.FAILED);
-                e.onNext(operationResult);
+                progress.addError(bcptExc);
+                progress.setState(ProcessState.FAILED);
+                e.onNext(progress);
                 e.onError(bcptExc);
             } finally {
                 if (inputStreamReader != null) try {
@@ -155,6 +155,7 @@ public class DbfParser implements Parser {
         parsedBundle.addBloodInvoice(bloodInvoice);
     }
 
+    @SuppressWarnings("unused")
     private void saveDonation(BcptDtoBundle parsedBundle, Date donationDate, Date donationExpirationDate, String donationId, Double donationAmount, String bloodInvoiceId, String donorId) {
         BloodDonationDto bloodDonation = parsedBundle.getBloodDonation(donationId);
         if (bloodDonation == null) bloodDonation = new BloodDonationDto();
