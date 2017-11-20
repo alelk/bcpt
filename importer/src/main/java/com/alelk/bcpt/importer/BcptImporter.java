@@ -1,12 +1,12 @@
 package com.alelk.bcpt.importer;
 
+import com.alelk.bcpt.common.process.ProcessState;
+import com.alelk.bcpt.common.process.Progress;
 import com.alelk.bcpt.database.BcptDatabase;
 import com.alelk.bcpt.importer.parsed.BcptDtoBundle;
 import com.alelk.bcpt.importer.parsed.BcptDtoBundleInfo;
 import com.alelk.bcpt.importer.persist.BcptDtoBundleSaver;
-import com.alelk.bcpt.importer.result.OperationResult;
 import com.alelk.bcpt.importer.parser.DbfParser;
-import com.alelk.bcpt.importer.result.Result;
 import com.alelk.bcpt.importer.util.Messages;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
@@ -45,58 +45,58 @@ public class BcptImporter {
         this.messages = messages;
     }
 
-    public Flowable<OperationResult<BcptDtoBundle>> parseDbf(File file) {
+    public Flowable<Progress<BcptDtoBundle>> parseDbf(File file) {
         return dbfParser.parse(file);
     }
 
-    public Flowable<OperationResult<BcptDtoBundle>> saveBundle(BcptDtoBundle bundle) {
+    public Flowable<Progress<BcptDtoBundle>> saveBundle(BcptDtoBundle bundle) {
         return bundleSaver.save(bundle);
     }
 
-    public Flowable<OperationResult<BcptDtoBundleInfo>> importDbf(File file) {
-        return Flowable.create((FlowableEmitter<OperationResult<BcptDtoBundleInfo>> e) -> {
-            final OperationResult<BcptDtoBundleInfo> operationResult = new OperationResult<>();
-            operationResult.setOperationName(messages.get("importer.action.parsing", file.getAbsolutePath()));
-            e.onNext(operationResult);
-            final Flowable<OperationResult<BcptDtoBundle>> flow = parseDbf(file);
+    public Flowable<Progress<BcptDtoBundleInfo>> importDbf(File file) {
+        return Flowable.create((FlowableEmitter<Progress<BcptDtoBundleInfo>> e) -> {
+            final Progress<BcptDtoBundleInfo> progress = new Progress<>();
+            progress.setProcessName(messages.get("importer.action.parsing", file.getAbsolutePath()));
+            e.onNext(progress);
+            final Flowable<Progress<BcptDtoBundle>> flow = parseDbf(file);
             flow.subscribe(pr -> {
-                operationResult.setProgress(pr.getProgress() / 100);
-                operationResult.setResult(pr.getResult().isLessThan(Result.SUCCESS) ? pr.getResult() : Result.IN_PROGRESS);
-                operationResult.setErrors(pr.getErrors());
-                e.onNext(operationResult);
+                progress.setProgress(pr.getProgress() / 100);
+                progress.setState(pr.getState().isLessThan(ProcessState.SUCCESS) ? pr.getState() : ProcessState.IN_PROGRESS);
+                progress.setErrors(pr.getErrors());
+                e.onNext(progress);
             });
             flow.takeLast(1).subscribe(pr -> {
-                        operationResult.setOperationName(messages.get("importer.action.saving"));
-                        final List<Throwable> prErrors = operationResult.getErrors() == null ? new ArrayList<>() : operationResult.getErrors();
-                        saveBundle(pr.get()).subscribe(sr -> {
-                            operationResult.setProgress(1 + sr.getProgress() * 0.99);
-                            if (sr.getResult().isLessThan(operationResult.getResult()))
-                                operationResult.setResult(sr.getResult());
+                        progress.setProcessName(messages.get("importer.action.saving"));
+                        final List<Throwable> prErrors = progress.getErrors() == null ? new ArrayList<>() : progress.getErrors();
+                        saveBundle(pr.getResult()).subscribe(sr -> {
+                            progress.setProgress(1 + sr.getProgress() * 0.99);
+                            if (sr.getState().isLessThan(progress.getState()))
+                                progress.setState(sr.getState());
                             if (sr.getErrors() != null)
-                                operationResult.setErrors(Stream.concat(prErrors.stream(), sr.getErrors().stream()).collect(Collectors.toList()));
-                            operationResult.setSubject(BcptDtoBundleInfo.fromBundle(sr.get()));
-                            e.onNext(operationResult);
-                        }, (exc -> onException(e, operationResult, exc, file)
+                                progress.setErrors(Stream.concat(prErrors.stream(), sr.getErrors().stream()).collect(Collectors.toList()));
+                            progress.setResult(BcptDtoBundleInfo.fromBundle(sr.getResult()));
+                            e.onNext(progress);
+                        }, (exc -> onException(e, progress, exc, file)
                         ), () -> {
-                            if (operationResult.getErrors() == null || operationResult.getErrors().size() == 0) {
-                                operationResult.setResult(Result.SUCCESS);
-                                operationResult.setOperationName(messages.get("importer.state.done"));
+                            if (progress.getErrors() == null || progress.getErrors().size() == 0) {
+                                progress.setState(ProcessState.SUCCESS);
+                                progress.setProcessName(messages.get("importer.state.done"));
                             } else {
-                                operationResult.setResult(Result.WITH_WARNINGS);
-                                operationResult.setOperationName(messages.get("importer.state.doneWithWarnings"));
+                                progress.setState(ProcessState.WITH_WARNINGS);
+                                progress.setProcessName(messages.get("importer.state.doneWithWarnings"));
                             }
                             e.onComplete();
                         });
                     }
-                    , exc -> onException(e, operationResult, exc, file));
+                    , exc -> onException(e, progress, exc, file));
         }, BackpressureStrategy.LATEST).sample(1, TimeUnit.SECONDS, true).share();
     }
 
-    private void onException(FlowableEmitter<OperationResult<BcptDtoBundleInfo>> e,
-                             OperationResult<BcptDtoBundleInfo> result, Throwable exc, File file) {
-        result.addErrror(exc);
-        result.setResult(Result.FAILED);
-        result.setOperationName(messages.get("importer.state.error", file.getAbsolutePath()));
+    private void onException(FlowableEmitter<Progress<BcptDtoBundleInfo>> e,
+                             Progress<BcptDtoBundleInfo> result, Throwable exc, File file) {
+        result.addError(exc);
+        result.setState(ProcessState.FAILED);
+        result.setProcessName(messages.get("importer.state.error", file.getAbsolutePath()));
         e.onNext(result);
         e.onComplete();
     }

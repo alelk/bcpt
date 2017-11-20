@@ -93,6 +93,14 @@ public class BloodPoolService {
                 filterList);
     }
 
+    @Transactional(readOnly = true)
+    public List<BloodPoolDto> findByProductBatch(String productBatchExternalId) {
+        ProductBatchEntity batchEntity = findProductBatchEntityByExternalId(productBatchExternalId,
+                "Cannot find blood pools by product batch external id:");
+        return bloodPoolRepository.findByProductBatch(batchEntity)
+                .stream().map(DatabaseUtil::mapBloodPoolEntityToDto).collect(Collectors.toList());
+    }
+
 
     @Transactional(readOnly = true)
     public BloodPoolDto findByExternalId(String externalId) {

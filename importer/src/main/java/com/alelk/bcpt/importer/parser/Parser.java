@@ -1,11 +1,10 @@
 package com.alelk.bcpt.importer.parser;
 
+import com.alelk.bcpt.common.process.Progress;
 import com.alelk.bcpt.importer.parsed.BcptDtoBundle;
-import com.alelk.bcpt.importer.result.OperationResult;
 import io.reactivex.Flowable;
 
 import java.io.File;
-import java.io.InputStream;
 
 
 /**
@@ -15,6 +14,6 @@ import java.io.InputStream;
  */
 public interface Parser {
 
-    Flowable<OperationResult<BcptDtoBundle>> parse(File file);
+    Flowable<Progress<BcptDtoBundle>> parse(File file);
 
 }

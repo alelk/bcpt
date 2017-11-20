@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -8,9 +8,9 @@
 		<version>1.0.0-ALPHA</version>
 	</parent>
 
-	<artifactId>model</artifactId>
+	<artifactId>common</artifactId>
 	<packaging>jar</packaging>
-	<name>BCPT Model</name>
+	<name>BCPT Common</name>
 
 	<build>
 		<pluginManagement>
@@ -29,17 +29,5 @@
 	</build>
 
 	<dependencies>
-		<!-- jackson dependency -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alelk.bcpt</groupId>
-			<artifactId>common</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<!-- end jackson dependency -->
 	</dependencies>
 </project>

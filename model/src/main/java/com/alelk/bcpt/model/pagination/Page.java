@@ -1,7 +1,7 @@
 package com.alelk.bcpt.model.pagination;
 
+import com.alelk.bcpt.common.util.StringUtil;
 import com.alelk.bcpt.model.dto.BcptDto;
-import com.alelk.bcpt.model.util.Util;
 
 import java.util.List;
 
@@ -99,8 +99,8 @@ public class Page<T extends BcptDto> {
                 "pageNumber=" + pageNumber +
                 ", itemsPerPage=" + itemsPerPage +
                 ", items=" + (items != null ? "[" + items.size() + " elements]" : null) +
-                ", sortByList=" + Util.toString(sortByList) +
-                ", filterList=" + Util.toString(filterList) +
+                ", sortByList=" + StringUtil.toString(sortByList) +
+                ", filterList=" + StringUtil.toString(filterList) +
                 '}';
     }
 }

@@ -1,12 +1,11 @@
 package com.alelk.bcpt.restapi.controller;
 
+import com.alelk.bcpt.common.util.StringUtil;
 import com.alelk.bcpt.database.service.BloodPoolService;
-import com.alelk.bcpt.model.dto.BloodInvoiceDto;
 import com.alelk.bcpt.model.dto.BloodPoolDto;
 import com.alelk.bcpt.model.pagination.Filter;
 import com.alelk.bcpt.model.pagination.Page;
 import com.alelk.bcpt.model.pagination.SortBy;
-import com.alelk.bcpt.model.util.Util;
 import com.alelk.bcpt.restapi.request.BloodPoolCreateRequest;
 import com.alelk.bcpt.restapi.request.BloodPoolDeleteRequest;
 import com.alelk.bcpt.restapi.request.BloodPoolUpdateRequest;
@@ -59,7 +58,7 @@ public class BloodPoolController {
         final List<SortBy> sortByList = RestApiUtil.parseSortParams(sortBy);
         final List<Filter> filterList = RestApiUtil.parseFilterParams(filter);
         log.debug("Request /bloodPools/page/" + pageNumber + "?itemsPerPage=" + itemsPerPage + ": sortBy=" +
-                Util.toString(sortByList) + " filter=" + Util.toString(filterList));
+                StringUtil.toString(sortByList) + " filter=" + StringUtil.toString(filterList));
         return bloodPoolService.findAll(pageNumber, itemsPerPage == null ? 100 : itemsPerPage, sortByList, filterList);
     }
 

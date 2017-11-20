@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="BCPT Product Batch Report" pageWidth="842" pageHeight="595" columnWidth="800"
+              orientation="Landscape" leftMargin="22" rightMargin="20" topMargin="30" bottomMargin="30">
+
+    <style fontName="DejaVu Sans" name="base" isDefault="true" fontSize="10" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+
+    <style fontName="DejaVu Sans" name="document_title" isBold="true" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+    <style fontName="DejaVu Sans" name="table_header_cell" mode="Opaque" backcolor="#280f5e" forecolor="#FFFFFF" isBold="true" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H" isPdfEmbedded="true">
+        <box>
+            <pen lineWidth="0.5" lineColor="#999999"/>
+            <topPen lineWidth="0.5" lineColor="#999999"/>
+            <leftPen lineWidth="0.5" lineColor="#999999"/>
+            <bottomPen lineWidth="0.5" lineColor="#999999"/>
+            <rightPen lineWidth="0.5" lineColor="#999999"/>
+        </box>
+    </style>
+    <style name="table_data_cell" mode="Opaque" backcolor="#edeaf2">
+        <box>
+            <pen lineWidth="0.5" lineColor="#999999"/>
+            <topPen lineWidth="0.5" lineColor="#999999"/>
+            <leftPen lineWidth="0.5" lineColor="#999999"/>
+            <bottomPen lineWidth="0.5" lineColor="#999999"/>
+            <rightPen lineWidth="0.5" lineColor="#999999"/>
+        </box>
+    </style>
+    <parameter name="productBatch" class="com.alelk.bcpt.model.dto.ProductBatchDto"/>
+
+    <field name="bloodPool" class="com.alelk.bcpt.model.dto.BloodPoolDto"/>
+
+    <variable name="productBatchDate" class="java.util.Date">
+        <variableExpression><![CDATA[$P{productBatch}.getBatchDate()]]></variableExpression>
+    </variable>
+    <variable name="productBatchTotalAmount" class="java.lang.Double">
+        <variableExpression><![CDATA[$P{productBatch}.getTotalAmount()]]></variableExpression>
+    </variable>
+    <variable name="bloodPoolNumber" class="java.lang.Integer">
+        <variableExpression><![CDATA[$F{bloodPool}.getPoolNumber()]]></variableExpression>
+    </variable>
+
+    <title>
+        <band height="110" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="0" width="800" height="20" uuid="a51e9b43-e80d-4af5-a1c0-4184fe625606"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <text><![CDATA[ГБУЗ Нижегородской области Нижегородский областной центр крови им. Н. Я. Климовой. Отдел производства препаратов]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="20" width="800" height="20" uuid="f3b8e1dd-2610-47e3-bfce-8484560aac8f"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[ПРОТОКОЛ ФОРМИРОВАНИЯ ПУЛОВ]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="44" width="400" height="20" uuid="76f98525-1a18-48ae-895d-035860aa3d62"/>
+                <textElement verticalAlignment="Middle"/>
+                <text><![CDATA[Наименование продукта:]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="64" width="200" height="20" uuid="06de6d84-a550-45bd-9610-9dd104977e01"/>
+                <textElement verticalAlignment="Middle"/>
+                <text><![CDATA[Номер загрузки: ]]></text>
+            </staticText>
+            <textField isBlankWhenNull="true">
+                <reportElement x="200" y="64" width="200" height="20" uuid="06de6d84-a550-45bd-9610-9dd104977e01"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{productBatch}.getBatchNumber()]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="0" y="84" width="400" height="20" uuid="6b318136-9f84-4bf1-ab4e-e4f72525831d"/>
+                <textElement verticalAlignment="Middle"/>
+                <text><![CDATA[Наименование поставщика:]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="400" y="44" width="400" height="20" uuid="73e69e01-e808-484e-a8ef-246f957d697e"/>
+                <textElement verticalAlignment="Middle"/>
+                <text><![CDATA[Место проведения:]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="400" y="64" width="200" height="20" uuid="6e98df37-8391-49e3-a6dc-ed8c9cd3d7db"/>
+                <textElement verticalAlignment="Middle"/>
+                <text><![CDATA[Дата загрузки: ]]></text>
+            </staticText>
+            <textField pattern="dd MMMMM yyyy г." isBlankWhenNull="true">
+                <reportElement x="600" y="64" width="200" height="20" uuid="6e98df37-8391-49e3-a6dc-ed8c9cd3d7db"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{productBatch}.getBatchDate()]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <pageHeader>
+        <band height="60" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="0" width="30" height="60" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[№ пула]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="30" y="0" width="60" height="60" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Номер накладной]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="90" y="0" width="50" height="60" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Номер серии ПДФ]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="140" y="0" width="220" height="60" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Номера емкостей]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="360" y="0" width="40" height="60" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Объем, мл]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="760" y="0" width="40" height="60" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Заключение ОКК]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="460" y="0" width="300" height="20" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Результаты анализов]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="700" y="20" width="30" height="40" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[pH]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="660" y="20" width="40" height="40" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[ПЦР]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="620" y="20" width="40" height="40" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[АЛАТ]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="580" y="20" width="40" height="40" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[At к возб. сиф.]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="730" y="20" width="30" height="40" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[конц. белка]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="540" y="20" width="40" height="40" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Ag и At к ВИЧ-1 ВИЧ-2]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="500" y="20" width="40" height="40" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[At к вирусу геп. C]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="460" y="20" width="40" height="40" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[HBsAg]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="430" y="0" width="30" height="60" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Объем контроля, мл]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="400" y="0" width="30" height="60" style="table_header_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Количество доз]]></text>
+            </staticText>
+        </band>
+    </pageHeader>
+
+    <detail>
+        <band splitType="Stretch" height="40">
+            <textField isBlankWhenNull="true">
+                <reportElement x="0" y="0" width="30" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{bloodPool}.getPoolNumber()]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="30" y="0" width="60" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA["100044120"]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="90" y="0" width="50" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[130317]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true" isStretchWithOverflow="true">
+                <reportElement x="140" y="0" width="220" height="40" style="table_data_cell"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{bloodPool}.getBloodDonations()]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="360" y="0" width="40" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{bloodPool}.getTotalAmount().intValue()]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="400" y="0" width="30" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{bloodPool}.getBloodDonations().size()]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="430" y="0" width="30" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[10]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="460" y="0" width="40" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="500" y="0" width="40" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="540" y="0" width="40" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="580" y="0" width="40" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="620" y="0" width="40" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="660" y="0" width="40" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="700" y="0" width="30" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="730" y="0" width="30" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="760" y="0" width="40" height="40" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+            </textField>
+        </band>
+    </detail>
+    <pageFooter>
+        <band height="20">
+            <textField>
+                <reportElement mode="Transparent" x="0" y="7" width="515" height="13"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA["Страница "+$V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report">
+                <reportElement mode="Transparent" x="515" y="7" width="40" height="13"/>
+                <textFieldExpression><![CDATA[" из " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+</jasperReport>

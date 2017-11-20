@@ -1,10 +1,10 @@
 package com.alelk.bcpt.importer.persist;
 
+import com.alelk.bcpt.common.process.ProcessState;
+import com.alelk.bcpt.common.process.Progress;
 import com.alelk.bcpt.database.service.*;
 import com.alelk.bcpt.importer.exception.BcptImporterException;
 import com.alelk.bcpt.importer.parsed.BcptDtoBundle;
-import com.alelk.bcpt.importer.result.OperationResult;
-import com.alelk.bcpt.importer.result.Result;
 import com.alelk.bcpt.importer.util.Messages;
 import com.alelk.bcpt.model.dto.*;
 import io.reactivex.BackpressureStrategy;
@@ -37,10 +37,10 @@ public class BcptDtoBundleSaver {
     }
 
     @SuppressWarnings("unchecked")
-    public Flowable<OperationResult<BcptDtoBundle>> save(BcptDtoBundle bundle) {
-        return Flowable.create((FlowableEmitter<OperationResult<BcptDtoBundle>> e) -> {
+    public Flowable<Progress<BcptDtoBundle>> save(BcptDtoBundle bundle) {
+        return Flowable.create((FlowableEmitter<Progress<BcptDtoBundle>> e) -> {
             final BcptDtoBundle bcptDtoBundle = new BcptDtoBundle();
-            final OperationResult<BcptDtoBundle> result = new OperationResult<>(bcptDtoBundle, 0.0, Result.IN_PROGRESS, new ArrayList<>());
+            final Progress<BcptDtoBundle> result = new Progress<>(bcptDtoBundle, 0.0, ProcessState.IN_PROGRESS, new ArrayList<>());
             try {
                 if (bundle == null) throw new BcptImporterException("Incorrect argument provided: bundle=" + null);
                 final long countObjects = countObjects(bundle);
@@ -53,42 +53,42 @@ public class BcptDtoBundleSaver {
                 if (bundle.getPersons() != null)
                     persistDtos(bundle.getPersons().values(),
                             bcptDtoBundle::addPerson,
-                            result::addErrror,
+                            result::addError,
                             (Consumer<PersonDto>) onOneProcessed
                     );
                 if (bundle.getBloodDonations() != null)
                     persistDtos(bundle.getBloodDonations().values(),
                             bcptDtoBundle::addBloodDonation,
-                            result::addErrror,
+                            result::addError,
                             (Consumer<BloodDonationDto>) onOneProcessed
                     );
                 if (bundle.getBloodInvoices() != null)
                     persistDtos(bundle.getBloodInvoices().values(),
                             bcptDtoBundle::addBloodInvoice,
-                            result::addErrror,
+                            result::addError,
                             (Consumer<BloodInvoiceDto>) onOneProcessed
                     );
                 if (bundle.getBloodPools() != null)
                     persistDtos(bundle.getBloodPools().values(),
                             bcptDtoBundle::addBloodPool,
-                            result::addErrror,
+                            result::addError,
                             (Consumer<BloodPoolDto>) onOneProcessed
                     );
                 if (bundle.getProductBatches() != null)
                     persistDtos(bundle.getProductBatches().values(),
                             bcptDtoBundle::addProductBatch,
-                            result::addErrror,
+                            result::addError,
                             (Consumer<ProductBatchDto>) onOneProcessed
                     );
                 result.setProgress(100.0);
-                result.setResult(result.getErrors() != null && result.getErrors().size() > 0 ? Result.WITH_WARNINGS : Result.SUCCESS);
+                result.setState(result.getErrors() != null && result.getErrors().size() > 0 ? ProcessState.WITH_WARNINGS : ProcessState.SUCCESS);
                 e.onNext(result);
                 e.onComplete();
 
             } catch (Exception exc) {
                 Exception exception = new BcptImporterException(messages.get("saver.unableSave", exc.getLocalizedMessage()));
-                result.addErrror(exception);
-                result.setResult(Result.FAILED);
+                result.addError(exception);
+                result.setState(ProcessState.FAILED);
                 e.onNext(result);
                 e.onError(exception);
             }

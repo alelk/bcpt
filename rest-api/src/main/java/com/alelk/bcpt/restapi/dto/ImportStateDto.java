@@ -1,8 +1,8 @@
 package com.alelk.bcpt.restapi.dto;
 
+import com.alelk.bcpt.common.process.ProcessState;
+import com.alelk.bcpt.common.process.Progress;
 import com.alelk.bcpt.importer.parsed.BcptDtoBundleInfo;
-import com.alelk.bcpt.importer.result.OperationResult;
-import com.alelk.bcpt.importer.result.Result;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -22,7 +22,7 @@ public class ImportStateDto {
     private String fileName;
     private String operationName;
     private Double progress;
-    private Result result;
+    private ProcessState processState;
     private Integer countPersons;
     private Integer countBloodDonations;
     private Integer countBloodInvoices;
@@ -90,12 +90,12 @@ public class ImportStateDto {
         this.progress = progress;
     }
 
-    public Result getResult() {
-        return result;
+    public ProcessState getProcessState() {
+        return processState;
     }
 
-    public void setResult(Result result) {
-        this.result = result;
+    public void setProcessState(ProcessState processState) {
+        this.processState = processState;
     }
 
     public Integer getCountPersons() {
@@ -155,13 +155,13 @@ public class ImportStateDto {
         this.importTimestamp = importTimestamp;
     }
 
-    public void applyOperationResult(OperationResult<BcptDtoBundleInfo> operationResult) {
-        if (operationResult == null) return;
-        operationName = operationResult.getOperationName();
-        progress = operationResult.getProgress();
-        result = operationResult.getResult();
-        errors = operationResult.getErrors() != null ? operationResult.getErrors().stream().map(Throwable::toString).collect(Collectors.toList()) : null;
-        final BcptDtoBundleInfo bundleInfo = operationResult.get();
+    public void applyOperationResult(Progress<BcptDtoBundleInfo> progress) {
+        if (progress == null) return;
+        operationName = progress.getProcessName();
+        this.progress = progress.getProgress();
+        processState = progress.getState();
+        errors = progress.getErrors() != null ? progress.getErrors().stream().map(Throwable::toString).collect(Collectors.toList()) : null;
+        final BcptDtoBundleInfo bundleInfo = progress.getResult();
         if (bundleInfo == null) return;
         countPersons = bundleInfo.getCountPersons();
         countBloodDonations = bundleInfo.getCountBloodDonations();
@@ -178,7 +178,7 @@ public class ImportStateDto {
                 ", fileName='" + fileName + '\'' +
                 ", operationName='" + operationName + '\'' +
                 ", progress=" + progress +
-                ", result=" + result +
+                ", processState=" + processState +
                 ", countPersons=" + countPersons +
                 ", countBloodDonations=" + countBloodDonations +
                 ", countBloodInvoices=" + countBloodInvoices +
