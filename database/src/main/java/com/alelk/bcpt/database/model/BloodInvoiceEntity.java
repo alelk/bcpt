@@ -7,7 +7,9 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
+import static com.alelk.bcpt.database.model.BloodInvoiceEntity.PARAMETER_PRODUCT_BATCH;
 import static com.alelk.bcpt.database.model.BloodInvoiceEntity.QUERY_FIND_ALL;
+import static com.alelk.bcpt.database.model.BloodInvoiceEntity.QUERY_FIND_BY_PRODUCT_BATCH;
 
 /**
  * Blood Donation Delivery Entity
@@ -19,10 +21,17 @@ import static com.alelk.bcpt.database.model.BloodInvoiceEntity.QUERY_FIND_ALL;
 @NamedQueries(value = {
         @NamedQuery(
                 name = QUERY_FIND_ALL,
-                query = "select bdde from BloodInvoiceEntity bdde"
+                query = "select bi from BloodInvoiceEntity bi"
+        ),
+        @NamedQuery(
+                name = QUERY_FIND_BY_PRODUCT_BATCH,
+                query = "select distinct bi from BloodPoolEntity as bp " +
+                        "inner join bp.bloodDonations as bd inner join bd.bloodInvoice as bi where bp.productBatch=:" + PARAMETER_PRODUCT_BATCH
         )})
 public class BloodInvoiceEntity extends AbstractEntity {
     public static final String QUERY_FIND_ALL = "findAllBloodInvoices";
+    public static final String QUERY_FIND_BY_PRODUCT_BATCH = "findAllBloodInvoicesByProductBatch";
+    public static final String PARAMETER_PRODUCT_BATCH = "pBatch";
 
     @Sortable
     @Temporal(TemporalType.TIMESTAMP)

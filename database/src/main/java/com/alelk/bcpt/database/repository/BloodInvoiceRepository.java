@@ -1,6 +1,7 @@
 package com.alelk.bcpt.database.repository;
 
 import com.alelk.bcpt.database.model.BloodInvoiceEntity;
+import com.alelk.bcpt.database.model.ProductBatchEntity;
 import com.alelk.bcpt.database.predicate.BloodInvoicePredicateBuilder;
 import com.alelk.bcpt.database.util.RepositoryUtil;
 import com.alelk.bcpt.model.pagination.Filter;
@@ -46,6 +47,12 @@ public class BloodInvoiceRepository {
 
     public List<BloodInvoiceEntity> findAll() {
         return em.createNamedQuery(BloodInvoiceEntity.QUERY_FIND_ALL, BloodInvoiceEntity.class).getResultList();
+    }
+
+    public List<BloodInvoiceEntity> findByProductBatch(ProductBatchEntity productBatchEntity) {
+        return em.createNamedQuery(BloodInvoiceEntity.QUERY_FIND_BY_PRODUCT_BATCH, BloodInvoiceEntity.class)
+                .setParameter(BloodInvoiceEntity.PARAMETER_PRODUCT_BATCH, productBatchEntity)
+                .getResultList();
     }
 
     public Long countItems() {
