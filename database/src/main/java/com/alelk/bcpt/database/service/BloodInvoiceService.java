@@ -3,9 +3,11 @@ package com.alelk.bcpt.database.service;
 import com.alelk.bcpt.database.builder.BloodInvoiceEntityBuilder;
 import com.alelk.bcpt.database.model.BloodInvoiceEntity;
 import com.alelk.bcpt.database.model.BloodPoolEntity;
+import com.alelk.bcpt.database.model.ProductBatchEntity;
 import com.alelk.bcpt.database.repository.BloodDonationRepository;
 import com.alelk.bcpt.database.repository.BloodInvoiceRepository;
 import com.alelk.bcpt.database.repository.BloodPoolRepository;
+import com.alelk.bcpt.database.repository.ProductBatchRepository;
 import com.alelk.bcpt.database.util.DatabaseUtil;
 import com.alelk.bcpt.model.dto.BloodInvoiceDto;
 import com.alelk.bcpt.model.pagination.Filter;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 import static com.alelk.bcpt.database.util.ValidationUtil.validateNotEmpty;
 import static com.alelk.bcpt.database.util.ValidationUtil.validateNotNull;
 import static com.alelk.bcpt.database.util.ServiceUtil.getBloodDonationEntitiesByExternalIds;
+import static com.alelk.bcpt.database.util.ServiceUtil.getProductBatchEntityByExternalId;
 
 /**
  * Blood Donation Delivery Service
@@ -34,12 +37,14 @@ public class BloodInvoiceService {
     private BloodInvoiceRepository bloodInvoiceRepository;
     private BloodDonationRepository bloodDonationRepository;
     private BloodPoolRepository bloodPoolRepository;
+    private ProductBatchRepository productBatchRepository;
 
     @Autowired
-    BloodInvoiceService(BloodInvoiceRepository bloodInvoiceRepository, BloodDonationRepository bloodDonationRepository, BloodPoolRepository bloodPoolRepository) {
+    BloodInvoiceService(BloodInvoiceRepository bloodInvoiceRepository, BloodDonationRepository bloodDonationRepository, BloodPoolRepository bloodPoolRepository, ProductBatchRepository productBatchRepository) {
         this.bloodInvoiceRepository = bloodInvoiceRepository;
         this.bloodDonationRepository = bloodDonationRepository;
         this.bloodPoolRepository = bloodPoolRepository;
+        this.productBatchRepository = productBatchRepository;
     }
 
     @Transactional
@@ -89,6 +94,14 @@ public class BloodInvoiceService {
                 bloodInvoiceRepository.countItems(filterList),
                 sortByList,
                 filterList);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BloodInvoiceDto> findByProductBatch(String productBatchExternalId) {
+        ProductBatchEntity batchEntity = getProductBatchEntityByExternalId(productBatchRepository, productBatchExternalId,
+                "Cannot find blood invoices by product batch external id:");
+        return bloodInvoiceRepository.findByProductBatch(batchEntity)
+                .stream().map(DatabaseUtil::mapBloodInvoiceEntityToDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

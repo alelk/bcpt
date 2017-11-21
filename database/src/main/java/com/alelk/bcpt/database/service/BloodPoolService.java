@@ -1,6 +1,5 @@
 package com.alelk.bcpt.database.service;
 
-import com.alelk.bcpt.database.builder.BloodPoolDtoBuilder;
 import com.alelk.bcpt.database.builder.BloodPoolEntityBuilder;
 import com.alelk.bcpt.database.model.BloodPoolEntity;
 import com.alelk.bcpt.database.model.ProductBatchEntity;
@@ -20,10 +19,11 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.alelk.bcpt.database.util.DatabaseUtil.mapBloodPoolEntityToDto;
 import static com.alelk.bcpt.database.util.ServiceUtil.getBloodDonationEntitiesByExternalIds;
+import static com.alelk.bcpt.database.util.ServiceUtil.getProductBatchEntityByExternalId;
 import static com.alelk.bcpt.database.util.ValidationUtil.validateNotEmpty;
 import static com.alelk.bcpt.database.util.ValidationUtil.validateNotNull;
-import static com.alelk.bcpt.database.util.DatabaseUtil.mapBloodPoolEntityToDto;
 
 /**
  * Blood Donation Pool Service
@@ -52,7 +52,7 @@ public class BloodPoolService {
         return mapBloodPoolEntityToDto(
                 bloodPoolRepository.save(new BloodPoolEntityBuilder().apply(dto)
                         .apply(getBloodDonationEntitiesByExternalIds(bloodDonationRepository, dto.getBloodDonations(), message))
-                        .apply(findProductBatchEntityByExternalId(dto.getProductBatch(), message))
+                        .apply(getProductBatchEntityByExternalId(productBatchRepository, dto.getProductBatch(), message))
                         .build())
         );
     }
@@ -69,7 +69,7 @@ public class BloodPoolService {
                 new BloodPoolEntityBuilder(entity, mergeWithNullValues, softUpdate)
                         .apply(dto)
                         .apply(getBloodDonationEntitiesByExternalIds(bloodDonationRepository, dto.getBloodDonations(), message))
-                        .apply(findProductBatchEntityByExternalId(dto.getProductBatch(), message))
+                        .apply(getProductBatchEntityByExternalId(productBatchRepository, dto.getProductBatch(), message))
                         .build()
         );
     }
@@ -95,7 +95,7 @@ public class BloodPoolService {
 
     @Transactional(readOnly = true)
     public List<BloodPoolDto> findByProductBatch(String productBatchExternalId) {
-        ProductBatchEntity batchEntity = findProductBatchEntityByExternalId(productBatchExternalId,
+        ProductBatchEntity batchEntity = getProductBatchEntityByExternalId(productBatchRepository, productBatchExternalId,
                 "Cannot find blood pools by product batch external id:");
         return bloodPoolRepository.findByProductBatch(batchEntity)
                 .stream().map(DatabaseUtil::mapBloodPoolEntityToDto).collect(Collectors.toList());
@@ -119,13 +119,6 @@ public class BloodPoolService {
     @Transactional
     public boolean isIdExists(String externalId) {
         return !StringUtils.isEmpty(externalId) && findEntityByExternalId(externalId, "Error checking if the blood pool exists: ") != null;
-    }
-
-    private ProductBatchEntity findProductBatchEntityByExternalId(String externalId, String message) {
-        if (StringUtils.isEmpty(externalId)) return null;
-        ProductBatchEntity pbe = productBatchRepository.findByExternalId(externalId);
-        validateNotNull(pbe, message + "Cannot find product batch for external id '" + externalId + '\'');
-        return pbe;
     }
 
     private BloodPoolEntity findEntityByExternalId(String externalId, String message) {

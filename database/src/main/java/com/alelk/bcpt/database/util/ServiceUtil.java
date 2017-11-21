@@ -1,7 +1,9 @@
 package com.alelk.bcpt.database.util;
 
 import com.alelk.bcpt.database.model.BloodDonationEntity;
+import com.alelk.bcpt.database.model.ProductBatchEntity;
 import com.alelk.bcpt.database.repository.BloodDonationRepository;
+import com.alelk.bcpt.database.repository.ProductBatchRepository;
 import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
@@ -26,5 +28,12 @@ public class ServiceUtil {
             bloodDonationEntities.add(bde);
         });
         return bloodDonationEntities.size() > 0 ? bloodDonationEntities : null;
+    }
+
+    public static ProductBatchEntity getProductBatchEntityByExternalId(ProductBatchRepository repository, String externalId, String message) {
+        if (StringUtils.isEmpty(externalId)) return null;
+        ProductBatchEntity pbe = repository.findByExternalId(externalId);
+        validateNotNull(pbe, message + "Cannot find product batch for external id '" + externalId + '\'');
+        return pbe;
     }
 }

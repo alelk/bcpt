@@ -2,6 +2,7 @@ package com.alelk.bcpt.reportgenerator;
 
 import com.alelk.bcpt.common.util.StringUtil;
 import com.alelk.bcpt.database.BcptDatabase;
+import com.alelk.bcpt.model.dto.BloodInvoiceDto;
 import com.alelk.bcpt.model.dto.BloodPoolDto;
 import com.alelk.bcpt.model.dto.ProductBatchDto;
 import com.alelk.bcpt.reportgenerator.datasource.BloodPoolsDataSource;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Report Generator Main class for the testing
@@ -36,16 +38,15 @@ public class ReportGeneratorMain {
 
         BcptDatabase database = BcptDatabase.getInstance();
 
-        Map<String, Object> parameters = new LinkedHashMap<>();
-        ProductBatchDto productBatchDto = database.getProductBatchService().findByExternalId("2017-1");
+        ProductBatchDto productBatchDto = database.getProductBatchService().findByExternalId("2017-50");
         log.info("Product batch: " + productBatchDto);
-        List<BloodPoolDto> bloodPools = database.getBloodPoolService().findByProductBatch("2017-1");
+        List<BloodPoolDto> bloodPools = database.getBloodPoolService().findByProductBatch("2017-50");
         log.info("Blood pools: {}", bloodPools);
-
-        parameters.put("productBatch", productBatchDto);
+        List<BloodInvoiceDto> bloodInvoices = database.getBloodInvoiceService().findByProductBatch("2017-50");
+        log.info("Blood invoices: {}", bloodInvoices.stream().map(BloodInvoiceDto::getExternalId).collect(Collectors.toList()));
 
         try {
-            JasperPrint print = JasperFillManager.fillReport(report, parameters, new BloodPoolsDataSource(bloodPools));
+            JasperPrint print = JasperFillManager.fillReport(report, new LinkedHashMap<>(), new BloodPoolsDataSource(productBatchDto, bloodPools, bloodInvoices));
             JasperViewer.viewReport(print);
         } catch (JRException e) {
             e.printStackTrace();
