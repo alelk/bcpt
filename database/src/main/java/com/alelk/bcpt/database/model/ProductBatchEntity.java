@@ -1,7 +1,6 @@
 package com.alelk.bcpt.database.model;
 
 import com.alelk.bcpt.database.util.Sortable;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -31,6 +30,18 @@ public class ProductBatchEntity extends AbstractEntity {
     @Sortable
     private Date batchDate;
 
+    @Sortable
+    private String location;
+
+    @Sortable
+    private String batchAuthor;
+
+    @Sortable
+    private String productProvider;
+
+    @Sortable
+    private String productName;
+
     @OneToMany
     @JoinColumn(name = "productbatch_id")
     private Set<BloodPoolEntity> bloodPools;
@@ -38,9 +49,14 @@ public class ProductBatchEntity extends AbstractEntity {
     public ProductBatchEntity() {
     }
 
-    public ProductBatchEntity(String externalId, Integer batchNumber, Date batchDate, Set<BloodPoolEntity> bloodPools) {
+    public ProductBatchEntity(String externalId, Integer batchNumber, Date batchDate, String location, String batchAuthor, String productProvider, String productName, Set<BloodPoolEntity> bloodPools) {
         super(externalId);
+        this.batchNumber = batchNumber;
         this.batchDate = batchDate;
+        this.location = location;
+        this.batchAuthor = batchAuthor;
+        this.productProvider = productProvider;
+        this.productName = productName;
         this.bloodPools = bloodPools;
     }
 
@@ -73,18 +89,48 @@ public class ProductBatchEntity extends AbstractEntity {
         return bloodPools.stream().mapToDouble(BloodPoolEntity::getTotalAmount).sum();
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getBatchAuthor() {
+        return batchAuthor;
+    }
+
+    public void setBatchAuthor(String batchAuthor) {
+        this.batchAuthor = batchAuthor;
+    }
+
+    public String getProductProvider() {
+        return productProvider;
+    }
+
+    public void setProductProvider(String productProvider) {
+        this.productProvider = productProvider;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
     @Override
     public String toString() {
         return "ProductBatchEntity{" +
-                "id=" + getId() +
-                ", externalId='" + getExternalId() + '\'' +
-                ", batchNumber=" + batchNumber +
+                "batchNumber=" + batchNumber +
                 ", batchDate=" + batchDate +
-                ", bloodPools=" + (bloodPools != null
-                ? '[' + bloodPools.stream().map(AbstractEntity::getExternalId).collect(Collectors.joining(", ")) + ']'
-                : null) +
-                ", creationTimestamp=" + getCreationTimestamp() +
-                ", updateTimestamp=" + getUpdateTimestamp() +
-                '}';
+                ", location='" + location + '\'' +
+                ", batchAuthor='" + batchAuthor + '\'' +
+                ", productProvider='" + productProvider + '\'' +
+                ", productName='" + productName + '\'' +
+                ", bloodPools=[" + (bloodPools == null ? "" : bloodPools.stream().map(BloodPoolEntity::getExternalId).collect(Collectors.joining(", "))) +
+                "]}";
     }
 }

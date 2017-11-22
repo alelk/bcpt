@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-11-21T13:41:55 -->
+<!-- 2017-11-21T14:41:44 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BCPT Product Batch Report" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="800" leftMargin="22" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eaf72290-3b7d-4186-91fa-756baa83b6fb">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="base" isDefault="true" fontName="DejaVu Sans" fontSize="10" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
@@ -42,7 +42,7 @@
 				<text><![CDATA[ПРОТОКОЛ ФОРМИРОВАНИЯ ПУЛОВ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="44" width="400" height="20" uuid="76f98525-1a18-48ae-895d-035860aa3d62"/>
+				<reportElement x="0" y="44" width="200" height="20" uuid="76f98525-1a18-48ae-895d-035860aa3d62"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Наименование продукта:]]></text>
 			</staticText>
@@ -57,12 +57,12 @@
 				<textFieldExpression><![CDATA[$F{productBatch}.getBatchNumber()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="84" width="400" height="20" uuid="6b318136-9f84-4bf1-ab4e-e4f72525831d"/>
+				<reportElement x="0" y="84" width="200" height="20" uuid="6b318136-9f84-4bf1-ab4e-e4f72525831d"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Наименование поставщика:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="44" width="400" height="20" uuid="73e69e01-e808-484e-a8ef-246f957d697e"/>
+				<reportElement x="400" y="44" width="200" height="20" uuid="73e69e01-e808-484e-a8ef-246f957d697e"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Место проведения:]]></text>
 			</staticText>
@@ -107,6 +107,7 @@
 			<textField isBlankWhenNull="true">
 				<reportElement x="400" y="130" width="400" height="20" uuid="9c1bb472-27c7-4a1a-a809-13f9335bf89f"/>
 				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{productBatch}.getBatchAuthor()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="150" width="400" height="20" uuid="13e39e7b-e1f2-4f49-88cb-9955cfe67988"/>
@@ -140,6 +141,21 @@
 			<line>
 				<reportElement x="0" y="210" width="800" height="1" forecolor="#D8EBE0" uuid="f2f4cb39-fb1e-418d-a21a-310e33d44cb3"/>
 			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="200" y="44" width="200" height="20" uuid="fd14212d-debe-4f42-8c59-40d205542d94"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{productBatch}.getProductName()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="200" y="84" width="200" height="20" uuid="26098e5e-6add-4540-b0ce-856669b6f65c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{productBatch}.getProductProvider()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="600" y="44" width="200" height="20" uuid="24f33c29-14a0-4438-9fdc-1740d8e8e25b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{productBatch}.getLocation()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -297,7 +313,7 @@
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="150" y="0" width="300" height="40" uuid="e296c779-d40a-4d98-969e-e4818c77be4c"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bloodDonationIds}]]></textFieldExpression>

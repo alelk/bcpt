@@ -35,6 +35,10 @@ public class ProductBatchEntityBuilder extends AbstractEntityBuilder<ProductBatc
         if (dto == null) return this;
         setEntityFieldValue("batchNumber", dto.getBatchNumber());
         setEntityFieldValue("batchDate", dto.getBatchDate());
+        setEntityFieldValue("location", dto.getLocation());
+        setEntityFieldValue("batchAuthor", dto.getBatchAuthor());
+        setEntityFieldValue("productProvider", dto.getProductProvider());
+        setEntityFieldValue("productName", dto.getProductName());
         return this;
     }
 
