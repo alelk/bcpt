@@ -27,6 +27,8 @@
 	<field name="bloodPool" class="com.alelk.bcpt.model.dto.BloodPoolDto"/>
 	<field name="bloodDonationIds" class="java.lang.String"/>
 	<field name="bloodInvoiceIds" class="java.lang.String"/>
+	<field name="bloodInvoiceSeriesIds" class="java.lang.String"/>
+	<field name="bloodInvoiceDates" class="java.lang.String"/>
 	<title>
 		<band height="220" splitType="Stretch">
 			<staticText>
@@ -304,12 +306,19 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bloodInvoiceIds}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="70" y="0" width="40" height="40" uuid="09cc8db4-cb8e-43b8-863e-70ff55a6442d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bloodInvoiceDates}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="110" y="0" width="40" height="40" uuid="cca77bc0-3dd6-4983-99d2-01934a743733"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[130317]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bloodInvoiceSeriesIds}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="150" y="0" width="300" height="40" uuid="e296c779-d40a-4d98-969e-e4818c77be4c"/>
@@ -378,13 +387,6 @@
 			<textField isBlankWhenNull="true">
 				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="770" y="0" width="30" height="40" uuid="26d2b2a3-721a-4349-b34b-3f557a37207a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="70" y="0" width="40" height="40" uuid="09cc8db4-cb8e-43b8-863e-70ff55a6442d"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA["10.23.34"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
