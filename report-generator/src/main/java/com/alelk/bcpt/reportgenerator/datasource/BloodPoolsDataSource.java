@@ -58,7 +58,7 @@ public class BloodPoolsDataSource implements JRDataSource {
                 Matcher matcher = BLOOD_DONATION_EXTERNAL_ID_PATTERN.matcher(bloodDonationId);
                 if (!matcher.find()) return bloodDonationId;
                 return matcher.group(1) + "<style isBold='true' size='9'>" + matcher.group(2) + "</style>" + matcher.group(3);
-            }).collect(Collectors.joining("    ")) + "    ";
+            }).collect(Collectors.joining(" ")) + " ";
         }
         if ("bloodInvoiceIds".equals(fieldName)) {
             return bloodInvoices.stream()

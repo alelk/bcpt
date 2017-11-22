@@ -18,6 +18,10 @@ public abstract class ProductBatchAbstractRequest extends BcptDtoApiRequest<Prod
     private Date batchDate;
     private Set<String> bloodPools;
     private Double totalAmount;
+    private String location;
+    private String batchAuthor;
+    private String productProvider;
+    private String productName;
 
     public Integer getBatchNumber() {
         return batchNumber;
@@ -51,9 +55,41 @@ public abstract class ProductBatchAbstractRequest extends BcptDtoApiRequest<Prod
         this.totalAmount = totalAmount;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getBatchAuthor() {
+        return batchAuthor;
+    }
+
+    public void setBatchAuthor(String batchAuthor) {
+        this.batchAuthor = batchAuthor;
+    }
+
+    public String getProductProvider() {
+        return productProvider;
+    }
+
+    public void setProductProvider(String productProvider) {
+        this.productProvider = productProvider;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
     @Override
     public ProductBatchDto toDto() {
-        return new ProductBatchDto(getExternalId(), null, null, batchNumber, batchDate, bloodPools, totalAmount);
+        return new ProductBatchDto(getExternalId(), null, null, batchNumber, batchDate, bloodPools, totalAmount, location, batchAuthor, productProvider, productName);
     }
 
     @Override
@@ -63,6 +99,10 @@ public abstract class ProductBatchAbstractRequest extends BcptDtoApiRequest<Prod
                 ", batchNumber=" + batchNumber +
                 ", batchDate=" + batchDate +
                 ", totalAmount=" + totalAmount +
+                ", location=" + location +
+                ", batchAuthor=" + batchAuthor +
+                ", productName=" + productName +
+                ", productProvider=" + productProvider +
                 ", bloodPools=" + (bloodPools != null ?
                 '[' + bloodPools.stream().collect(Collectors.joining(", ")) + ']' : null) +
                 '}';

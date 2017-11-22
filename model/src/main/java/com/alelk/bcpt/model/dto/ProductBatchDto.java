@@ -19,6 +19,10 @@ public class ProductBatchDto extends AbstractBcptDto {
     private Date batchDate;
     private Set<String> bloodPools;
     private Double totalAmount;
+    private String location;
+    private String batchAuthor;
+    private String productProvider;
+    private String productName;
 
     public ProductBatchDto() {}
 
@@ -26,12 +30,16 @@ public class ProductBatchDto extends AbstractBcptDto {
         super(externalId, creationTimestamp, updateTimestamp);
     }
 
-    public ProductBatchDto(String externalId, Date creationTimestamp, Date updateTimestamp, Integer batchNumber, Date batchDate, Set<String> bloodPools, Double totalAmount) {
+    public ProductBatchDto(String externalId, Date creationTimestamp, Date updateTimestamp, Integer batchNumber, Date batchDate, Set<String> bloodPools, Double totalAmount, String location, String batchAuthor, String productProvider, String productName) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.batchNumber = batchNumber;
         this.batchDate = batchDate;
         this.bloodPools = bloodPools;
         this.totalAmount = totalAmount;
+        this.location = location;
+        this.batchAuthor = batchAuthor;
+        this.productProvider = productProvider;
+        this.productName = productName;
     }
 
     public Integer getBatchNumber() {
@@ -67,17 +75,53 @@ public class ProductBatchDto extends AbstractBcptDto {
         this.totalAmount = totalAmount == null ? null : new BigDecimal(totalAmount).setScale(2, RoundingMode.FLOOR).doubleValue();
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getBatchAuthor() {
+        return batchAuthor;
+    }
+
+    public void setBatchAuthor(String batchAuthor) {
+        this.batchAuthor = batchAuthor;
+    }
+
+    public String getProductProvider() {
+        return productProvider;
+    }
+
+    public void setProductProvider(String productProvider) {
+        this.productProvider = productProvider;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
     @Override
     public String toString() {
         return "ProductBatchDto{" +
                 "externalId='" + getExternalId() +
-                ", batchNumber='" + batchNumber +
+                "', batchNumber=" + batchNumber +
                 ", batchDate='" + batchDate +
                 ", bloodPools=" + (bloodPools != null
                 ? '[' + bloodPools.stream().collect(Collectors.joining(", ")) + ']'
                 : null) +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", totalAmount=" + totalAmount +
+                ", location=" + location +
+                ", batchAuthor=" + batchAuthor +
+                ", productName=" + productName +
+                ", productProvider=" + productProvider +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';
     }

@@ -37,6 +37,14 @@ public class ProductBatchPredicateBuilder
         for (Filter filter: filters) {
             if ("batchNumber".equals(filter.getFieldName()))
                 specifications.add(this.specifications.batchNumberEqual(filter.getFilter()));
+            else if ("productName".equals(filter.getFieldName()))
+                specifications.add(this.specifications.productNameStartsWith(filter.getFilter()));
+            else if ("location".equals(filter.getFieldName()))
+                specifications.add(this.specifications.locationStartsWith(filter.getFilter()));
+            else if ("productProvider".equals(filter.getFieldName()))
+                specifications.add(this.specifications.productProviderStartsWith(filter.getFilter()));
+            else if ("batchAuthor".equals(filter.getFieldName()))
+                specifications.add(this.specifications.batchAuthorStartsWith(filter.getFilter()));
         }
         return and(cb, commonPredicate, and(root, query, cb, specifications));
     }
