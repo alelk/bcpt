@@ -41,12 +41,17 @@ public class BloodInvoiceEntity extends AbstractEntity {
     @JoinColumn(name = "bloodinvoice_id")
     private Set<BloodDonationEntity> bloodDonations;
 
+    @Sortable
+    @ManyToOne
+    private BloodInvoiceSeriesEntity bloodInvoiceSeries;
+
     protected BloodInvoiceEntity() {}
 
-    public BloodInvoiceEntity(String externalId, Date deliveryDate, Set<BloodDonationEntity> bloodDonations) {
+    public BloodInvoiceEntity(String externalId, Date deliveryDate, Set<BloodDonationEntity> bloodDonations, BloodInvoiceSeriesEntity bloodInvoiceSeries) {
         super(externalId);
         this.deliveryDate = deliveryDate;
         this.bloodDonations = bloodDonations;
+        this.bloodInvoiceSeries = bloodInvoiceSeries;
     }
 
     public Date getDeliveryDate() {
@@ -74,6 +79,14 @@ public class BloodInvoiceEntity extends AbstractEntity {
         return bloodDonations.stream().mapToDouble(BloodDonationEntity::getAmount).sum();
     }
 
+    public BloodInvoiceSeriesEntity getBloodInvoiceSeries() {
+        return bloodInvoiceSeries;
+    }
+
+    public void setBloodInvoiceSeries(BloodInvoiceSeriesEntity bloodInvoiceSeries) {
+        this.bloodInvoiceSeries = bloodInvoiceSeries;
+    }
+
     @Override
     public String toString() {
         return "BloodInvoiceEntity{" +
@@ -82,6 +95,7 @@ public class BloodInvoiceEntity extends AbstractEntity {
                 ", bloodDonations=" + StringUtil.toString(bloodDonations) +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +
+                ", bloodInvoiceSeries=" + (bloodInvoiceSeries != null ? bloodInvoiceSeries.getExternalId() : null) +
                 '}';
     }
 }

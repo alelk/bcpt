@@ -1,8 +1,10 @@
 package com.alelk.bcpt.database.util;
 
 import com.alelk.bcpt.database.model.BloodDonationEntity;
+import com.alelk.bcpt.database.model.BloodInvoiceEntity;
 import com.alelk.bcpt.database.model.ProductBatchEntity;
 import com.alelk.bcpt.database.repository.BloodDonationRepository;
+import com.alelk.bcpt.database.repository.BloodInvoiceRepository;
 import com.alelk.bcpt.database.repository.ProductBatchRepository;
 import org.springframework.util.StringUtils;
 
@@ -20,14 +22,26 @@ public class ServiceUtil {
 
     public static Set<BloodDonationEntity> getBloodDonationEntitiesByExternalIds(BloodDonationRepository repository, Set<String> externalIds, String message) {
         if (externalIds == null) return null;
-        final Set<BloodDonationEntity> bloodDonationEntities = new HashSet<>();
+        final Set<BloodDonationEntity> entities = new HashSet<>();
         externalIds.forEach(externalId -> {
             if (StringUtils.isEmpty(externalId)) return;
-            BloodDonationEntity bde = repository.findByExternalId(externalId);
-            validateNotNull(bde, message + "Cannot find blood donation entity for the external id '" + externalId + '\'');
-            bloodDonationEntities.add(bde);
+            BloodDonationEntity entity = repository.findByExternalId(externalId);
+            validateNotNull(entity, message + "Cannot find blood donation entity for the external id '" + externalId + '\'');
+            entities.add(entity);
         });
-        return bloodDonationEntities.size() > 0 ? bloodDonationEntities : null;
+        return entities.size() > 0 ? entities : null;
+    }
+
+    public static Set<BloodInvoiceEntity> getBloodInvoiceEntitiesByExternslIds(BloodInvoiceRepository repository, Set<String> externalIds, String message) {
+        if (externalIds == null) return null;
+        final Set<BloodInvoiceEntity> entities = new HashSet<>();
+        externalIds.forEach(externalId -> {
+            if (StringUtils.isEmpty(externalId)) return;
+            BloodInvoiceEntity entity = repository.findByExternalId(externalId);
+            validateNotNull(entity, message + "Cannot find blood invoice entity for the external id '" + externalId + '\'');
+            entities.add(entity);
+        });
+        return entities.size() > 0 ? entities : null;
     }
 
     public static ProductBatchEntity getProductBatchEntityByExternalId(ProductBatchRepository repository, String externalId, String message) {

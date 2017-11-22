@@ -17,6 +17,7 @@ public class BcptDatabase {
     private PersonService personService;
     private BloodDonationService bloodDonationService;
     private BloodInvoiceService bloodInvoiceService;
+    private BloodInvoiceSeriesService bloodInvoiceSeriesService;
     private BloodPoolService bloodPoolService;
     private ProductBatchService productBatchService;
     private UniversalService universalService;
@@ -25,11 +26,14 @@ public class BcptDatabase {
     BcptDatabase(PersonService personService,
                  BloodDonationService bloodDonationService,
                  BloodInvoiceService bloodInvoiceService,
+                 BloodInvoiceSeriesService bloodInvoiceSeriesService,
                  BloodPoolService bloodPoolService,
-                 ProductBatchService productBatchService, UniversalService universalService) {
+                 ProductBatchService productBatchService,
+                 UniversalService universalService) {
         this.personService = personService;
         this.bloodDonationService = bloodDonationService;
         this.bloodInvoiceService = bloodInvoiceService;
+        this.bloodInvoiceSeriesService = bloodInvoiceSeriesService;
         this.bloodPoolService = bloodPoolService;
         this.productBatchService = productBatchService;
         this.universalService = universalService;
@@ -63,5 +67,9 @@ public class BcptDatabase {
 
     public UniversalService getUniversalService() {
         return universalService;
+    }
+
+    public BloodInvoiceSeriesService getBloodInvoiceSeriesService() {
+        return bloodInvoiceSeriesService;
     }
 }

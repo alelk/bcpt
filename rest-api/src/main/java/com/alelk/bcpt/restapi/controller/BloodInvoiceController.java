@@ -13,6 +13,7 @@ import com.alelk.bcpt.restapi.util.RestApiUtil;
 import com.alelk.bcpt.restapi.validator.BloodInvoiceValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -33,6 +34,7 @@ public class BloodInvoiceController {
     private BloodInvoiceService bloodInvoiceService;
     private BloodInvoiceValidator bloodInvoiceValidator;
 
+    @Autowired
     public BloodInvoiceController(BloodInvoiceService bloodInvoiceService, BloodInvoiceValidator bloodInvoiceValidator) {
         this.bloodInvoiceService = bloodInvoiceService;
         this.bloodInvoiceValidator = bloodInvoiceValidator;

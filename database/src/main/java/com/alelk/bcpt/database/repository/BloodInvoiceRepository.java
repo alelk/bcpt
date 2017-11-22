@@ -16,7 +16,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
- * Blood Donation Delivery Repository
+ * Blood Invoice Repository
  *
  * Created by Alex Elkin on 11.09.2017.
  */

@@ -16,7 +16,7 @@ public abstract class BloodInvoiceAbstractRequest extends BcptDtoApiRequest<Bloo
 
     private Date deliveryDate;
     private Set<String> bloodDonations;
-    private String bloodPool;
+    private String bloodInvoiceSeries;
     private Double totalAmount;
 
     public Date getDeliveryDate() {
@@ -35,14 +35,6 @@ public abstract class BloodInvoiceAbstractRequest extends BcptDtoApiRequest<Bloo
         this.bloodDonations = bloodDonations;
     }
 
-    public String getBloodPool() {
-        return bloodPool;
-    }
-
-    public void setBloodPool(String bloodPool) {
-        this.bloodPool = bloodPool;
-    }
-
     public Double getTotalAmount() {
         return totalAmount;
     }
@@ -51,16 +43,24 @@ public abstract class BloodInvoiceAbstractRequest extends BcptDtoApiRequest<Bloo
         this.totalAmount = totalAmount;
     }
 
+    public String getBloodInvoiceSeries() {
+        return bloodInvoiceSeries;
+    }
+
+    public void setBloodInvoiceSeries(String bloodInvoiceSeries) {
+        this.bloodInvoiceSeries = bloodInvoiceSeries;
+    }
+
     @Override
     public BloodInvoiceDto toDto() {
-        return new BloodInvoiceDto(getExternalId(), null, null, deliveryDate, bloodDonations, bloodPool, totalAmount);
+        return new BloodInvoiceDto(getExternalId(), null, null, deliveryDate, bloodDonations, bloodInvoiceSeries, totalAmount);
     }
 
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + "{" +
                 "externalId='" + getExternalId() + '\'' +
-                ", bloodPool='" + bloodPool + '\'' +
+                ", bloodInvoiceSeries='" + bloodInvoiceSeries + '\'' +
                 ", deliveryDate='" + deliveryDate + '\'' +
                 ", totalAmount='" + totalAmount + '\'' +
                 ", bloodDonations=" + (bloodDonations != null

@@ -23,6 +23,10 @@ public class DatabaseUtil {
         return new BloodInvoiceDtoBuilder().apply(entity).build();
     }
 
+    public static BloodInvoiceSeriesDto mapBloodInvoiceSeriesEntityToDto(BloodInvoiceSeriesEntity entity) {
+        return new BloodInvoiceSeriesDtoBuilder().apply(entity).build();
+    }
+
     public static BloodPoolDto mapBloodPoolEntityToDto(BloodPoolEntity entity) {
         return new BloodPoolDtoBuilder().apply(entity).build();
     }
