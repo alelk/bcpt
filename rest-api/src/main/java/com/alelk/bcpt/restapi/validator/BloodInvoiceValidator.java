@@ -1,8 +1,8 @@
 package com.alelk.bcpt.restapi.validator;
 
 import com.alelk.bcpt.database.service.BloodDonationService;
+import com.alelk.bcpt.database.service.BloodInvoiceSeriesService;
 import com.alelk.bcpt.database.service.BloodInvoiceService;
-import com.alelk.bcpt.database.service.BloodPoolService;
 import com.alelk.bcpt.restapi.request.BloodInvoiceAbstractRequest;
 import com.alelk.bcpt.restapi.request.BloodInvoiceCreateRequest;
 import com.alelk.bcpt.restapi.request.BloodInvoiceDeleteRequest;
@@ -24,13 +24,13 @@ public class BloodInvoiceValidator implements Validator{
 
     private BloodInvoiceService bloodInvoiceService;
     private BloodDonationService bloodDonationService;
-    private BloodPoolService bloodPoolService;
+    private BloodInvoiceSeriesService bloodInvoiceSeriesService;
 
     @Autowired
-    public BloodInvoiceValidator(BloodInvoiceService bloodInvoiceService, BloodDonationService bloodDonationService, BloodPoolService bloodPoolService) {
+    public BloodInvoiceValidator(BloodInvoiceService bloodInvoiceService, BloodDonationService bloodDonationService, BloodInvoiceSeriesService bloodInvoiceSeriesService) {
         this.bloodInvoiceService = bloodInvoiceService;
         this.bloodDonationService = bloodDonationService;
-        this.bloodPoolService = bloodPoolService;
+        this.bloodInvoiceSeriesService = bloodInvoiceSeriesService;
     }
 
     @Override
@@ -58,8 +58,8 @@ public class BloodInvoiceValidator implements Validator{
                             new String[]{bloodDonationId}, null
                     );
             });
-            if (!StringUtils.isEmpty(request.getBloodPool()) && !bloodPoolService.isIdExists(request.getBloodPool())) {
-                errors.rejectValue("bloodPool", "bloodPool.externalId.notFound");
+            if (!StringUtils.isEmpty(request.getBloodInvoiceSeries()) && !bloodInvoiceSeriesService.isIdExists(request.getBloodInvoiceSeries())) {
+                errors.rejectValue("bloodInvoiceSeries", "bloodInvoiceSeries.externalId.notFound");
             }
         }
         if (target instanceof BloodInvoiceDeleteRequest) {

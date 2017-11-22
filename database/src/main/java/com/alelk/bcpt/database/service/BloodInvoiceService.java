@@ -2,12 +2,9 @@ package com.alelk.bcpt.database.service;
 
 import com.alelk.bcpt.database.builder.BloodInvoiceEntityBuilder;
 import com.alelk.bcpt.database.model.BloodInvoiceEntity;
-import com.alelk.bcpt.database.model.BloodPoolEntity;
+import com.alelk.bcpt.database.model.BloodInvoiceSeriesEntity;
 import com.alelk.bcpt.database.model.ProductBatchEntity;
-import com.alelk.bcpt.database.repository.BloodDonationRepository;
-import com.alelk.bcpt.database.repository.BloodInvoiceRepository;
-import com.alelk.bcpt.database.repository.BloodPoolRepository;
-import com.alelk.bcpt.database.repository.ProductBatchRepository;
+import com.alelk.bcpt.database.repository.*;
 import com.alelk.bcpt.database.util.DatabaseUtil;
 import com.alelk.bcpt.model.dto.BloodInvoiceDto;
 import com.alelk.bcpt.model.pagination.Filter;
@@ -36,15 +33,18 @@ public class BloodInvoiceService {
 
     private BloodInvoiceRepository bloodInvoiceRepository;
     private BloodDonationRepository bloodDonationRepository;
-    private BloodPoolRepository bloodPoolRepository;
     private ProductBatchRepository productBatchRepository;
+    private BloodInvoiceSeriesRepository bloodInvoiceSeriesRepository;
 
     @Autowired
-    BloodInvoiceService(BloodInvoiceRepository bloodInvoiceRepository, BloodDonationRepository bloodDonationRepository, BloodPoolRepository bloodPoolRepository, ProductBatchRepository productBatchRepository) {
+    BloodInvoiceService(
+            BloodInvoiceRepository bloodInvoiceRepository, BloodDonationRepository bloodDonationRepository,
+            ProductBatchRepository productBatchRepository, BloodInvoiceSeriesRepository bloodInvoiceSeriesRepository
+    ) {
         this.bloodInvoiceRepository = bloodInvoiceRepository;
         this.bloodDonationRepository = bloodDonationRepository;
-        this.bloodPoolRepository = bloodPoolRepository;
         this.productBatchRepository = productBatchRepository;
+        this.bloodInvoiceSeriesRepository = bloodInvoiceSeriesRepository;
     }
 
     @Transactional
@@ -55,7 +55,7 @@ public class BloodInvoiceService {
         return DatabaseUtil.mapBloodInvoiceEntityToDto(
                 bloodInvoiceRepository.save(new BloodInvoiceEntityBuilder().apply(dto)
                         .apply(getBloodDonationEntitiesByExternalIds(bloodDonationRepository, dto.getBloodDonations(), message))
-                        .apply(findBloodPoolByExternalId(dto.getBloodPool(), message))
+                        .apply(findBloodInvoiceSeriesByExternalId(dto.getBloodInvoiceSeries(), message))
                         .build())
         );
     }
@@ -72,7 +72,7 @@ public class BloodInvoiceService {
                 new BloodInvoiceEntityBuilder(entity, mergeWithNullValues, softUpdate)
                         .apply(dto)
                         .apply(getBloodDonationEntitiesByExternalIds(bloodDonationRepository, dto.getBloodDonations(), message))
-                        .apply(findBloodPoolByExternalId(dto.getBloodPool(), message))
+                        .apply(findBloodInvoiceSeriesByExternalId(dto.getBloodInvoiceSeries(), message))
                         .build()
         );
     }
@@ -123,11 +123,11 @@ public class BloodInvoiceService {
         return !StringUtils.isEmpty(externalId) && findEntityByExternalId(externalId, "Error checking if the blood invoice exists: ") != null;
     }
 
-    private BloodPoolEntity findBloodPoolByExternalId(String externalId, String message) {
+    private BloodInvoiceSeriesEntity findBloodInvoiceSeriesByExternalId(String externalId, String message) {
         if (StringUtils.isEmpty(externalId)) return null;
-        BloodPoolEntity bpe = bloodPoolRepository.findByExternalId(externalId);
-        validateNotNull(bpe, message + "Cannot find Blood Pool for external id '" + externalId + '\'');
-        return bpe;
+        BloodInvoiceSeriesEntity entity = bloodInvoiceSeriesRepository.findByExternalId(externalId);
+        validateNotNull(entity, message + "Cannot find Blood Invoice Series for external id '" + externalId + '\'');
+        return entity;
     }
 
     private BloodInvoiceEntity findEntityByExternalId(String externalId, String message) {

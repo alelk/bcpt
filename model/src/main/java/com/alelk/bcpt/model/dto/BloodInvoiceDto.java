@@ -17,7 +17,7 @@ public class BloodInvoiceDto extends AbstractBcptDto {
 
     private Date deliveryDate;
     private Set<String> bloodDonations;
-    private String bloodPool;
+    private String bloodInvoiceSeries;
     private Double totalAmount;
 
     public BloodInvoiceDto() {}
@@ -26,11 +26,11 @@ public class BloodInvoiceDto extends AbstractBcptDto {
         super(externalId, creationTimestamp, updateTimestamp);
     }
 
-    public BloodInvoiceDto(String externalId, Date creationTimestamp, Date updateTimestamp, Date deliveryDate, Set<String> bloodDonations, String bloodPool, Double totalAmount) {
+    public BloodInvoiceDto(String externalId, Date creationTimestamp, Date updateTimestamp, Date deliveryDate, Set<String> bloodDonations, String bloodInvoiceSeries, Double totalAmount) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.deliveryDate = deliveryDate;
         this.bloodDonations = bloodDonations;
-        this.bloodPool = bloodPool;
+        this.bloodInvoiceSeries = bloodInvoiceSeries;
         this.totalAmount = totalAmount;
     }
 
@@ -51,20 +51,20 @@ public class BloodInvoiceDto extends AbstractBcptDto {
         this.bloodDonations = bloodDonations;
     }
 
-    public String getBloodPool() {
-        return bloodPool;
-    }
-
-    public void setBloodPool(String bloodPool) {
-        this.bloodPool = bloodPool;
-    }
-
     public Double getTotalAmount() {
         return totalAmount;
     }
 
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount == null ? null : new BigDecimal(totalAmount).setScale(2, RoundingMode.FLOOR).doubleValue();
+    }
+
+    public String getBloodInvoiceSeries() {
+        return bloodInvoiceSeries;
+    }
+
+    public void setBloodInvoiceSeries(String bloodInvoiceSeries) {
+        this.bloodInvoiceSeries = bloodInvoiceSeries;
     }
 
     @Override
@@ -75,7 +75,7 @@ public class BloodInvoiceDto extends AbstractBcptDto {
                 ", bloodDonations=" + (bloodDonations != null
                 ? '[' + bloodDonations.stream().collect(Collectors.joining(", ")) + ']'
                 : null) +
-                ", bloodPool='" + getBloodPool() + '\'' +
+                ", bloodInvoiceSeries='" + getBloodInvoiceSeries() + '\'' +
                 ", totalAmount='" + getTotalAmount() + '\'' +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +
