@@ -64,6 +64,12 @@ public class RestApiConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Bean
     @Autowired
+    public BloodPoolAnalysisService bloodPoolAnalysisService(BcptDatabase bcptDatabase) {
+        return bcptDatabase.getBloodPoolAnalysisService();
+    }
+
+    @Bean
+    @Autowired
     public ProductBatchService productBatchService(BcptDatabase bcptDatabase) {
         return bcptDatabase.getProductBatchService();
     }

@@ -41,6 +41,9 @@ public class BloodPoolEntity extends AbstractEntity {
     @JoinColumn(name = "bloodpool_id")
     private Set<BloodDonationEntity> bloodDonations;
 
+    @OneToOne
+    private BloodPoolAnalysisEntity bloodPoolAnalysis;
+
     public BloodPoolEntity() {
     }
 
