@@ -1,7 +1,9 @@
 package com.alelk.bcpt.restapi.controller;
 
 import com.alelk.bcpt.common.util.StringUtil;
+import com.alelk.bcpt.database.service.BloodPoolAnalysisService;
 import com.alelk.bcpt.database.service.BloodPoolService;
+import com.alelk.bcpt.model.dto.BloodPoolAnalysisDto;
 import com.alelk.bcpt.model.dto.BloodPoolDto;
 import com.alelk.bcpt.model.pagination.Filter;
 import com.alelk.bcpt.model.pagination.Page;
@@ -32,11 +34,13 @@ public class BloodPoolController {
 
     private final static Logger log = LoggerFactory.getLogger(BloodPoolController.class);
     private BloodPoolService bloodPoolService;
+    private BloodPoolAnalysisService bloodPoolAnalysisService;
     private BloodPoolValidator bloodPoolValidator;
 
     @Autowired
-    public BloodPoolController(BloodPoolService bloodPoolService, BloodPoolValidator bloodPoolValidator) {
+    public BloodPoolController(BloodPoolService bloodPoolService, BloodPoolAnalysisService bloodPoolAnalysisService, BloodPoolValidator bloodPoolValidator) {
         this.bloodPoolService = bloodPoolService;
+        this.bloodPoolAnalysisService = bloodPoolAnalysisService;
         this.bloodPoolValidator = bloodPoolValidator;
     }
 
@@ -64,7 +68,9 @@ public class BloodPoolController {
 
     @PostMapping("/")
     public ResponseEntity<BloodPoolDto> create(@Validated @RequestBody BloodPoolCreateRequest request) {
-        return ResponseEntity.ok(bloodPoolService.create(request.toDto()));
+        final BloodPoolDto dto = bloodPoolService.create(request.toDto());
+        bloodPoolAnalysisService.create(new BloodPoolAnalysisDto(dto.getExternalId(), null, null, dto.getExternalId(), null, null, null, null, null));
+        return ResponseEntity.ok(dto);
     }
 
     @PutMapping("/{externalId}")
@@ -79,6 +85,8 @@ public class BloodPoolController {
 
     @DeleteMapping("/")
     public ResponseEntity<BloodPoolDto> delete(@Validated @RequestBody BloodPoolDeleteRequest request) {
-        return ResponseEntity.ok(bloodPoolService.removeByExternalId(request.getExternalId()));
+        final BloodPoolDto dto = bloodPoolService.removeByExternalId(request.getExternalId());
+        bloodPoolAnalysisService.removeByExternalId(dto.getExternalId());
+        return ResponseEntity.ok(dto);
     }
 }

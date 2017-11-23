@@ -31,6 +31,10 @@ public class DatabaseUtil {
         return new BloodPoolDtoBuilder().apply(entity).build();
     }
 
+    public static BloodPoolAnalysisDto mapBloodPoolAnalysisEntityToDto(BloodPoolAnalysisEntity entity) {
+        return new BloodPoolAnalysisDtoBuilder().apply(entity).build();
+    }
+
     public static ProductBatchDto mapProductBatchEntityToDto(ProductBatchEntity entity) {
         return new ProductBatchDtoBuilder().apply(entity).build();
     }

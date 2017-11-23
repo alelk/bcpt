@@ -2,9 +2,11 @@ package com.alelk.bcpt.database.util;
 
 import com.alelk.bcpt.database.model.BloodDonationEntity;
 import com.alelk.bcpt.database.model.BloodInvoiceEntity;
+import com.alelk.bcpt.database.model.BloodPoolEntity;
 import com.alelk.bcpt.database.model.ProductBatchEntity;
 import com.alelk.bcpt.database.repository.BloodDonationRepository;
 import com.alelk.bcpt.database.repository.BloodInvoiceRepository;
+import com.alelk.bcpt.database.repository.BloodPoolRepository;
 import com.alelk.bcpt.database.repository.ProductBatchRepository;
 import org.springframework.util.StringUtils;
 
@@ -47,7 +49,14 @@ public class ServiceUtil {
     public static ProductBatchEntity getProductBatchEntityByExternalId(ProductBatchRepository repository, String externalId, String message) {
         if (StringUtils.isEmpty(externalId)) return null;
         ProductBatchEntity pbe = repository.findByExternalId(externalId);
-        validateNotNull(pbe, message + "Cannot find product batch for external id '" + externalId + '\'');
+        validateNotNull(pbe, message + "Cannot find the product batch for the external id '" + externalId + '\'');
         return pbe;
+    }
+
+    public static BloodPoolEntity getBloodPoolEntytyByExternalId(BloodPoolRepository repository, String externalId, String message) {
+        if (StringUtils.isEmpty(externalId)) return null;
+        BloodPoolEntity bpe = repository.findByExternalId(externalId);
+        validateNotNull(bpe, message + "Cannot find the blood pool for the external id = '" + externalId + '\'');
+        return bpe;
     }
 }

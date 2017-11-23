@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 import static com.alelk.bcpt.database.util.ValidationUtil.validateNotEmpty;
 import static com.alelk.bcpt.database.util.ValidationUtil.validateNotNull;
+import static com.alelk.bcpt.database.util.ServiceUtil.getBloodPoolEntytyByExternalId;
 
 /**
  * Blood Donation Service
@@ -57,7 +58,7 @@ public class BloodDonationService {
                         .apply(bloodDonation)
                         .apply(findPersonByExternalId(bloodDonation.getDonor(), message))
                         .apply(findBloodInvoiceByExternalId(bloodDonation.getBloodInvoice(), message))
-                        .apply(findBloodPoolByExternalId(bloodDonation.getBloodPool(), message))
+                        .apply(getBloodPoolEntytyByExternalId(bloodPoolRepository, bloodDonation.getBloodPool(), message))
                         .build())
         );
     }
@@ -75,7 +76,7 @@ public class BloodDonationService {
                         .apply(dto)
                         .apply(findPersonByExternalId(dto.getDonor(), message))
                         .apply(findBloodInvoiceByExternalId(dto.getBloodInvoice(), message))
-                        .apply(findBloodPoolByExternalId(dto.getBloodPool(), message))
+                        .apply(getBloodPoolEntytyByExternalId(bloodPoolRepository, dto.getBloodPool(), message))
                         .build()
         );
     }
@@ -142,13 +143,6 @@ public class BloodDonationService {
         BloodInvoiceEntity bie = bloodInvoiceRepository.findByExternalId(externalId);
         validateNotNull(bie, message + "No blood invoice found with the external id = '" + externalId + '\'');
         return bie;
-    }
-
-    private BloodPoolEntity findBloodPoolByExternalId(String externalId, String message) {
-        if (StringUtils.isEmpty(externalId)) return null;
-        BloodPoolEntity bpe = bloodPoolRepository.findByExternalId(externalId);
-        validateNotNull(bpe, message + "No blood pool found with the external id = '" + externalId + '\'');
-        return bpe;
     }
 
     private BloodDonationEntity findEntityByExternalId(String externalId, String message) {
