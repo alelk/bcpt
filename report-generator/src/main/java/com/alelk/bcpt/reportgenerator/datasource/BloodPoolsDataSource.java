@@ -1,9 +1,6 @@
 package com.alelk.bcpt.reportgenerator.datasource;
 
-import com.alelk.bcpt.model.dto.BloodInvoiceDto;
-import com.alelk.bcpt.model.dto.BloodInvoiceSeriesDto;
-import com.alelk.bcpt.model.dto.BloodPoolDto;
-import com.alelk.bcpt.model.dto.ProductBatchDto;
+import com.alelk.bcpt.model.dto.*;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
@@ -28,10 +25,12 @@ public class BloodPoolsDataSource implements JRDataSource {
     private List<BloodPoolDto> bloodPools;
     private List<BloodInvoiceDto> bloodInvoices;
     private List<BloodInvoiceSeriesDto> bloodInvoiceSeries;
+    private List<BloodPoolAnalysisDto> bloodPoolAnalyzes;
     private int index = -1;
 
-    public BloodPoolsDataSource(ProductBatchDto productBatchDto, List<BloodPoolDto> bloodPools, List<BloodInvoiceDto> bloodInvoices, List<BloodInvoiceSeriesDto> bloodInvoiceSeries) {
+    public BloodPoolsDataSource(ProductBatchDto productBatchDto, List<BloodPoolDto> bloodPools, List<BloodInvoiceDto> bloodInvoices, List<BloodInvoiceSeriesDto> bloodInvoiceSeries, List<BloodPoolAnalysisDto> bloodPoolAnalyzes) {
         this.productBatchDto = productBatchDto;
+        this.bloodPoolAnalyzes = bloodPoolAnalyzes;
         this.bloodPools = new ArrayList<>();
         this.bloodInvoices = new ArrayList<>();
         this.bloodInvoiceSeries = new ArrayList<>();
@@ -53,12 +52,13 @@ public class BloodPoolsDataSource implements JRDataSource {
         if (jrField == null) return null;
         final String fieldName = jrField.getName();
         if ("productBatch".equals(fieldName)) return productBatchDto;
-        if ("bloodPool".equals(fieldName)) return bloodPools.get(index);
+        final BloodPoolDto bloodPool = bloodPools.get(index);
+        if (bloodPool == null) return null;
+        if ("bloodPool".equals(fieldName)) return bloodPool;
         final List<String> bloodDonationIds = new ArrayList<>();
-        bloodDonationIds.addAll(bloodPools.get(index).getBloodDonations());
+        bloodDonationIds.addAll(bloodPool.getBloodDonations());
         bloodDonationIds.sort(Comparator.naturalOrder());
         if ("bloodDonationIds".equals(fieldName)) {
-            if (bloodPools.get(index) == null) return null;
             return bloodDonationIds.stream().map(bloodDonationId -> {
                 Matcher matcher = BLOOD_DONATION_EXTERNAL_ID_PATTERN.matcher(bloodDonationId);
                 if (!matcher.find()) return bloodDonationId;
@@ -85,6 +85,12 @@ public class BloodPoolsDataSource implements JRDataSource {
                 dates = bloodInvoices.stream().map(BloodInvoiceDto::getDeliveryDate).collect(Collectors.toList());
             return dates.stream().filter(Objects::nonNull).distinct().map(BloodPoolsDataSource::mapDateToSimpleString)
                     .collect(Collectors.joining(" "));
+        }
+        if ("bloodPoolAnalyzes".equals(fieldName)) {
+            if (bloodPoolAnalyzes == null) return null;
+            return bloodPoolAnalyzes.stream()
+                    .filter(bpa -> bloodPool.getExternalId().equals(bpa.getExternalId()))
+                    .findFirst().orElse(null);
         }
         return null;
     }

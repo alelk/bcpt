@@ -5,7 +5,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="base" isDefault="true" fontName="DejaVu Sans" fontSize="10" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 	<style name="document_title" fontName="DejaVu Sans" isBold="true" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-	<style name="table_header_cell" mode="Opaque" forecolor="#FFFFFF" backcolor="#280F5E" fontName="DejaVu Sans" isBold="true" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H" isPdfEmbedded="true">
+	<style name="table_header_cell" mode="Opaque" forecolor="#000000" backcolor="#c5cae9" fontName="DejaVu Sans" isBold="true" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H" isPdfEmbedded="true">
 		<box>
 			<pen lineWidth="0.5" lineColor="#999999"/>
 			<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -14,7 +14,7 @@
 			<rightPen lineWidth="0.5" lineColor="#999999"/>
 		</box>
 	</style>
-	<style name="table_data_cell" mode="Opaque" backcolor="#EDEAF2">
+	<style name="table_data_cell" mode="Opaque" backcolor="#fdfafd">
 		<box>
 			<pen lineWidth="0.5" lineColor="#999999"/>
 			<topPen lineWidth="0.5" lineColor="#999999"/>
@@ -25,6 +25,7 @@
 	</style>
 	<field name="productBatch" class="com.alelk.bcpt.model.dto.ProductBatchDto"/>
 	<field name="bloodPool" class="com.alelk.bcpt.model.dto.BloodPoolDto"/>
+	<field name="bloodPoolAnalyzes" class="com.alelk.bcpt.model.dto.BloodPoolAnalysisDto"/>
 	<field name="bloodDonationIds" class="java.lang.String"/>
 	<field name="bloodInvoiceIds" class="java.lang.String"/>
 	<field name="bloodInvoiceSeriesIds" class="java.lang.String"/>
@@ -377,12 +378,14 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{bloodPoolAnalyzes}.getpH()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="750" y="0" width="20" height="40" uuid="f19cb9f4-e6cb-4aa9-bce9-6303cd5f14ac"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{bloodPoolAnalyzes}.getProteinConcentration()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="770" y="0" width="30" height="40" uuid="26d2b2a3-721a-4349-b34b-3f557a37207a"/>

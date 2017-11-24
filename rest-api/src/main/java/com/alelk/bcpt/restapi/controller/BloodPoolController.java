@@ -85,8 +85,8 @@ public class BloodPoolController {
 
     @DeleteMapping("/")
     public ResponseEntity<BloodPoolDto> delete(@Validated @RequestBody BloodPoolDeleteRequest request) {
+        bloodPoolAnalysisService.removeByExternalId(request.getExternalId());
         final BloodPoolDto dto = bloodPoolService.removeByExternalId(request.getExternalId());
-        bloodPoolAnalysisService.removeByExternalId(dto.getExternalId());
         return ResponseEntity.ok(dto);
     }
 }
