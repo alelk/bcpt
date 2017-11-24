@@ -10,7 +10,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum TargetFormat {
     PDF("PDF", "pdf"),
-    XLS("XLS", "xls");
+    XLS("XLS", "xls"),
+    DOCX("DOCX", "docx");
 
     private String mSignature;
     private String mFileExtension;
@@ -30,7 +31,7 @@ public enum TargetFormat {
     }
 
     @JsonCreator
-    public TargetFormat forValue(String signature) {
+    public static TargetFormat forValue(String signature) {
         for (TargetFormat format : TargetFormat.values()) {
             if (format.getSignature().equalsIgnoreCase(signature)) return format;
         }

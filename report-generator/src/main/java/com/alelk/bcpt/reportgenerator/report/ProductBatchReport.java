@@ -1,27 +1,39 @@
 package com.alelk.bcpt.reportgenerator.report;
 
-import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 /**
  * Product Batch Report
  *
  * Created by Alex Elkin on 16.11.2017.
  */
-public class ProductBatchReport implements Report {
+public class ProductBatchReport extends AbstractReport {
 
     private static final Logger log = LoggerFactory.getLogger(ProductBatchReport.class);
     private static final String TEMPLATE_NAME = "reports/product-batch-report-template.jrxml";
 
+    public ProductBatchReport() {
+    }
+
+    public ProductBatchReport(String productBatchId) {
+        setProductBatchId(productBatchId);
+    }
+
+    public void setProductBatchId(String productBatchId) {
+        setParam("productBatchId", productBatchId);
+    }
+
+    public String getProductBatchId() {
+        return (String) getParam("productBatchId");
+    }
+
     @Override
     public String getTemplateName() {
-        return null;
+        return TEMPLATE_NAME;
     }
 
     @Override
@@ -35,12 +47,10 @@ public class ProductBatchReport implements Report {
     }
 
     @Override
-    public JRDataSource produceJRDataSource() {
-        return null;
-    }
-
-    @Override
-    public String printDataModel() {
-        return null;
+    public String toString() {
+        return "ProductBatchReport{" +
+                "templateName='" + getTemplateName() +
+                "', productBatchId='" + getProductBatchId() +
+                "'}";
     }
 }
