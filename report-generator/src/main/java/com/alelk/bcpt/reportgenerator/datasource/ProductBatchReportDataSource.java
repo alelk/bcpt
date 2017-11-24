@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  *
  * Created by Alex Elkin on 16.11.2017.
  */
-public class BloodPoolsDataSource implements JRDataSource {
+public class ProductBatchReportDataSource implements JRDataSource {
 
     private final static Pattern BLOOD_DONATION_EXTERNAL_ID_PATTERN = Pattern.compile("^(\\d{6})(\\d{6})(\\d{2})$");
     private final static SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy");
@@ -28,7 +28,7 @@ public class BloodPoolsDataSource implements JRDataSource {
     private List<BloodPoolAnalysisDto> bloodPoolAnalyzes;
     private int index = -1;
 
-    public BloodPoolsDataSource(ProductBatchDto productBatchDto, List<BloodPoolDto> bloodPools, List<BloodInvoiceDto> bloodInvoices, List<BloodInvoiceSeriesDto> bloodInvoiceSeries, List<BloodPoolAnalysisDto> bloodPoolAnalyzes) {
+    public ProductBatchReportDataSource(ProductBatchDto productBatchDto, List<BloodPoolDto> bloodPools, List<BloodInvoiceDto> bloodInvoices, List<BloodInvoiceSeriesDto> bloodInvoiceSeries, List<BloodPoolAnalysisDto> bloodPoolAnalyzes) {
         this.productBatchDto = productBatchDto;
         this.bloodPoolAnalyzes = bloodPoolAnalyzes;
         this.bloodPools = new ArrayList<>();
@@ -62,8 +62,8 @@ public class BloodPoolsDataSource implements JRDataSource {
             return bloodDonationIds.stream().map(bloodDonationId -> {
                 Matcher matcher = BLOOD_DONATION_EXTERNAL_ID_PATTERN.matcher(bloodDonationId);
                 if (!matcher.find()) return bloodDonationId;
-                return matcher.group(1) + "<style isBold='true' size='8'>" + matcher.group(2) + "</style>" + matcher.group(3);
-            }).collect(Collectors.joining(" ")) + " ";
+                return matcher.group(1) + "<style isBold='true' size='9'>" + matcher.group(2) + "</style>" + matcher.group(3);
+            }).collect(Collectors.joining("     "));
         }
         final List<BloodInvoiceDto> bloodInvoices = this.bloodInvoices.stream()
                 .filter(bi -> bi.getBloodDonations() != null && bloodDonationIds.stream().anyMatch(bloodDonationId ->
@@ -83,7 +83,7 @@ public class BloodPoolsDataSource implements JRDataSource {
             List<Date> dates = bloodInvoiceSeries.stream().map(BloodInvoiceSeriesDto::getSeriesDate).collect(Collectors.toList());
             if (dates.size() == 0)
                 dates = bloodInvoices.stream().map(BloodInvoiceDto::getDeliveryDate).collect(Collectors.toList());
-            return dates.stream().filter(Objects::nonNull).distinct().map(BloodPoolsDataSource::mapDateToSimpleString)
+            return dates.stream().filter(Objects::nonNull).distinct().map(ProductBatchReportDataSource::mapDateToSimpleString)
                     .collect(Collectors.joining(" "));
         }
         if ("bloodPoolAnalyzes".equals(fieldName)) {

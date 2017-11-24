@@ -3,6 +3,7 @@ package com.alelk.bcpt.restapi.config;
 import com.alelk.bcpt.database.BcptDatabase;
 import com.alelk.bcpt.database.service.*;
 import com.alelk.bcpt.importer.BcptImporter;
+import com.alelk.bcpt.reportgenerator.ReportGenerator;
 import com.alelk.bcpt.storage.BcptStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -99,6 +100,12 @@ public class RestApiConfig extends AbstractWebSocketMessageBrokerConfigurer {
         multipartResolver.setMaxUploadSize(50 * 1024 * 1024);
         multipartResolver.setMaxInMemorySize(80 * 1024 * 1024);
         return multipartResolver;
+    }
+
+    @Bean
+    @Autowired
+    public ReportGenerator reportGenerator(BcptDatabase database) {
+        return ReportGenerator.getInstance(database);
     }
 
     @Bean

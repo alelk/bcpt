@@ -86,6 +86,11 @@
 			<artifactId>storage</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.alelk.bcpt</groupId>
+			<artifactId>report-generator</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<!-- end project modules dependencies -->
 	</dependencies>
 </project>

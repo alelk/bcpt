@@ -58,6 +58,14 @@
         </dependency>
         <!-- end jasper reports dependency -->
 
+		<!-- apache poi dependency -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${apache-poi.version}</version>
+		</dependency>
+		<!-- end apache poi dependency -->
+
         <!-- project modules dependencies -->
         <dependency>
             <groupId>com.alelk.bcpt</groupId>
@@ -65,8 +73,6 @@
             <version>${project.version}</version>
         </dependency>
 
-
-		<!-- todo: remove this dependency -->
         <dependency>
             <groupId>com.alelk.bcpt</groupId>
             <artifactId>database</artifactId>

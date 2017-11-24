@@ -1,9 +1,8 @@
 package com.alelk.bcpt.reportgenerator.report;
 
-import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JasperReport;
 
-import java.io.OutputStream;
+import java.util.Map;
 
 /**
  * Report Interface
@@ -16,7 +15,5 @@ public interface Report {
 
     JasperReport getJasperReport();
 
-    JRDataSource produceJRDataSource();
-
-    String printDataModel();
+    Map<String, Object> getParams();
 }
