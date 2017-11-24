@@ -21,7 +21,7 @@ import static com.alelk.bcpt.database.model.BloodPoolAnalysisEntity.*;
                 query = "select bpa from BloodPoolAnalysisEntity bpa"
         ), @NamedQuery(
         name = QUERY_FIND_BY_PRODUCT_BATCH,
-        query = "select bpa from BloodPoolEntity bpe inner join bpe.bloodPoolAnalysis bpa where bpe.productBatch=:" + PARAMETER_PRODUCT_BATCH
+        query = "select bpa from BloodPoolAnalysisEntity as bpa inner join bpa.bloodPool as bp where bp.productBatch=:" + PARAMETER_PRODUCT_BATCH
 )})
 public class BloodPoolAnalysisEntity extends AbstractEntity {
     public static final String QUERY_FIND_ALL = "findAllBloodPoolAnalysis";

@@ -1,10 +1,7 @@
 package com.alelk.bcpt.reportgenerator;
 
 import com.alelk.bcpt.database.BcptDatabase;
-import com.alelk.bcpt.model.dto.BloodInvoiceDto;
-import com.alelk.bcpt.model.dto.BloodInvoiceSeriesDto;
-import com.alelk.bcpt.model.dto.BloodPoolDto;
-import com.alelk.bcpt.model.dto.ProductBatchDto;
+import com.alelk.bcpt.model.dto.*;
 import com.alelk.bcpt.reportgenerator.datasource.BloodPoolsDataSource;
 import com.alelk.bcpt.reportgenerator.report.ProductBatchReport;
 import net.sf.jasperreports.engine.JRException;
@@ -44,10 +41,12 @@ public class ReportGeneratorMain {
         log.info("Blood invoices: {}", bloodInvoices.stream().map(BloodInvoiceDto::getExternalId).collect(Collectors.toList()));
         List<BloodInvoiceSeriesDto> bloodInvoiceSeries = database.getBloodInvoiceSeriesService().findByProductBatch("2017-1");
         log.info("Blood invoice series: {}", bloodInvoices.stream().map(BloodInvoiceDto::getExternalId).collect(Collectors.toList()));
+        List<BloodPoolAnalysisDto> bloodPoolAnalyzes = database.getBloodPoolAnalysisService().findByProductBatch("2017-1");
+        log.info("Blood pool analyzes: {}", bloodPoolAnalyzes);
 
         try {
             JasperPrint print = JasperFillManager.fillReport(report, new LinkedHashMap<>(),
-                    new BloodPoolsDataSource(productBatchDto, bloodPools, bloodInvoices, bloodInvoiceSeries));
+                    new BloodPoolsDataSource(productBatchDto, bloodPools, bloodInvoices, bloodInvoiceSeries, bloodPoolAnalyzes));
             JasperViewer.viewReport(print);
         } catch (JRException e) {
             e.printStackTrace();
