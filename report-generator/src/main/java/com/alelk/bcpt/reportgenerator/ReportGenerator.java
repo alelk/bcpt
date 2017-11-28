@@ -29,7 +29,9 @@ public class ReportGenerator {
     private BcptDatabase database;
     private ProductBatchReportExporter productBatchReportExporter;
 
-    private ReportGenerator() {
+    @Autowired
+    private ReportGenerator(ProductBatchReportExporter productBatchReportExporter) {
+        this.productBatchReportExporter = productBatchReportExporter;
     }
 
     BcptDatabase getDatabase() {
@@ -38,11 +40,6 @@ public class ReportGenerator {
 
     void setDatabase(BcptDatabase database) {
         this.database = database;
-    }
-
-    @Autowired
-    public void setProductBatchReportExporter(ProductBatchReportExporter productBatchReportExporter) {
-        this.productBatchReportExporter = productBatchReportExporter;
     }
 
     public static ReportGenerator getInstance(BcptDatabase database) {
