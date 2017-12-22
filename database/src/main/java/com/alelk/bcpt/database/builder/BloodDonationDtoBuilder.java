@@ -17,6 +17,7 @@ public class BloodDonationDtoBuilder extends AbstractDtoBuilder<BloodDonationEnt
     @Override
     public BloodDonationDtoBuilder apply(BloodDonationEntity entity) {
         super.apply(entity);
+        if (entity == null) return this;
         dto.setDonor(entity.getDonor() != null ? entity.getDonor().getExternalId() : null);
         dto.setBloodInvoice(entity.getBloodInvoice() != null ? entity.getBloodInvoice().getExternalId() : null);
         dto.setBloodPool(entity.getBloodPool() != null ? entity.getBloodPool().getExternalId() : null);

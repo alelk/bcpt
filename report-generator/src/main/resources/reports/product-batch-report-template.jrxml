@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-11-24T09:49:45 -->
+<!-- 2017-12-12T14:05:47 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BCPT Product Batch Report" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="800" leftMargin="22" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eaf72290-3b7d-4186-91fa-756baa83b6fb">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="base" isDefault="true" fontName="DejaVu Sans" fontSize="10" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
@@ -185,14 +185,16 @@
 				<text><![CDATA[Номер серии ПДФ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_header_cell" x="150" y="0" width="280" height="60" uuid="74d592f0-a297-4706-80b0-0f2db5046022"/>
+				<reportElement style="table_header_cell" x="150" y="0" width="272" height="60" uuid="74d592f0-a297-4706-80b0-0f2db5046022"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Номера емкостей]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_header_cell" x="430" y="0" width="20" height="60" uuid="e976d77c-0f03-4737-8a90-8c3bc2b685b1"/>
+				<reportElement style="table_header_cell" x="422" y="0" width="28" height="60" uuid="e976d77c-0f03-4737-8a90-8c3bc2b685b1">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right" markup="none">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -213,14 +215,14 @@
 				<text><![CDATA[Результаты анализов]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_header_cell" x="730" y="20" width="20" height="40" uuid="deb4fb47-6668-4d63-8c2e-05e19202d503"/>
+				<reportElement style="table_header_cell" x="690" y="20" width="40" height="40" uuid="deb4fb47-6668-4d63-8c2e-05e19202d503"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[pH]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_header_cell" x="690" y="20" width="40" height="40" uuid="cc3bdf16-1a5b-46b8-9675-1609c9c9c43a">
+				<reportElement style="table_header_cell" x="630" y="20" width="60" height="40" uuid="cc3bdf16-1a5b-46b8-9675-1609c9c9c43a">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -229,7 +231,7 @@
 				<text><![CDATA[ПЦР]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_header_cell" x="650" y="20" width="40" height="40" uuid="f1ea9e9e-e76a-405d-a638-a27dd893aba7">
+				<reportElement style="table_header_cell" x="602" y="20" width="28" height="40" uuid="f1ea9e9e-e76a-405d-a638-a27dd893aba7">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -238,35 +240,35 @@
 				<text><![CDATA[АЛАТ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_header_cell" x="610" y="20" width="40" height="40" uuid="01069c02-ab65-4f80-9422-9fa579303f3e"/>
+				<reportElement style="table_header_cell" x="574" y="20" width="28" height="40" uuid="01069c02-ab65-4f80-9422-9fa579303f3e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[At к возб. сиф.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_header_cell" x="750" y="20" width="20" height="40" uuid="484bfc98-0a2b-4eed-92f0-24a4194fa433"/>
+				<reportElement style="table_header_cell" x="730" y="20" width="40" height="40" uuid="484bfc98-0a2b-4eed-92f0-24a4194fa433"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[конц. белка]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_header_cell" x="570" y="20" width="40" height="40" uuid="c76937b0-6e46-447f-ae02-4491f217e26e"/>
+				<reportElement style="table_header_cell" x="546" y="20" width="28" height="40" uuid="c76937b0-6e46-447f-ae02-4491f217e26e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Ag и At к ВИЧ-1 ВИЧ-2]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_header_cell" x="530" y="20" width="40" height="40" uuid="ed32f6a1-a613-443c-ba0f-54c8bab5cb4b"/>
+				<reportElement style="table_header_cell" x="518" y="20" width="28" height="40" uuid="ed32f6a1-a613-443c-ba0f-54c8bab5cb4b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[At к вир. геп. C]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_header_cell" x="490" y="20" width="40" height="40" uuid="9cab800e-adb5-4a72-804f-cbd13e544285"/>
+				<reportElement style="table_header_cell" x="490" y="20" width="28" height="40" uuid="9cab800e-adb5-4a72-804f-cbd13e544285"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -296,102 +298,106 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="40" splitType="Prevent">
+		<band height="60" splitType="Prevent">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="20" height="40" uuid="6e882fc7-a03b-4e84-b7a6-80fc148bc5f9"/>
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="20" height="60" uuid="6e882fc7-a03b-4e84-b7a6-80fc148bc5f9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bloodPool}.getPoolNumber()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="20" y="0" width="50" height="40" uuid="746aa294-e00c-4a93-89c7-8a0d95f74433"/>
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="20" y="0" width="50" height="60" uuid="746aa294-e00c-4a93-89c7-8a0d95f74433"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bloodInvoiceIds}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="70" y="0" width="40" height="40" uuid="09cc8db4-cb8e-43b8-863e-70ff55a6442d"/>
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="70" y="0" width="40" height="60" uuid="09cc8db4-cb8e-43b8-863e-70ff55a6442d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bloodInvoiceDates}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="110" y="0" width="40" height="40" uuid="cca77bc0-3dd6-4983-99d2-01934a743733"/>
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="110" y="0" width="40" height="60" uuid="cca77bc0-3dd6-4983-99d2-01934a743733"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bloodInvoiceSeriesIds}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="150" y="0" width="280" height="40" uuid="e296c779-d40a-4d98-969e-e4818c77be4c"/>
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="150" y="0" width="272" height="60" uuid="e296c779-d40a-4d98-969e-e4818c77be4c"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bloodDonationIds}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="430" y="0" width="20" height="40" uuid="ce2601cd-ba34-414d-9c03-514282ca5848"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right" markup="none">
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="422" y="0" width="28" height="60" uuid="ce2601cd-ba34-414d-9c03-514282ca5848">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bloodPool}.getTotalAmount().intValue()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="450" y="0" width="20" height="40" uuid="a646133f-d262-4c20-bc51-6b8052cb706f"/>
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="450" y="0" width="20" height="60" uuid="a646133f-d262-4c20-bc51-6b8052cb706f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bloodPool}.getBloodDonations().size()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="470" y="0" width="20" height="40" uuid="e5eef0b0-54cc-45ea-828c-6b7d305a4e58"/>
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="470" y="0" width="20" height="60" uuid="e5eef0b0-54cc-45ea-828c-6b7d305a4e58"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[10]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="490" y="0" width="40" height="40" uuid="41a2434a-5a84-42f1-9b80-1212cc7f38d6">
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="490" y="0" width="28" height="60" uuid="41a2434a-5a84-42f1-9b80-1212cc7f38d6">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="530" y="0" width="40" height="40" uuid="334121ff-74f6-41f0-8f41-b97b11263e9a"/>
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="518" y="0" width="28" height="60" uuid="334121ff-74f6-41f0-8f41-b97b11263e9a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="570" y="0" width="40" height="40" uuid="94fdcda4-524d-4716-90e2-db7dcdc5eb41"/>
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="546" y="0" width="28" height="60" uuid="94fdcda4-524d-4716-90e2-db7dcdc5eb41"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="610" y="0" width="40" height="40" uuid="4ff9fc4d-448b-42ec-9df9-9f03cec0368a"/>
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="574" y="0" width="28" height="60" uuid="4ff9fc4d-448b-42ec-9df9-9f03cec0368a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="650" y="0" width="40" height="40" uuid="4af28190-be65-468c-8308-61de490e6deb">
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="602" y="0" width="28" height="60" uuid="4af28190-be65-468c-8308-61de490e6deb">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="690" y="0" width="40" height="40" uuid="41ce8675-a2b0-43f1-882c-d3485a55a83c">
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="630" y="0" width="60" height="60" uuid="41ce8675-a2b0-43f1-882c-d3485a55a83c">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="730" y="0" width="20" height="40" uuid="485611b0-c39f-405a-91a6-b0b65d6da1b1"/>
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="690" y="0" width="40" height="60" uuid="485611b0-c39f-405a-91a6-b0b65d6da1b1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bloodPoolAnalyzes}.getpH()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="750" y="0" width="20" height="40" uuid="f19cb9f4-e6cb-4aa9-bce9-6303cd5f14ac">
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="730" y="0" width="40" height="60" uuid="f19cb9f4-e6cb-4aa9-bce9-6303cd5f14ac">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
@@ -400,7 +406,9 @@
 				<textFieldExpression><![CDATA[$F{bloodPoolAnalyzes}.getProteinConcentration()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="770" y="0" width="30" height="40" uuid="26d2b2a3-721a-4349-b34b-3f557a37207a"/>
+				<reportElement key="" style="table_data_cell" positionType="Float" stretchType="RelativeToTallestObject" x="770" y="0" width="30" height="60" uuid="26d2b2a3-721a-4349-b34b-3f557a37207a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 			</textField>
 		</band>

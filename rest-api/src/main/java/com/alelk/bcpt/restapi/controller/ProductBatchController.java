@@ -74,8 +74,9 @@ public class ProductBatchController {
     }
 
     @GetMapping("/{externalId}")
-    public ProductBatchDto get(@PathVariable String externalId) {
-        return productBatchService.findByExternalId(externalId);
+    public ResponseEntity<ProductBatchDto> get(@PathVariable String externalId) {
+        final ProductBatchDto dto = productBatchService.findByExternalId(externalId);
+        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/")
