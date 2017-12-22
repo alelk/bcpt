@@ -23,7 +23,7 @@ import org.springframework.validation.Validator;
 @Component
 public class BloodDonationValidator implements Validator {
 
-    private static final String EXTERNAL_ID_REGEX = "\\d{14}";
+    private static final String EXTERNAL_ID_REGEX = "\\d{10,14}";
     private PersonService personService;
     private BloodDonationService bloodDonationService;
     private BloodInvoiceService bloodInvoiceService;

@@ -72,8 +72,9 @@ public class PersonController {
     }
 
     @GetMapping("/{externalId}")
-    public PersonDto get(@PathVariable String externalId) {
-        return personService.findByExternalId(externalId);
+    public ResponseEntity<PersonDto> get(@PathVariable String externalId) {
+        final PersonDto dto = personService.findByExternalId(externalId);
+        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/")

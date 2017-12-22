@@ -71,8 +71,9 @@ public class BloodPoolAnalysisController {
     }
 
     @GetMapping("/{externalId}")
-    public BloodPoolAnalysisDto get(@PathVariable String externalId) {
-        return bloodPoolAnalysisService.findByExternalId(externalId);
+    public ResponseEntity<BloodPoolAnalysisDto> get(@PathVariable String externalId) {
+        final BloodPoolAnalysisDto dto = bloodPoolAnalysisService.findByExternalId(externalId);
+        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/")

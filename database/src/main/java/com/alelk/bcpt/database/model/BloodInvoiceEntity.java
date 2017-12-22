@@ -5,6 +5,7 @@ import com.alelk.bcpt.database.util.Sortable;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.alelk.bcpt.database.model.BloodInvoiceEntity.PARAMETER_PRODUCT_BATCH;
@@ -76,7 +77,7 @@ public class BloodInvoiceEntity extends AbstractEntity {
 
     public Double getTotalAmount() {
         if (bloodDonations == null) return null;
-        return bloodDonations.stream().mapToDouble(BloodDonationEntity::getAmount).sum();
+        return bloodDonations.stream().mapToDouble(bde -> bde.getAmount() != null ? bde.getAmount() : 0).sum();
     }
 
     public BloodInvoiceSeriesEntity getBloodInvoiceSeries() {
