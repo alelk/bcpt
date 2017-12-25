@@ -1,6 +1,7 @@
 package com.alelk.bcpt.database.model;
 
 import com.alelk.bcpt.database.util.Sortable;
+import com.alelk.bcpt.model.AnalysisConclusion;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.alelk.bcpt.database.model.ProductBatchEntity.QUERY_FIND_ALL;
+import static com.alelk.bcpt.database.util.RepositoryUtil.processAnalysisConclusion;
 
 /**
  * Product Batch Entity
@@ -87,6 +89,11 @@ public class ProductBatchEntity extends AbstractEntity {
     public Double getTotalAmount() {
         if (bloodPools == null) return null;
         return bloodPools.stream().mapToDouble(BloodPoolEntity::getTotalAmount).sum();
+    }
+
+    public AnalysisConclusion getAnalysisConclusion() {
+        return bloodPools == null ? null :
+                processAnalysisConclusion(bloodPools.stream().map(BloodPoolEntity::getAnalysisConclusion));
     }
 
     public String getLocation() {

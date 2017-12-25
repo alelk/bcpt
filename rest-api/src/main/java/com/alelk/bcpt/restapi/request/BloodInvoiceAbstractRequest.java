@@ -1,5 +1,6 @@
 package com.alelk.bcpt.restapi.request;
 
+import com.alelk.bcpt.model.AnalysisConclusion;
 import com.alelk.bcpt.model.dto.BloodInvoiceDto;
 
 import java.util.Date;
@@ -18,6 +19,7 @@ public abstract class BloodInvoiceAbstractRequest extends BcptDtoApiRequest<Bloo
     private Set<String> bloodDonations;
     private String bloodInvoiceSeries;
     private Double totalAmount;
+    private AnalysisConclusion analysisConclusion;
 
     public Date getDeliveryDate() {
         return deliveryDate;
@@ -51,9 +53,17 @@ public abstract class BloodInvoiceAbstractRequest extends BcptDtoApiRequest<Bloo
         this.bloodInvoiceSeries = bloodInvoiceSeries;
     }
 
+    public AnalysisConclusion getAnalysisConclusion() {
+        return analysisConclusion;
+    }
+
+    public void setAnalysisConclusion(AnalysisConclusion analysisConclusion) {
+        this.analysisConclusion = analysisConclusion;
+    }
+
     @Override
     public BloodInvoiceDto toDto() {
-        return new BloodInvoiceDto(getExternalId(), null, null, deliveryDate, bloodDonations, bloodInvoiceSeries, totalAmount);
+        return new BloodInvoiceDto(getExternalId(), null, null, deliveryDate, bloodDonations, bloodInvoiceSeries, totalAmount, analysisConclusion);
     }
 
     @Override
@@ -63,6 +73,7 @@ public abstract class BloodInvoiceAbstractRequest extends BcptDtoApiRequest<Bloo
                 ", bloodInvoiceSeries='" + bloodInvoiceSeries + '\'' +
                 ", deliveryDate='" + deliveryDate + '\'' +
                 ", totalAmount='" + totalAmount + '\'' +
+                ", analysisConclusion=" + analysisConclusion +
                 ", bloodDonations=" + (bloodDonations != null
                 ? '[' + bloodDonations.stream().collect(Collectors.joining(", ")) + ']' : null) +
                 '}';

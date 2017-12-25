@@ -34,6 +34,7 @@ public class BloodDonationEntityBuilder extends AbstractEntityBuilder<BloodDonat
         setEntityFieldValue("donationDate", dto.getDonationDate());
         setEntityFieldValue("expirationDate", dto.getExpirationDate());
         setEntityFieldValue("quarantineDate", dto.getQuarantineDate());
+        setEntityFieldValue("analysisConclusion", dto.getAnalysisConclusion());
         return this;
     }
 

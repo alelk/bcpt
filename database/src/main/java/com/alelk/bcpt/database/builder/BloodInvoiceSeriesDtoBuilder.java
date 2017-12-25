@@ -23,6 +23,7 @@ public class BloodInvoiceSeriesDtoBuilder extends AbstractDtoBuilder<BloodInvoic
         if (entity == null) return this;
         dto.setSeriesDate(entity.getSeriesDate());
         dto.setTotalAmount(entity.getTotalAmount());
+        dto.setAnalysisConclusion(entity.getAnalysisConclusion());
         dto.setBloodInvoices(
                 entity.getBloodInvoices() != null ? entity.getBloodInvoices().stream()
                         .map(BloodInvoiceEntity::getExternalId).collect(Collectors.toSet()) : null

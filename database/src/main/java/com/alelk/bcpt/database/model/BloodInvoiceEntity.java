@@ -2,15 +2,18 @@ package com.alelk.bcpt.database.model;
 
 import com.alelk.bcpt.common.util.StringUtil;
 import com.alelk.bcpt.database.util.Sortable;
+import com.alelk.bcpt.model.AnalysisConclusion;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static com.alelk.bcpt.database.model.BloodInvoiceEntity.PARAMETER_PRODUCT_BATCH;
 import static com.alelk.bcpt.database.model.BloodInvoiceEntity.QUERY_FIND_ALL;
 import static com.alelk.bcpt.database.model.BloodInvoiceEntity.QUERY_FIND_BY_PRODUCT_BATCH;
+import static com.alelk.bcpt.database.util.RepositoryUtil.processAnalysisConclusion;
 
 /**
  * Blood Donation Delivery Entity
@@ -71,13 +74,14 @@ public class BloodInvoiceEntity extends AbstractEntity {
         this.bloodDonations = bloodDonations;
     }
 
-    boolean needCalculateTotalAmount() {
-        return false;
-    }
-
     public Double getTotalAmount() {
         if (bloodDonations == null) return null;
         return bloodDonations.stream().mapToDouble(bde -> bde.getAmount() != null ? bde.getAmount() : 0).sum();
+    }
+
+    public AnalysisConclusion getAnalysisConclusion() {
+        return bloodDonations == null ? null :
+                processAnalysisConclusion(bloodDonations.stream().map(BloodDonationEntity::getAnalysisConclusion));
     }
 
     public BloodInvoiceSeriesEntity getBloodInvoiceSeries() {

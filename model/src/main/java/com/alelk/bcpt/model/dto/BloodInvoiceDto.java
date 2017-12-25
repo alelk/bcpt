@@ -1,5 +1,6 @@
 package com.alelk.bcpt.model.dto;
 
+import com.alelk.bcpt.model.AnalysisConclusion;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ public class BloodInvoiceDto extends AbstractBcptDto {
     private Set<String> bloodDonations;
     private String bloodInvoiceSeries;
     private Double totalAmount;
+    private AnalysisConclusion analysisConclusion;
 
     public BloodInvoiceDto() {}
 
@@ -26,12 +28,13 @@ public class BloodInvoiceDto extends AbstractBcptDto {
         super(externalId, creationTimestamp, updateTimestamp);
     }
 
-    public BloodInvoiceDto(String externalId, Date creationTimestamp, Date updateTimestamp, Date deliveryDate, Set<String> bloodDonations, String bloodInvoiceSeries, Double totalAmount) {
+    public BloodInvoiceDto(String externalId, Date creationTimestamp, Date updateTimestamp, Date deliveryDate, Set<String> bloodDonations, String bloodInvoiceSeries, Double totalAmount, AnalysisConclusion analysisConclusion) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.deliveryDate = deliveryDate;
         this.bloodDonations = bloodDonations;
         this.bloodInvoiceSeries = bloodInvoiceSeries;
         this.totalAmount = totalAmount;
+        this.analysisConclusion = analysisConclusion;
     }
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -67,6 +70,14 @@ public class BloodInvoiceDto extends AbstractBcptDto {
         this.bloodInvoiceSeries = bloodInvoiceSeries;
     }
 
+    public AnalysisConclusion getAnalysisConclusion() {
+        return analysisConclusion;
+    }
+
+    public void setAnalysisConclusion(AnalysisConclusion analysisConclusion) {
+        this.analysisConclusion = analysisConclusion;
+    }
+
     @Override
     public String toString() {
         return "BloodInvoiceDto{" +
@@ -77,6 +88,7 @@ public class BloodInvoiceDto extends AbstractBcptDto {
                 : null) +
                 ", bloodInvoiceSeries='" + getBloodInvoiceSeries() + '\'' +
                 ", totalAmount='" + getTotalAmount() + '\'' +
+                ", analysisConclusion='" + analysisConclusion + '\'' +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';

@@ -25,6 +25,7 @@ public class BloodDonationDtoBuilder extends AbstractDtoBuilder<BloodDonationEnt
         dto.setDonationType(entity.getDonationType());
         dto.setBloodType(entity.getBloodType());
         dto.setRhFactor(entity.getRhFactor());
+        dto.setAnalysisConclusion(entity.getAnalysisConclusion());
         dto.setDonationDate(entity.getDonationDate());
         dto.setExpirationDate(entity.getExpirationDate());
         dto.setQuarantineDate(entity.getQuarantineDate());

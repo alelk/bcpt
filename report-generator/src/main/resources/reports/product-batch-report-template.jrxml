@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-12-12T14:05:47 -->
+<!-- 2017-12-25T14:20:27 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BCPT Product Batch Report" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="800" leftMargin="22" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eaf72290-3b7d-4186-91fa-756baa83b6fb">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="base" isDefault="true" fontName="DejaVu Sans" fontSize="10" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
@@ -30,8 +30,12 @@
 	<field name="bloodInvoiceIds" class="java.lang.String"/>
 	<field name="bloodInvoiceSeriesIds" class="java.lang.String"/>
 	<field name="bloodInvoiceDates" class="java.lang.String"/>
+	<variable name="rowsOnPage" class="java.lang.Integer" resetType="Page">
+		<variableExpression><![CDATA[$V{rowsOnPage} + 1]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
 	<title>
-		<band height="220" splitType="Stretch">
+		<band height="110" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="800" height="20" uuid="a51e9b43-e80d-4af5-a1c0-4184fe625606"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -79,70 +83,13 @@
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{productBatch}.getBatchDate()]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="400" y="84" width="200" height="20" uuid="6e98df37-8391-49e3-a6dc-ed8c9cd3d7db"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Суммарный объем продукта, мл:]]></text>
-			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="600" y="84" width="200" height="20" uuid="6e98df37-8391-49e3-a6dc-ed8c9cd3d7db"/>
+				<reportElement x="400" y="84" width="400" height="20" uuid="21f36a4e-9047-481e-b957-63fc92ad21d2"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{productBatch}.getTotalAmount().intValue()]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Ответственный за формирование пулов: " + ($F{productBatch}.getBatchAuthor() == null ? "" : $F{productBatch}.getBatchAuthor())]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="0" y="130" width="400" height="20" uuid="21f36a4e-9047-481e-b957-63fc92ad21d2"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Ответственный за формирование пулов:]]></text>
-			</staticText>
 			<line>
 				<reportElement x="0" y="104" width="800" height="1" forecolor="#D8EBE0" uuid="922cdc15-205a-4a94-afd4-8d81664f89fb"/>
-			</line>
-			<staticText>
-				<reportElement x="0" y="110" width="400" height="20" uuid="d19efa52-942c-4034-9cf9-bd3ad92411ae"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Количество проб отобрано и отправлено:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="110" width="400" height="20" uuid="df217933-79e1-4a29-bd71-1fd79fb0ef03"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{productBatch}.getBloodPools().size()]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="130" width="400" height="20" uuid="9c1bb472-27c7-4a1a-a809-13f9335bf89f"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{productBatch}.getBatchAuthor()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="150" width="400" height="20" uuid="13e39e7b-e1f2-4f49-88cb-9955cfe67988"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Дата и время:]]></text>
-			</staticText>
-			<textField pattern="dd MMMMM yyyy г. HH ч. mm м." isBlankWhenNull="true">
-				<reportElement x="400" y="150" width="400" height="20" uuid="ada30ff7-8f0c-4496-aeb6-d3d49e7b8a4d"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="0" y="170" width="800" height="1" forecolor="#D8EBE0" uuid="fc7c11fa-3085-44c9-8eb0-62d4941fea17"/>
-			</line>
-			<staticText>
-				<reportElement x="0" y="170" width="200" height="20" uuid="9cc06c75-c120-48aa-9f1f-b2f0e12477b3"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Дата исследования:]]></text>
-			</staticText>
-			<line>
-				<reportElement x="200" y="200" width="200" height="1" forecolor="#999999" uuid="774f9714-33fc-4bbc-8b67-03cad81ea549"/>
-			</line>
-			<staticText>
-				<reportElement x="400" y="170" width="400" height="20" uuid="95489d9c-203b-4eed-a4b7-24ed46a511d4"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Ответственный за проведение исследования:]]></text>
-			</staticText>
-			<line>
-				<reportElement x="650" y="200" width="150" height="1" forecolor="#999999" uuid="b6d2aa14-2b41-4cca-b163-30a61b1e1309"/>
-			</line>
-			<line>
-				<reportElement x="0" y="210" width="800" height="1" forecolor="#D8EBE0" uuid="f2f4cb39-fb1e-418d-a21a-310e33d44cb3"/>
 			</line>
 			<textField isBlankWhenNull="true">
 				<reportElement x="200" y="44" width="200" height="20" uuid="fd14212d-debe-4f42-8c59-40d205542d94"/>
@@ -414,16 +361,95 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="20">
+		<band height="45">
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="0" y="6" width="300" height="14" uuid="ee14da26-130a-4ffc-9b72-f19f98f64edd">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Пробы в количестве "+$V{rowsOnPage} + " из " + $F{productBatch}.getBloodPools().size() + " отобраны и отправлены"]]></textFieldExpression>
+			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="400" y="7" width="360" height="13" uuid="050f752c-604f-44f9-8842-8ee5d288321d"/>
-				<textElement textAlignment="Right"/>
+				<reportElement mode="Transparent" x="650" y="26" width="108" height="14" uuid="050f752c-604f-44f9-8842-8ee5d288321d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Страница "+$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement mode="Transparent" x="760" y="7" width="40" height="13" uuid="828f7665-1b1f-4b6f-a590-befbb89cc48a"/>
+				<reportElement mode="Transparent" x="760" y="26" width="40" height="14" uuid="828f7665-1b1f-4b6f-a590-befbb89cc48a">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[" из " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="300" y="6" width="50" height="14" uuid="13e39e7b-e1f2-4f49-88cb-9955cfe67988">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Дата: ]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM yyyy г. HH ч. mm м." isBlankWhenNull="true">
+				<reportElement x="350" y="6" width="100" height="14" uuid="ada30ff7-8f0c-4496-aeb6-d3d49e7b8a4d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="450" y="6" width="200" height="14" uuid="cd3c5714-2df4-4f71-bcd7-b706c1445da1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Подпись:_______________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="26" width="250" height="14" uuid="4740adee-393a-4068-859a-6d601cef52e4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Дата исследования: "____"___________________20____г.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="26" width="400" height="14" uuid="391ff735-86f8-4a8c-804e-aec28efa9f3e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Подпись ответственного за проведение исследования:____________________________]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 </jasperReport>

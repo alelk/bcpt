@@ -4,6 +4,7 @@ import com.alelk.bcpt.database.model.AbstractEntity;
 import com.alelk.bcpt.database.model.AbstractEntity_;
 import com.alelk.bcpt.database.predicate.AbstractPredicateBuilder;
 import com.alelk.bcpt.database.specifications.AbstractSpecifications;
+import com.alelk.bcpt.model.AnalysisConclusion;
 import com.alelk.bcpt.model.pagination.Filter;
 import com.alelk.bcpt.model.pagination.SortBy;
 import com.alelk.bcpt.model.pagination.SortDirection;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Repository Util
@@ -133,5 +135,13 @@ public class RepositoryUtil {
         return (Class<? extends AbstractEntity_>) reflections.getTypesAnnotatedWith(StaticMetamodel.class).stream()
                 .filter(annotatedClass -> clazz.equals(annotatedClass.getAnnotation(StaticMetamodel.class).value()))
                 .findFirst().orElse(null);
+    }
+
+    public static AnalysisConclusion processAnalysisConclusion(Stream<AnalysisConclusion> stream) {
+        return stream.reduce(AnalysisConclusion.PASS, (accumulator, analysis) -> {
+            if (analysis == null) return AnalysisConclusion.PASS.equals(accumulator) ? null : accumulator;
+            return analysis.morePriorityThan(accumulator) ?
+                    AnalysisConclusion.PASS.equals(analysis) ? null : analysis : accumulator;
+        });
     }
 }

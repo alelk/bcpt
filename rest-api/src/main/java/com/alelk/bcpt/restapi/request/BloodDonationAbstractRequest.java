@@ -1,5 +1,6 @@
 package com.alelk.bcpt.restapi.request;
 
+import com.alelk.bcpt.model.AnalysisConclusion;
 import com.alelk.bcpt.model.BloodType;
 import com.alelk.bcpt.model.DonationType;
 import com.alelk.bcpt.model.RhFactor;
@@ -25,6 +26,7 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
     private DonationType donationType;
     private BloodType bloodType;
     private RhFactor rhFactor;
+    private AnalysisConclusion analysisConclusion;
 
     public String getDonor() {
         return donor;
@@ -106,10 +108,18 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
         this.rhFactor = rhFactor;
     }
 
+    public AnalysisConclusion getAnalysisConclusion() {
+        return analysisConclusion;
+    }
+
+    public void setAnalysisConclusion(AnalysisConclusion analysisConclusion) {
+        this.analysisConclusion = analysisConclusion;
+    }
+
     @Override
     public BloodDonationDto toDto() {
         return new BloodDonationDto(getExternalId(), null, null, donor,
-                bloodInvoice, bloodPool, amount, donationDate, quarantineDate, expirationDate, donationType, bloodType, rhFactor);
+                bloodInvoice, bloodPool, amount, donationDate, quarantineDate, expirationDate, donationType, bloodType, rhFactor, analysisConclusion);
     }
 
     @Override
@@ -123,6 +133,7 @@ public class BloodDonationAbstractRequest extends BcptDtoApiRequest<BloodDonatio
                 ", donationType=" + donationType +
                 ", bloodType=" + bloodType +
                 ", rhFactor=" + rhFactor +
+                ", analysisConclusion=" + analysisConclusion +
                 ", donationDate=" + donationDate +
                 ", expirationDate=" + expirationDate +
                 ", quarantineDate=" + quarantineDate +

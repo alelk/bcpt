@@ -1,14 +1,17 @@
 package com.alelk.bcpt.database.model;
 
 import com.alelk.bcpt.database.util.Sortable;
+import com.alelk.bcpt.model.AnalysisConclusion;
 
 import javax.persistence.*;
 
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.alelk.bcpt.database.model.BloodInvoiceSeriesEntity.*;
+import static com.alelk.bcpt.database.util.RepositoryUtil.processAnalysisConclusion;
 
 /**
  * Blood Series Entity
@@ -63,6 +66,11 @@ public class BloodInvoiceSeriesEntity extends AbstractEntity {
     public Double getTotalAmount() {
         if (bloodInvoices == null) return null;
         return bloodInvoices.stream().mapToDouble(BloodInvoiceEntity::getTotalAmount).sum();
+    }
+
+    public AnalysisConclusion getAnalysisConclusion() {
+        return bloodInvoices == null ? null :
+                processAnalysisConclusion(bloodInvoices.stream().map(BloodInvoiceEntity::getAnalysisConclusion));
     }
 
     @Override

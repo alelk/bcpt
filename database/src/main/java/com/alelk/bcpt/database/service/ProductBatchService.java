@@ -1,6 +1,5 @@
 package com.alelk.bcpt.database.service;
 
-import com.alelk.bcpt.database.builder.ProductBatchDtoBuilder;
 import com.alelk.bcpt.database.builder.ProductBatchEntityBuilder;
 import com.alelk.bcpt.database.model.BloodPoolEntity;
 import com.alelk.bcpt.database.model.ProductBatchEntity;
@@ -20,6 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.alelk.bcpt.database.util.ValidationUtil.*;
+import static com.alelk.bcpt.database.util.DatabaseUtil.mapProductBatchEntityToDto;
 
 /**
  * Product Batch Service
@@ -43,13 +43,13 @@ public class ProductBatchService {
         final String message = "Cannot add new product batch info '" + dto + ':';
         validateNotNull(dto, message + " Product Batch DTO must be not null!");
         validateNotEmpty(dto.getExternalId(), message + " no external id provided!");
-        return new ProductBatchDtoBuilder().apply(
+        return mapProductBatchEntityToDto(
                 productBatchRepository.save(
                         new ProductBatchEntityBuilder()
                                 .apply(dto)
                                 .apply(getBloodPoolEntitiesByExternalIds(dto.getBloodPools(), message))
                                 .build())
-        ).build();
+        );
     }
 
     @Transactional
@@ -60,18 +60,18 @@ public class ProductBatchService {
             validateNotEmpty(dto.getExternalId(), message + "no product batch external id provided!");
         final ProductBatchEntity entity = findEntityByExternalId(externalId, message);
         validateNotNull(entity, message + "product batch external id does'nt exist.");
-        return new ProductBatchDtoBuilder().apply(
+        return mapProductBatchEntityToDto(
                 new ProductBatchEntityBuilder(entity, mergeWithNullValues, softUpdate)
                         .apply(dto)
                         .apply(getBloodPoolEntitiesByExternalIds(dto.getBloodPools(), message))
                         .build()
-        ).build();
+        );
     }
 
     @Transactional(readOnly = true)
     public List<ProductBatchDto> findAll() {
         return productBatchRepository.findAll().stream()
-                .map(entity -> new ProductBatchDtoBuilder().apply(entity).build())
+                .map(DatabaseUtil::mapProductBatchEntityToDto)
                 .collect(Collectors.toList());
     }
 
@@ -89,7 +89,7 @@ public class ProductBatchService {
 
     @Transactional(readOnly = true)
     public ProductBatchDto findByExternalId(String externalId) {
-        return new ProductBatchDtoBuilder().apply(findEntityByExternalId(externalId, "")).build();
+        return mapProductBatchEntityToDto(findEntityByExternalId(externalId, ""));
     }
 
     @Transactional
@@ -98,7 +98,7 @@ public class ProductBatchService {
         final ProductBatchEntity entity = findEntityByExternalId(externalId, message);
         validateNotNull(entity, message + "no entity found for the external id '" + externalId + '\'');
         productBatchRepository.remove(entity);
-        return new ProductBatchDtoBuilder().apply(entity).build();
+        return mapProductBatchEntityToDto(entity);
     }
 
     @Transactional

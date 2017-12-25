@@ -1,5 +1,7 @@
 package com.alelk.bcpt.model.dto;
 
+import com.alelk.bcpt.model.AnalysisConclusion;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
@@ -17,6 +19,7 @@ public class BloodPoolDto extends AbstractBcptDto {
     private Set<String> bloodDonations;
     private String productBatch;
     private Double totalAmount;
+    private AnalysisConclusion analysisConclusion;
 
     public BloodPoolDto() {}
 
@@ -24,11 +27,12 @@ public class BloodPoolDto extends AbstractBcptDto {
         super(externalId, creationTimestamp, updateTimestamp);
     }
 
-    public BloodPoolDto(String externalId, Date creationTimestamp, Date updateTimestamp, Integer poolNumber, Set<String> bloodDonations, String productBatch, Double totalAmount) {
+    public BloodPoolDto(String externalId, Date creationTimestamp, Date updateTimestamp, Integer poolNumber, Set<String> bloodDonations, String productBatch, Double totalAmount, AnalysisConclusion analysisConclusion) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.poolNumber = poolNumber;
         this.bloodDonations = bloodDonations;
         this.productBatch = productBatch;
+        this.analysisConclusion = analysisConclusion;
     }
 
     public Integer getPoolNumber() {
@@ -63,6 +67,14 @@ public class BloodPoolDto extends AbstractBcptDto {
         this.totalAmount = totalAmount == null ? null : new BigDecimal(totalAmount).setScale(2, RoundingMode.FLOOR).doubleValue();
     }
 
+    public AnalysisConclusion getAnalysisConclusion() {
+        return analysisConclusion;
+    }
+
+    public void setAnalysisConclusion(AnalysisConclusion analysisConclusion) {
+        this.analysisConclusion = analysisConclusion;
+    }
+
     @Override
     public String toString() {
         return "BloodPoolDto{" +
@@ -73,6 +85,7 @@ public class BloodPoolDto extends AbstractBcptDto {
                 ? '[' + bloodDonations.stream().collect(Collectors.joining(", ")) + ']'
                 : null) +
                 ", totalAmount=" + totalAmount +
+                ", analysisConclusion=" + analysisConclusion +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';

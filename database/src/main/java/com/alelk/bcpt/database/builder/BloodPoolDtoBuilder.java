@@ -23,6 +23,7 @@ public class BloodPoolDtoBuilder extends AbstractDtoBuilder<BloodPoolEntity, Blo
         if (entity == null) return this;
         dto.setPoolNumber(entity.getPoolNumber());
         dto.setTotalAmount(entity.getTotalAmount());
+        dto.setAnalysisConclusion(entity.getAnalysisConclusion());
         dto.setProductBatch(entity.getProductBatch() != null ? entity.getProductBatch().getExternalId() : null);
         dto.setBloodDonations(
                 entity.getBloodDonations() != null ? entity.getBloodDonations().stream()

@@ -81,6 +81,8 @@ public class ProductBatchController {
 
     @DeleteMapping("/")
     public ResponseEntity<ProductBatchDto> delete(@Validated @RequestBody ProductBatchDeleteRequest request) {
-        return ResponseEntity.ok(productBatchService.removeByExternalId(request.getExternalId()));
+        productBatchService.removeByExternalId(request.getExternalId());
+        final ProductBatchDto dto = productBatchService.removeByExternalId(request.getExternalId());
+        return ResponseEntity.ok(dto);
     }
 }

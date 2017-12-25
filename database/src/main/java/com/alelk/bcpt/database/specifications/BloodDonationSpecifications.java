@@ -1,6 +1,7 @@
 package com.alelk.bcpt.database.specifications;
 
 import com.alelk.bcpt.database.model.*;
+import com.alelk.bcpt.model.AnalysisConclusion;
 import com.alelk.bcpt.model.BloodType;
 import com.alelk.bcpt.model.DonationType;
 import com.alelk.bcpt.model.RhFactor;
@@ -38,5 +39,9 @@ public class BloodDonationSpecifications extends AbstractSpecifications<BloodDon
 
     public Specification<BloodDonationEntity> rhFactorEqual(Join<BloodDonationEntity, PersonEntity> persons, RhFactor rhFactor) {
         return valueEqual(persons.get(PersonEntity_.rhFactor), rhFactor);
+    }
+
+    public Specification<BloodDonationEntity> analysisConclusionEqual(AnalysisConclusion analysisConclusion) {
+        return valueEqual(BloodDonationEntity_.analysisConclusion, analysisConclusion);
     }
 }

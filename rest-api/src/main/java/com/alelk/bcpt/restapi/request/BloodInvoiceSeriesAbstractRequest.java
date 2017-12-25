@@ -1,6 +1,7 @@
 package com.alelk.bcpt.restapi.request;
 
 import com.alelk.bcpt.common.util.StringUtil;
+import com.alelk.bcpt.model.AnalysisConclusion;
 import com.alelk.bcpt.model.dto.BloodInvoiceSeriesDto;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ public class BloodInvoiceSeriesAbstractRequest extends BcptDtoApiRequest<BloodIn
     private Date seriesDate;
     private Set<String> bloodInvoices;
     private Double totalAmount;
+    private AnalysisConclusion analysisConclusion;
 
     public Date getSeriesDate() {
         return seriesDate;
@@ -41,9 +43,17 @@ public class BloodInvoiceSeriesAbstractRequest extends BcptDtoApiRequest<BloodIn
         this.totalAmount = totalAmount;
     }
 
+    public AnalysisConclusion getAnalysisConclusion() {
+        return analysisConclusion;
+    }
+
+    public void setAnalysisConclusion(AnalysisConclusion analysisConclusion) {
+        this.analysisConclusion = analysisConclusion;
+    }
+
     @Override
     public BloodInvoiceSeriesDto toDto() {
-        return new BloodInvoiceSeriesDto(getExternalId(), null, null, seriesDate, bloodInvoices, totalAmount);
+        return new BloodInvoiceSeriesDto(getExternalId(), null, null, seriesDate, bloodInvoices, totalAmount, analysisConclusion);
     }
 
     @Override
@@ -52,6 +62,7 @@ public class BloodInvoiceSeriesAbstractRequest extends BcptDtoApiRequest<BloodIn
                 "externalId='" + getExternalId() +
                 "', seriesDate=" + seriesDate +
                 ", totalAmount=" + totalAmount +
+                ", analysisConclusion=" + analysisConclusion +
                 ", bloodInvoices=[" + StringUtil.toString(bloodInvoices) +
                 "]}";
     }

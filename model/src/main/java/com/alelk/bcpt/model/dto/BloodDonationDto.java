@@ -1,5 +1,6 @@
 package com.alelk.bcpt.model.dto;
 
+import com.alelk.bcpt.model.AnalysisConclusion;
 import com.alelk.bcpt.model.BloodType;
 import com.alelk.bcpt.model.DonationType;
 import com.alelk.bcpt.model.RhFactor;
@@ -24,6 +25,7 @@ public class BloodDonationDto extends AbstractBcptDto {
     private DonationType donationType;
     private BloodType bloodType;
     private RhFactor rhFactor;
+    private AnalysisConclusion analysisConclusion;
 
     public BloodDonationDto() {}
 
@@ -33,7 +35,7 @@ public class BloodDonationDto extends AbstractBcptDto {
 
     public BloodDonationDto(String externalId, Date creationTimestamp, Date updateTimestamp,
                             String donor, String bloodInvoiceExternalId, String bloodPool, Double amount,
-                            Date donationDate, Date quarantineDate, Date expirationDate, DonationType donationType, BloodType bloodType, RhFactor rhFactor) {
+                            Date donationDate, Date quarantineDate, Date expirationDate, DonationType donationType, BloodType bloodType, RhFactor rhFactor, AnalysisConclusion analysisConclusion) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.donor = donor;
         this.bloodInvoice = bloodInvoiceExternalId;
@@ -45,6 +47,7 @@ public class BloodDonationDto extends AbstractBcptDto {
         this.donationType = donationType;
         this.bloodType = bloodType;
         this.rhFactor = rhFactor;
+        this.analysisConclusion = analysisConclusion;
     }
 
     public void setDonor(String donor) {
@@ -130,6 +133,14 @@ public class BloodDonationDto extends AbstractBcptDto {
         this.rhFactor = rhFactor;
     }
 
+    public AnalysisConclusion getAnalysisConclusion() {
+        return analysisConclusion;
+    }
+
+    public void setAnalysisConclusion(AnalysisConclusion analysisConclusion) {
+        this.analysisConclusion = analysisConclusion;
+    }
+
     @Override
     public String toString() {
         return "BloodDonationDto{" +
@@ -144,6 +155,7 @@ public class BloodDonationDto extends AbstractBcptDto {
                 ", expirationDate=" + expirationDate +
                 ", bloodType=" + bloodType +
                 ", rhFactor=" + rhFactor +
+                ", analysisConclusion=" + analysisConclusion +
                 ", creationTimestamp=" + getCreationTimestamp() +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';

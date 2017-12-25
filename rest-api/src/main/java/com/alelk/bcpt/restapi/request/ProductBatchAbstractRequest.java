@@ -1,5 +1,6 @@
 package com.alelk.bcpt.restapi.request;
 
+import com.alelk.bcpt.model.AnalysisConclusion;
 import com.alelk.bcpt.model.dto.ProductBatchDto;
 
 import java.util.Date;
@@ -22,6 +23,7 @@ public abstract class ProductBatchAbstractRequest extends BcptDtoApiRequest<Prod
     private String batchAuthor;
     private String productProvider;
     private String productName;
+    private AnalysisConclusion analysisConclusion;
 
     public Integer getBatchNumber() {
         return batchNumber;
@@ -87,9 +89,17 @@ public abstract class ProductBatchAbstractRequest extends BcptDtoApiRequest<Prod
         this.productName = productName;
     }
 
+    public AnalysisConclusion getAnalysisConclusion() {
+        return analysisConclusion;
+    }
+
+    public void setAnalysisConclusion(AnalysisConclusion analysisConclusion) {
+        this.analysisConclusion = analysisConclusion;
+    }
+
     @Override
     public ProductBatchDto toDto() {
-        return new ProductBatchDto(getExternalId(), null, null, batchNumber, batchDate, bloodPools, totalAmount, location, batchAuthor, productProvider, productName);
+        return new ProductBatchDto(getExternalId(), null, null, batchNumber, batchDate, bloodPools, totalAmount, location, batchAuthor, productProvider, productName, analysisConclusion);
     }
 
     @Override
@@ -103,6 +113,7 @@ public abstract class ProductBatchAbstractRequest extends BcptDtoApiRequest<Prod
                 ", batchAuthor=" + batchAuthor +
                 ", productName=" + productName +
                 ", productProvider=" + productProvider +
+                ", analysisConclusion=" + analysisConclusion +
                 ", bloodPools=" + (bloodPools != null ?
                 '[' + bloodPools.stream().collect(Collectors.joining(", ")) + ']' : null) +
                 '}';
