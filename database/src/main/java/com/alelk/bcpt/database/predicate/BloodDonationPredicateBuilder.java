@@ -3,6 +3,7 @@ package com.alelk.bcpt.database.predicate;
 import com.alelk.bcpt.database.model.*;
 import com.alelk.bcpt.database.specifications.BloodDonationSpecifications;
 import com.alelk.bcpt.database.specifications.Specification;
+import com.alelk.bcpt.model.AnalysisConclusion;
 import com.alelk.bcpt.model.BloodType;
 import com.alelk.bcpt.model.DonationType;
 import com.alelk.bcpt.model.RhFactor;
@@ -48,6 +49,8 @@ public class BloodDonationPredicateBuilder extends AbstractPredicateBuilder<Bloo
                 specifications.add(this.specifications.bloodTypeEqual(persons, BloodType.forString(filter.getFilter())));
             if ("rhFactor".equals(filter.getFieldName()))
                 specifications.add(this.specifications.rhFactorEqual(persons, RhFactor.forSignature(filter.getFilter())));
+            if ("analysisConclusion".equals(filter.getFieldName()))
+                specifications.add(this.specifications.analysisConclusionEqual(AnalysisConclusion.forSignature(filter.getFilter())));
         }
         return and(cb, commonPredicate, and(root, query, cb, specifications));
     }

@@ -28,6 +28,7 @@ public class ProductBatchDtoBuilder extends AbstractDtoBuilder<ProductBatchEntit
         dto.setLocation(entity.getLocation());
         dto.setProductName(entity.getProductName());
         dto.setProductProvider(entity.getProductProvider());
+        dto.setAnalysisConclusion(entity.getAnalysisConclusion());
         dto.setBloodPools(
                 entity.getBloodPools() != null ?
                 entity.getBloodPools().stream().map(BloodPoolEntity::getExternalId).collect(Collectors.toSet()) : null

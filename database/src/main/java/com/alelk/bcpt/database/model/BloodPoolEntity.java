@@ -2,6 +2,7 @@ package com.alelk.bcpt.database.model;
 
 import com.alelk.bcpt.common.util.StringUtil;
 import com.alelk.bcpt.database.util.Sortable;
+import com.alelk.bcpt.model.AnalysisConclusion;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.Set;
 import static com.alelk.bcpt.database.model.BloodPoolEntity.PARAMETER_PRODUCT_BATCH;
 import static com.alelk.bcpt.database.model.BloodPoolEntity.QUERY_FIND_ALL;
 import static com.alelk.bcpt.database.model.BloodPoolEntity.QUERY_FIND_BY_PRODUCT_BATCH;
+import static com.alelk.bcpt.database.util.RepositoryUtil.processAnalysisConclusion;
 
 /**
  * Blood Donation Pool Entity
@@ -80,6 +82,11 @@ public class BloodPoolEntity extends AbstractEntity {
     public Double getTotalAmount() {
         if (bloodDonations == null) return null;
         return bloodDonations.stream().mapToDouble(BloodDonationEntity::getAmount).sum();
+    }
+
+    public AnalysisConclusion getAnalysisConclusion() {
+        return bloodDonations == null ? null :
+                processAnalysisConclusion(bloodDonations.stream().map(BloodDonationEntity::getAnalysisConclusion));
     }
 
     @Override

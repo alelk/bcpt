@@ -1,5 +1,6 @@
 package com.alelk.bcpt.model.dto;
 
+import com.alelk.bcpt.model.AnalysisConclusion;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ public class ProductBatchDto extends AbstractBcptDto {
     private String batchAuthor;
     private String productProvider;
     private String productName;
+    private AnalysisConclusion analysisConclusion;
 
     public ProductBatchDto() {}
 
@@ -30,7 +32,7 @@ public class ProductBatchDto extends AbstractBcptDto {
         super(externalId, creationTimestamp, updateTimestamp);
     }
 
-    public ProductBatchDto(String externalId, Date creationTimestamp, Date updateTimestamp, Integer batchNumber, Date batchDate, Set<String> bloodPools, Double totalAmount, String location, String batchAuthor, String productProvider, String productName) {
+    public ProductBatchDto(String externalId, Date creationTimestamp, Date updateTimestamp, Integer batchNumber, Date batchDate, Set<String> bloodPools, Double totalAmount, String location, String batchAuthor, String productProvider, String productName, AnalysisConclusion analysisConclusion) {
         super(externalId, creationTimestamp, updateTimestamp);
         this.batchNumber = batchNumber;
         this.batchDate = batchDate;
@@ -40,6 +42,7 @@ public class ProductBatchDto extends AbstractBcptDto {
         this.batchAuthor = batchAuthor;
         this.productProvider = productProvider;
         this.productName = productName;
+        this.analysisConclusion = analysisConclusion;
     }
 
     public Integer getBatchNumber() {
@@ -107,6 +110,14 @@ public class ProductBatchDto extends AbstractBcptDto {
         this.productName = productName;
     }
 
+    public AnalysisConclusion getAnalysisConclusion() {
+        return analysisConclusion;
+    }
+
+    public void setAnalysisConclusion(AnalysisConclusion analysisConclusion) {
+        this.analysisConclusion = analysisConclusion;
+    }
+
     @Override
     public String toString() {
         return "ProductBatchDto{" +
@@ -122,6 +133,7 @@ public class ProductBatchDto extends AbstractBcptDto {
                 ", batchAuthor=" + batchAuthor +
                 ", productName=" + productName +
                 ", productProvider=" + productProvider +
+                ", analysisConclusion=" + analysisConclusion +
                 ", updateTimestamp=" + getUpdateTimestamp() +
                 '}';
     }

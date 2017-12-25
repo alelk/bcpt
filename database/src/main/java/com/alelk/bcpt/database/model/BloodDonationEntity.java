@@ -1,6 +1,7 @@
 package com.alelk.bcpt.database.model;
 
 import com.alelk.bcpt.database.util.Sortable;
+import com.alelk.bcpt.model.AnalysisConclusion;
 import com.alelk.bcpt.model.BloodType;
 import com.alelk.bcpt.model.DonationType;
 import com.alelk.bcpt.model.RhFactor;
@@ -47,6 +48,9 @@ public class BloodDonationEntity extends AbstractEntity {
     private Double amount;
 
     @Sortable
+    private AnalysisConclusion analysisConclusion;
+
+    @Sortable
     private DonationType donationType;
 
     @Sortable
@@ -64,11 +68,12 @@ public class BloodDonationEntity extends AbstractEntity {
     public BloodDonationEntity() {
     }
 
-    public BloodDonationEntity(String externalId, PersonEntity donor, BloodPoolEntity bloodPool, Double amount, DonationType donationType, Date donationDate, Date quarantineDate, Date expirationDate) {
+    public BloodDonationEntity(String externalId, PersonEntity donor, BloodPoolEntity bloodPool, Double amount, AnalysisConclusion analysisConclusion, DonationType donationType, Date donationDate, Date quarantineDate, Date expirationDate) {
         super(externalId);
         this.donor = donor;
         this.bloodPool = bloodPool;
         this.amount = amount;
+        this.analysisConclusion = analysisConclusion;
         this.donationType = donationType;
         this.donationDate = donationDate;
         this.quarantineDate = quarantineDate;
@@ -131,6 +136,14 @@ public class BloodDonationEntity extends AbstractEntity {
         this.donationType = donationType;
     }
 
+    public AnalysisConclusion getAnalysisConclusion() {
+        return analysisConclusion;
+    }
+
+    public void setAnalysisConclusion(AnalysisConclusion analysisConclusion) {
+        this.analysisConclusion = analysisConclusion;
+    }
+
     public Date getExpirationDate() {
         return expirationDate;
     }
@@ -156,6 +169,7 @@ public class BloodDonationEntity extends AbstractEntity {
                 "', bloodInvoice=" + (bloodInvoice != null ? '\'' + bloodInvoice.getExternalId() + '\'' : null) +
                 "', bloodPool=" + (bloodPool != null ? '\'' + bloodPool.getExternalId() + '\'' : null) +
                 ", amount=" + amount +
+                ", analysisConclusion=" + analysisConclusion +
                 ", donationType=" + donationType +
                 ", donationDate=" + donationDate +
                 ", expirationDate=" + expirationDate +
