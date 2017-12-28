@@ -4,7 +4,7 @@
 
     <groupId>com.alelk.bcpt</groupId>
     <artifactId>bcpt</artifactId>
-    <version>1.0.0-ALPHA</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
     <name>Blood Centre Product Tracker</name>
 
@@ -22,14 +22,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.propertiesEncoding>UTF-8</project.build.propertiesEncoding>
         <jdk.version>1.8</jdk.version>
-        <spring.version>5.0.0.M5</spring.version>
+        <spring.version>5.0.2.RELEASE</spring.version>
         <jackson.version>2.9.1</jackson.version>
         <maven-compiler.version>3.6.2</maven-compiler.version>
         <maven-war.version>3.1.0</maven-war.version>
         <log4j2.version>2.7</log4j2.version>
         <javax-servlet.version>3.1.0</javax-servlet.version>
-        <hibernate.version>5.2.11.Final</hibernate.version>
-        <postgresql.version>9.4.1212</postgresql.version>
+        <hibernate.version>5.2.12.Final</hibernate.version>
+        <postgresql.version>42.1.4</postgresql.version>
         <rxjava.version>2.1.4</rxjava.version>
         <reflections.version>0.9.11</reflections.version>
         <jasperreports.version>6.4.3</jasperreports.version>
